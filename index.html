@@ -65,6 +65,10 @@ nav a:hover{color:var(--gold-bright);}
 .lang-btn:hover{color:var(--gold-bright);}
 .lang-btn.active{color:var(--gold);border-bottom:1px solid var(--gold);}
 @media(max-width:640px){.lang-switch{top:0.7rem;right:0.7rem;padding:0.3rem 0.5rem;}}
+.share-fab{position:fixed;bottom:1.3rem;right:1.3rem;z-index:101;width:46px;height:46px;border-radius:50%;background:rgba(11,10,19,0.55);backdrop-filter:blur(6px);border:1px solid rgba(201,163,95,0.28);color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color 0.3s ease,border-color 0.3s ease,transform 0.3s ease;}
+.share-fab:hover{color:var(--gold-bright);border-color:rgba(201,163,95,0.55);transform:translateY(-2px);}
+.share-toast{position:fixed;bottom:5rem;right:1.3rem;z-index:101;background:rgba(11,10,19,0.9);border:1px solid rgba(201,163,95,0.3);color:var(--cream);padding:0.55rem 1rem;border-radius:4px;font-size:0.78rem;letter-spacing:0.03em;font-family:'Cormorant Garamond',serif;}
+@media(max-width:640px){.share-fab{bottom:1rem;right:1rem;width:42px;height:42px;} .share-toast{bottom:4.4rem;right:1rem;}}
 
 /* HERO */
 .hero{
@@ -172,6 +176,13 @@ footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0
 .thought{font-style:italic;font-weight:700;color:var(--cream);}
 .isbn{display:block;font-size:0.72rem;letter-spacing:0.03em;color:var(--muted);font-style:normal;font-weight:400;margin-top:0.3rem;}
 .isni-line{text-align:center;font-size:0.78rem;color:var(--muted);letter-spacing:0.05em;margin-top:1.2rem;}
+.review-list{max-width:640px;margin:0 auto 2.5rem;display:flex;flex-direction:column;text-align:center;}
+.review-card{padding:2.2rem 0;border-top:1px solid rgba(201,163,95,0.18);}
+.review-card:first-child{border-top:none;padding-top:0;}
+.review-quote{font-style:italic;color:var(--cream);line-height:1.85;font-size:1.05rem;}
+.review-quote::before{content:"\201C";font-family:'Cormorant Garamond',Georgia,serif;font-style:normal;color:var(--gold);font-size:2.4rem;line-height:0;vertical-align:-0.5rem;margin-right:0.15rem;}
+.review-quote::after{content:"\201D";font-family:'Cormorant Garamond',Georgia,serif;font-style:normal;color:var(--gold);font-size:2.4rem;line-height:0;vertical-align:-0.5rem;margin-left:0.15rem;}
+.review-meta{font-family:'Cormorant Garamond',serif;font-size:0.85rem;letter-spacing:0.04em;color:var(--muted);margin-top:1.1rem;}
 </style>
 </head>
 <body>
@@ -184,11 +195,20 @@ footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0
   <button type="button" class="lang-btn" data-lang="pt">PT</button>
 </div>
 
+<button type="button" class="share-fab" id="shareFab" aria-label="Compartir esta página">
+  <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/>
+    <line x1="8.3" y1="10.6" x2="15.7" y2="6.4"/><line x1="8.3" y1="13.4" x2="15.7" y2="17.6"/>
+  </svg>
+</button>
+<div class="share-toast" id="shareToast" data-i18n="share-copied" hidden>Enlace copiado</div>
+
 <nav id="nav">
   <a href="#inicio" data-i18n="nav-inicio">Inicio</a>
   <a href="#sinopsis" data-i18n="nav-sinopsis">Sinopsis</a>
   <a href="#fragmento" data-i18n="nav-fragmento">Primeras páginas</a>
   <a href="#autor" data-i18n="nav-autor">Autor</a>
+  <a href="#resenas" data-i18n="nav-resenas">Reseñas</a>
   <a href="#comprar" data-i18n="nav-comprar">Comprar</a>
 </nav>
 
@@ -211,7 +231,7 @@ FANTASÍA</p>
   <p class="author-name">Arruda Van der Ley</p>
   <div class="cta-group">
     <a href="#fragmento" class="btn-primary" data-i18n="btn-fragmento">Leer un fragmento</a>
-    <a href="#comprar" class="btn-secondary" data-i18n="btn-comprar">Comprar en Amazon</a>
+    <a href="#comprar" class="btn-secondary" data-i18n="btn-comprar">Comprar</a>
   </div>
   <div class="scroll-cue">⌄</div>
 </section>
@@ -366,6 +386,31 @@ FANTASÍA</p>
 
 <div class="divider" aria-hidden="true"><svg viewBox="0 0 56 22"><circle cx="22" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/><circle cx="33" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/></svg></div>
 
+<section class="content reveal" id="resenas">
+  <h2 data-i18n="resenas-h2">Lo que dicen los lectores:</h2>
+  <div class="review-list">
+    <div class="review-card">
+      <p class="review-quote">GAEL tiene una prosa poética, una atmósfera que te atrapa y un protagonista que te rompe el corazón. Es un libro que no se lee rápido, un poco denso a veces, debemos saborearlo. El diseño de la portada y la contraportada ya te preparan para la inmersión. Muy recomendado para quienes buscan historias que tejen preguntas existenciales.</p>
+      <p class="review-meta">Reseñado en Alemania por Alex 🇩🇪</p>
+    </div>
+    <div class="review-card">
+      <p class="review-quote">Este libro te envuelve completamente en su relato con gran facilidad, amas a sus personajes desde el inicio, te sumerges en él y ansias leerlo cada vez más, me encantó!! Lo recomiendo al 100%.</p>
+      <p class="review-meta">Reseñado en España por Karen 🇪🇸</p>
+    </div>
+    <div class="review-card">
+      <p class="review-quote">Se nota el corazón y la dedicación que el autor ha puesto en cada capítulo. Gael no es solo una historia de ficción; es un viaje introspectivo lleno de matices. Me ha encantado la forma en que se aborda la trama, con un estilo muy auténtico. Espero con muchas ganas el próximo trabajo del autor.</p>
+      <p class="review-meta">Reseñado en Brasil por Ana Paula 🇧🇷</p>
+    </div>
+    <div class="review-card">
+      <p class="review-quote">El libro narra una historia de ficción que te hará reflexionar. Su lectura se me hizo interesante y muy amena.</p>
+      <p class="review-meta">Reseñado en España por Sergio Peiró 🇪🇸</p>
+    </div>
+  </div>
+  <a href="https://mybook.to/gael" class="author-link" data-i18n="resenas-cta" target="_blank" rel="noopener noreferrer">Deja tu reseña en Amazon →</a>
+</section>
+
+<div class="divider" aria-hidden="true"><svg viewBox="0 0 56 22"><circle cx="22" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/><circle cx="33" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/></svg></div>
+
 <section class="content reveal" id="autor">
   <h2 data-i18n="autor-h2">Sobre el autor</h2>
   <div class="author-photo">
@@ -421,58 +466,61 @@ revealEls.forEach(el=>io.observe(el));
 
 const translations = {
   es: {
-    'nav-inicio':'Inicio','nav-sinopsis':'Sinopsis','nav-fragmento':'Primeras páginas','nav-autor':'Autor','nav-comprar':'Comprar',
+    'nav-inicio':'Inicio','nav-sinopsis':'Sinopsis','nav-fragmento':'Primeras páginas','nav-autor':'Autor','nav-resenas':'Reseñas','nav-comprar':'Comprar',
     'eyebrow':'AVENTURA INTROSPECTIVA\nREALISMO MÁGICO\nFANTASÍA',
     'tagline':'Atrévete a escuchar tus propios silencios.',
-    'btn-fragmento':'Leer un fragmento','btn-comprar':'Comprar en Amazon',
+    'btn-fragmento':'Leer un fragmento','btn-comprar':'Comprar',
     'sinopsis-h2':'Sinopsis',
     'sinopsis-hook':'Gael supo que su vida había sido arrancada de la memoria del universo el día en que su madre dejó de pronunciar su nombre.',
     'sinopsis-p1':'Condenado al olvido, el joven Gael inicia una búsqueda desesperada a través de reinos donde la mentira brilla y el silencio es una sinfonía. Entre seres míticos y desafíos existenciales, esta novela nos invita a cuestionar qué es lo que realmente nos hace humanos.',
     'sinopsis-p2':'Una historia profunda y conmovedora sobre la identidad, el poder de los vínculos y la valentía que requiere ser tierno en un mundo envenenado por la ignorancia.',
     'fragmento-h2':'Las primeras páginas','sample-note':'',
     'chapter-label':'Capítulo 1','fin-muestra':'— Fin de la muestra —',
+    'resenas-h2':'Lo que dicen los lectores:','resenas-cta':'Deja tu reseña en Amazon →',
     'autor-h2':'Sobre el autor',
     'autor-bio':'Arruda Van der Ley (Brasil, 1990) es, ante todo, un caminante que busca en las palabras una forma de entender los silencios del alma. Educador social por profunda vocación y escritor de nacimiento. Gael es su primera novela publicada, una obra donde vuelca su fe en la compasión y en la capacidad humana de reconstruirse a través del amor y la memoria.',
     'autor-link':'Más sobre el autor en Amazon →',
     'comprar-h2':'Consigue tu ejemplar',
     'buy-paperback':'Tapa blanda (español)','buy-ebook-es':'Ebook (español)','buy-ebook-en':'Ebook (inglés)',
-    'footer-tagline':'Sigue el viaje de Gael'
+    'footer-tagline':'Sigue el viaje de Gael','share-copied':'Enlace copiado'
   },
   en: {
-    'nav-inicio':'Home','nav-sinopsis':'Synopsis','nav-fragmento':'First Pages','nav-autor':'Author','nav-comprar':'Buy',
+    'nav-inicio':'Home','nav-sinopsis':'Synopsis','nav-fragmento':'First Pages','nav-autor':'Author','nav-resenas':'Reviews','nav-comprar':'Buy',
     'eyebrow':'INTROSPECTIVE ADVENTURE\nMAGICAL REALISM\nFANTASY',
     'tagline':'Dare to listen to your own silences.',
-    'btn-fragmento':'Read a sample','btn-comprar':'Buy on Amazon',
+    'btn-fragmento':'Read a sample','btn-comprar':'Buy',
     'sinopsis-h2':'Synopsis',
     'sinopsis-hook':'Gael knew his life had been torn from the memory of the universe the day his mother stopped saying his name.',
     'sinopsis-p1':'Condemned to oblivion, young Gael begins a desperate search through realms where lies shine and silence is a symphony. Among mythical beings and existential challenges, this novel invites us to question what truly makes us human.',
     'sinopsis-p2':'A profound and moving story about identity, the power of the bonds we keep, and the courage it takes to be tender in a world poisoned by ignorance.',
     'fragmento-h2':'The First Pages','sample-note':'This sample is currently available in Spanish only.',
     'chapter-label':'Chapter 1','fin-muestra':'— End of sample —',
+    'resenas-h2':'What readers say:','resenas-cta':'Leave your review on Amazon →',
     'autor-h2':'About the author',
     'autor-bio':"Arruda Van der Ley (Brazil, 1990) is, above all, a wanderer who searches in words for a way to understand the silences of the soul. A social educator by deep calling and a writer by birth. Gael is his first published novel, a work that pours out his faith in compassion and in humanity's capacity to rebuild itself through love and memory.",
     'autor-link':'More about the author on Amazon →',
     'comprar-h2':'Get your copy',
     'buy-paperback':'Paperback (Spanish)','buy-ebook-es':'Ebook (Spanish)','buy-ebook-en':'Ebook (English)',
-    'footer-tagline':"Follow Gael's journey"
+    'footer-tagline':"Follow Gael's journey",'share-copied':'Link copied'
   },
   pt: {
-    'nav-inicio':'Início','nav-sinopsis':'Sinopse','nav-fragmento':'Primeiras páginas','nav-autor':'Autor','nav-comprar':'Comprar',
+    'nav-inicio':'Início','nav-sinopsis':'Sinopse','nav-fragmento':'Primeiras páginas','nav-autor':'Autor','nav-resenas':'Resenhas','nav-comprar':'Comprar',
     'eyebrow':'AVENTURA INTROSPECTIVA\nREALISMO MÁGICO\nFANTASIA',
     'tagline':'Atreva-se a escutar os seus próprios silêncios.',
-    'btn-fragmento':'Ler um trecho','btn-comprar':'Comprar na Amazon',
+    'btn-fragmento':'Ler um trecho','btn-comprar':'Comprar',
     'sinopsis-h2':'Sinopse',
     'sinopsis-hook':'Gael soube que sua vida havia sido arrancada da memória do universo no dia em que sua mãe deixou de pronunciar seu nome.',
     'sinopsis-p1':'Condenado ao esquecimento, o jovem Gael inicia uma busca desesperada por reinos onde a mentira brilha e o silêncio é uma sinfonia. Entre seres míticos e desafios existenciais, este romance nos convida a questionar o que realmente nos torna humanos.',
     'sinopsis-p2':'Uma história profunda e comovente sobre identidade, o poder dos vínculos que criamos e a coragem que é preciso ter para ser terno num mundo envenenado pela ignorância.',
     'fragmento-h2':'As primeiras páginas','sample-note':'Esta amostra está disponível apenas em espanhol, por enquanto.',
     'chapter-label':'Capítulo 1','fin-muestra':'— Fim da amostra —',
+    'resenas-h2':'O que dizem os leitores:','resenas-cta':'Deixe sua resenha na Amazon →',
     'autor-h2':'Sobre o autor',
     'autor-bio':'Arruda Van der Ley (Brasil, 1990) é, acima de tudo, um caminhante que busca nas palavras uma forma de entender os silêncios da alma. Educador social por profunda vocação e escritor de nascença. Gael é seu primeiro romance publicado, uma obra em que deposita sua fé na compaixão e na capacidade humana de se reconstruir através do amor e da memória.',
     'autor-link':'Mais sobre o autor na Amazon →',
     'comprar-h2':'Garanta seu exemplar',
     'buy-paperback':'Capa comum (espanhol)','buy-ebook-es':'Ebook (espanhol)','buy-ebook-en':'Ebook (inglês)',
-    'footer-tagline':'Acompanhe a jornada de Gael'
+    'footer-tagline':'Acompanhe a jornada de Gael','share-copied':'Link copiado'
   }
 };
 
@@ -499,6 +547,27 @@ document.querySelectorAll('.lang-btn').forEach(btn=>{
 let savedLang = 'es';
 try{ savedLang = localStorage.getItem('gael-lang') || 'es'; }catch(e){}
 applyLanguage(savedLang);
+
+const shareFab = document.getElementById('shareFab');
+const shareToast = document.getElementById('shareToast');
+let toastTimer = null;
+shareFab.addEventListener('click', async ()=>{
+  const shareData = {
+    title: document.title,
+    text: document.querySelector('.tagline').textContent,
+    url: window.location.href
+  };
+  if(navigator.share){
+    try{ await navigator.share(shareData); }catch(err){ /* user cancelled the share sheet, nothing to do */ }
+    return;
+  }
+  try{
+    await navigator.clipboard.writeText(window.location.href);
+    shareToast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>{ shareToast.hidden = true; }, 2400);
+  }catch(err){ /* clipboard unavailable, fail silently */ }
+});
 </script>
 
 </body>
