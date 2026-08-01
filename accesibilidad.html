@@ -38,8 +38,8 @@ h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;color:va
 a{color:inherit;text-decoration:none;}
 img{max-width:100%;display:block;}
 a:focus-visible,button:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px;}
-.skip-link{position:absolute;top:-3rem;left:0.6rem;z-index:200;background:var(--gold);color:var(--void);padding:0.6rem 1.1rem;border-radius:4px;text-decoration:none;font-weight:600;transition:top 0.2s ease;}
-.skip-link:focus-visible{top:0.6rem;}
+.skip-link{position:absolute;top:0;left:0.6rem;z-index:200;background:var(--gold);color:var(--void);padding:0.6rem 1.1rem;border-radius:4px;text-decoration:none;font-weight:600;line-height:1.3;max-width:calc(100vw - 1.2rem);transform:translateY(-100%);transition:transform 0.2s ease;}
+.skip-link:focus-visible{transform:translateY(0.6rem);}
 
 /* HILO CONDUCTOR */
 .thread-track{position:fixed;left:10px;top:0;bottom:0;width:2px;background:rgba(201,163,95,0.15);z-index:40;}
@@ -111,6 +111,8 @@ section.content h2{font-size:clamp(1.7rem,4vw,2.3rem);margin-bottom:2rem;text-al
 #accesibilidad h1{font-size:clamp(2rem,5vw,2.8rem);margin-bottom:1.5rem;text-align:center;}
 #accesibilidad h3{margin-top:2.2rem;margin-bottom:0.6rem;font-size:1.2rem;}
 #accesibilidad>p{max-width:640px;margin-left:auto;margin-right:auto;}
+#accesibilidad .divider{margin-top:2rem;}
+#accesibilidad [data-i18n="a11y-honesty"]{margin-bottom:2rem;}
 .reveal{opacity:0;transform:translateY(26px);transition:opacity 0.9s ease,transform 0.9s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
 
