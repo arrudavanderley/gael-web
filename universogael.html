@@ -204,6 +204,11 @@ footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0
 .review-quote::after{content:"\201D";font-family:'Cormorant Garamond',Georgia,serif;font-style:normal;color:var(--gold);font-size:2.4rem;line-height:0;vertical-align:-0.5rem;margin-left:0.15rem;}
 .review-meta{font-family:'Cormorant Garamond',serif;font-size:0.85rem;letter-spacing:0.04em;color:var(--muted);margin-top:1.1rem;}
 #universo h1{font-size:clamp(2rem,5vw,2.8rem);margin-bottom:1.5rem;text-align:center;}
+#universo h2{font-size:clamp(1.5rem,3.5vw,2rem);margin-top:2.6rem;margin-bottom:0.9rem;text-align:center;}
+#universo h3{margin-top:1.8rem;margin-bottom:0.5rem;font-size:1.15rem;}
+#universo>p{max-width:640px;margin-left:auto;margin-right:auto;}
+.pull-quote{max-width:560px;margin:2.2rem auto;padding:1.4rem 0;border-top:1px solid rgba(201,163,95,0.3);border-bottom:1px solid rgba(201,163,95,0.3);text-align:center;}
+.pull-quote p{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:1.35rem;color:var(--gold-bright);line-height:1.6;margin:0;max-width:none;}
 </style>
 </head>
 <body>
@@ -217,14 +222,81 @@ footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0
   <button type="button" class="lang-btn" data-lang="pt">PT</button>
 </div>
 
+<button type="button" class="share-fab" id="shareFab" aria-label="Compartir esta página">
+  <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/>
+    <line x1="8.3" y1="10.6" x2="15.7" y2="6.4"/><line x1="8.3" y1="13.4" x2="15.7" y2="17.6"/>
+  </svg>
+</button>
+<div class="share-toast" id="shareToast" data-i18n="share-copied" hidden>Enlace copiado</div>
+
 <nav id="nav">
   <a href="index.html" data-i18n="back-link">&larr; Gael</a>
 </nav>
 
 <main id="contenido" tabindex="-1">
 <section class="content reveal" id="universo">
-  <h1 data-i18n="universo-h1">Universo Gael</h1>
-  <p class="edicion-lead" data-i18n="universo-placeholder">Estamos preparando esta sección con el mismo cuidado que el resto del universo de Gael. Vuelve pronto.</p>
+  <h1 data-i18n="universo-h1">El universo de Gael</h1>
+
+  <h2 data-i18n="universo-s1-h2">Un viaje hacia el interior</h2>
+  <p data-i18n="universo-s1-p1">Gael nace como una reflexión sobre la búsqueda de aquello que nos define como seres humanos. A través de la fantasía y la introspección, la obra invita a mirar hacia dentro, a reconocer nuestras propias sombras y a comprender que el camino del conocimiento de uno mismo es también un camino hacia la compasión.</p>
+  <p data-i18n="universo-s1-p2">Conocernos sin miedo ni vergüenza, abrazar aquello que somos y mantener la intención de crecer continuamente son parte de un viaje que nos acerca a los demás. Porque, aunque nuestras historias sean diferentes, compartimos muchas de las mismas preguntas, heridas y anhelos.</p>
+
+  <blockquote class="pull-quote">
+    <p data-i18n="universo-pullquote">No somos tan distintos unos de otros. Todos caminamos con nuestras propias sombras y buscamos, de una forma u otra, aprender a vivir con ellas.</p>
+  </blockquote>
+
+  <h2 data-i18n="universo-s2-h2">La sombra de la ignorancia</h2>
+  <p data-i18n="universo-s2-p1">La ignorancia representa una de las mayores barreras en el camino hacia el conocimiento y la transformación.</p>
+  <p data-i18n="universo-s2-p2">A veces, aquello que desconocemos puede generar una falsa sensación de inseguridad. Lo diferente puede percibirse como una amenaza cuando no existe una verdadera comprensión, dando lugar al miedo, al rechazo y a la construcción de barreras entre personas.</p>
+  <p data-i18n="universo-s2-p3">Sin embargo, el aprendizaje comienza cuando nos atrevemos a cuestionar aquello que creemos conocer, escuchar nuevas perspectivas y acercarnos al otro desde el respeto y la compasión.</p>
+
+  <h2 data-i18n="universo-s3-h2">El aprendizaje como camino de transformación</h2>
+  <p data-i18n="universo-s3-p1">Aprender no significa únicamente adquirir conocimientos. También implica observarnos con honestidad, reconocer las limitaciones y permitir que las experiencias nos transformen.</p>
+  <p data-i18n="universo-s3-p2">El aprendizaje nos invita a crecer, comprender mejor nuestra propia naturaleza y acercarnos al mundo con más sabiduría.</p>
+
+  <div class="divider" aria-hidden="true"><svg viewBox="0 0 56 22"><circle cx="22" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/><circle cx="33" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/></svg></div>
+
+  <h2 data-i18n="universo-s4-h2">Temas que acompañan la obra</h2>
+
+  <h3 data-i18n="universo-t1-h3">Autoconocimiento e identidad</h3>
+  <p data-i18n="universo-t1-p">El camino de comprender quiénes somos, entender las particularidades que nos definen y construir una relación más sincera con nosotros mismos.</p>
+
+  <h3 data-i18n="universo-t2-h3">Memoria y olvido</h3>
+  <p data-i18n="universo-t2-p">La memoria como parte esencial de nuestra identidad y el olvido como una experiencia que nos enfrenta a la fragilidad humana.</p>
+
+  <h3 data-i18n="universo-t3-h3">Ignorancia y aprendizaje</h3>
+  <p data-i18n="universo-t3-p">La tensión entre permanecer en aquello que conocemos y atrevernos a descubrir nuevas formas de comprender el mundo.</p>
+
+  <h3 data-i18n="universo-t4-h3">Apego y libertad interior</h3>
+  <p data-i18n="universo-t4-p">Aquello a lo que nos aferramos buscando seguridad puede convertirse en una prisión invisible que limita nuestra capacidad de cambiar y evolucionar.</p>
+
+  <h3 data-i18n="universo-t5-h3">Resiliencia</h3>
+  <p data-i18n="universo-t5-p1">La capacidad de reconstruirse después de atravesar momentos de oscuridad, encontrando dentro de uno mismo la fuerza necesaria para continuar el camino.</p>
+  <p data-i18n="universo-t5-p2">En Gael, la resiliencia representa la posibilidad de levantarse, aprender de las heridas y permitir que las experiencias difíciles se conviertan en motor para nuestra transformación.</p>
+
+  <h3 data-i18n="universo-t6-h3">Transformación</h3>
+  <p data-i18n="universo-t6-p">El cambio como parte natural del camino humano. La posibilidad de dejar atrás antiguas formas de comprendernos para descubrir nuevas perspectivas sobre nosotros mismos y sobre los demás.</p>
+
+  <h3 data-i18n="universo-t7-h3">Empatía y compasión</h3>
+  <p data-i18n="universo-t7-p">La capacidad de reconocer el sufrimiento y la humanidad compartida que existe en cada persona, comprendiendo que nuestras diferencias no eliminan aquello que nos une.</p>
+
+  <h3 data-i18n="universo-t8-h3">Paz</h3>
+  <p data-i18n="universo-t8-p">La búsqueda de equilibrio interior y la esperanza de una convivencia más armoniosa basada en el respeto, la comprensión y la unión entre personas y pueblos.</p>
+
+  <h3 data-i18n="universo-t9-h3">Naturaleza</h3>
+  <p data-i18n="universo-t9-p">La conexión entre los seres humanos y el mundo que habitamos, recordándonos que formamos parte de algo más amplio que nosotros mismos.</p>
+
+  <div class="divider" aria-hidden="true"><svg viewBox="0 0 56 22"><circle cx="22" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/><circle cx="33" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/></svg></div>
+
+  <h2 data-i18n="universo-s5-h2">Influencias y mirada del autor</h2>
+  <p data-i18n="universo-s5-p1">La creación de Gael está acompañada por una profunda atención hacia las experiencias humanas, los vínculos y el mundo interior de las personas.</p>
+  <p data-i18n="universo-s5-p2">La formación del autor como Educador Social y su interés por la sociopedagogía, los derechos humanos y la salud mental han contribuido a construir una mirada literaria centrada en las emociones, la conexión y la transformación.</p>
+  <p data-i18n="universo-s5-p3">La naturaleza y la reflexión filosófica también forman parte de la sensibilidad que acompaña esta obra.</p>
+
+  <h2 data-i18n="universo-s6-h2">Una invitación al lector</h2>
+  <p data-i18n="universo-s6-p1">Cada persona encuentra su propio camino dentro de una historia.</p>
+  <p data-i18n="universo-s6-p2">Gael es una invitación a observar nuestros silencios, disfrutar del autoconocimiento, aceptar nuestras luces y sombras, aprender de ellas y permitir que el crecimiento personal se convierta en un puente hacia los demás.</p>
 </section>
 </main>
 
@@ -263,29 +335,140 @@ const translations = {
   es: {
     'skip-link':'Saltar al contenido',
     'back-link':'← Gael',
-    'universo-h1':'Universo Gael',
-    'universo-placeholder':'Estamos preparando esta sección con el mismo cuidado que el resto del universo de Gael. Vuelve pronto.',
+    'universo-h1':'El universo de Gael',
+    'universo-s1-h2':'Un viaje hacia el interior',
+    'universo-s1-p1':'Gael nace como una reflexión sobre la búsqueda de aquello que nos define como seres humanos. A través de la fantasía y la introspección, la obra invita a mirar hacia dentro, a reconocer nuestras propias sombras y a comprender que el camino del conocimiento de uno mismo es también un camino hacia la compasión.',
+    'universo-s1-p2':'Conocernos sin miedo ni vergüenza, abrazar aquello que somos y mantener la intención de crecer continuamente son parte de un viaje que nos acerca a los demás. Porque, aunque nuestras historias sean diferentes, compartimos muchas de las mismas preguntas, heridas y anhelos.',
+    'universo-pullquote':'No somos tan distintos unos de otros. Todos caminamos con nuestras propias sombras y buscamos, de una forma u otra, aprender a vivir con ellas.',
+    'universo-s2-h2':'La sombra de la ignorancia',
+    'universo-s2-p1':'La ignorancia representa una de las mayores barreras en el camino hacia el conocimiento y la transformación.',
+    'universo-s2-p2':'A veces, aquello que desconocemos puede generar una falsa sensación de inseguridad. Lo diferente puede percibirse como una amenaza cuando no existe una verdadera comprensión, dando lugar al miedo, al rechazo y a la construcción de barreras entre personas.',
+    'universo-s2-p3':'Sin embargo, el aprendizaje comienza cuando nos atrevemos a cuestionar aquello que creemos conocer, escuchar nuevas perspectivas y acercarnos al otro desde el respeto y la compasión.',
+    'universo-s3-h2':'El aprendizaje como camino de transformación',
+    'universo-s3-p1':'Aprender no significa únicamente adquirir conocimientos. También implica observarnos con honestidad, reconocer las limitaciones y permitir que las experiencias nos transformen.',
+    'universo-s3-p2':'El aprendizaje nos invita a crecer, comprender mejor nuestra propia naturaleza y acercarnos al mundo con más sabiduría.',
+    'universo-s4-h2':'Temas que acompañan la obra',
+    'universo-t1-h3':'Autoconocimiento e identidad',
+    'universo-t1-p':'El camino de comprender quiénes somos, entender las particularidades que nos definen y construir una relación más sincera con nosotros mismos.',
+    'universo-t2-h3':'Memoria y olvido',
+    'universo-t2-p':'La memoria como parte esencial de nuestra identidad y el olvido como una experiencia que nos enfrenta a la fragilidad humana.',
+    'universo-t3-h3':'Ignorancia y aprendizaje',
+    'universo-t3-p':'La tensión entre permanecer en aquello que conocemos y atrevernos a descubrir nuevas formas de comprender el mundo.',
+    'universo-t4-h3':'Apego y libertad interior',
+    'universo-t4-p':'Aquello a lo que nos aferramos buscando seguridad puede convertirse en una prisión invisible que limita nuestra capacidad de cambiar y evolucionar.',
+    'universo-t5-h3':'Resiliencia',
+    'universo-t5-p1':'La capacidad de reconstruirse después de atravesar momentos de oscuridad, encontrando dentro de uno mismo la fuerza necesaria para continuar el camino.',
+    'universo-t5-p2':'En Gael, la resiliencia representa la posibilidad de levantarse, aprender de las heridas y permitir que las experiencias difíciles se conviertan en motor para nuestra transformación.',
+    'universo-t6-h3':'Transformación',
+    'universo-t6-p':'El cambio como parte natural del camino humano. La posibilidad de dejar atrás antiguas formas de comprendernos para descubrir nuevas perspectivas sobre nosotros mismos y sobre los demás.',
+    'universo-t7-h3':'Empatía y compasión',
+    'universo-t7-p':'La capacidad de reconocer el sufrimiento y la humanidad compartida que existe en cada persona, comprendiendo que nuestras diferencias no eliminan aquello que nos une.',
+    'universo-t8-h3':'Paz',
+    'universo-t8-p':'La búsqueda de equilibrio interior y la esperanza de una convivencia más armoniosa basada en el respeto, la comprensión y la unión entre personas y pueblos.',
+    'universo-t9-h3':'Naturaleza',
+    'universo-t9-p':'La conexión entre los seres humanos y el mundo que habitamos, recordándonos que formamos parte de algo más amplio que nosotros mismos.',
+    'universo-s5-h2':'Influencias y mirada del autor',
+    'universo-s5-p1':'La creación de Gael está acompañada por una profunda atención hacia las experiencias humanas, los vínculos y el mundo interior de las personas.',
+    'universo-s5-p2':'La formación del autor como Educador Social y su interés por la sociopedagogía, los derechos humanos y la salud mental han contribuido a construir una mirada literaria centrada en las emociones, la conexión y la transformación.',
+    'universo-s5-p3':'La naturaleza y la reflexión filosófica también forman parte de la sensibilidad que acompaña esta obra.',
+    'universo-s6-h2':'Una invitación al lector',
+    'universo-s6-p1':'Cada persona encuentra su propio camino dentro de una historia.',
+    'universo-s6-p2':'Gael es una invitación a observar nuestros silencios, disfrutar del autoconocimiento, aceptar nuestras luces y sombras, aprender de ellas y permitir que el crecimiento personal se convierta en un puente hacia los demás.',
     'footer-tagline':'Sigue el viaje de Gael',
     'footer-a11y-text':'Esta página ha sido diseñada teniendo en cuenta principios de accesibilidad digital, buscando ofrecer una experiencia de navegación clara, cómoda e inclusiva para todas las personas.',
-    'footer-a11y-link':'Accesibilidad'
+    'footer-a11y-link':'Accesibilidad','share-copied':'Enlace copiado'
   },
   en: {
     'skip-link':'Skip to content',
     'back-link':'← Gael',
-    'universo-h1':'Gael Universe',
-    'universo-placeholder':"We're preparing this section with the same care as the rest of Gael's universe. Check back soon.",
+    'universo-h1':'The Universe of Gael',
+    'universo-s1-h2':'A journey inward',
+    'universo-s1-p1':'Gael was born as a reflection on the search for what defines us as human beings. Through fantasy and introspection, the novel invites us to look inward, to recognize our own shadows, and to understand that the path to knowing oneself is also a path toward compassion.',
+    'universo-s1-p2':'Knowing ourselves without fear or shame, embracing who we are, and holding on to the intention of growing continuously are all part of a journey that brings us closer to others. Because, even when our stories differ, we share many of the same questions, wounds, and longings.',
+    'universo-pullquote':'We are not so different from one another. We all walk with our own shadows, and each of us searches, in one way or another, to learn how to live with them.',
+    'universo-s2-h2':'The shadow of ignorance',
+    'universo-s2-p1':'Ignorance represents one of the greatest barriers on the path toward knowledge and transformation.',
+    'universo-s2-p2':'Sometimes, what we don\'t understand can create a false sense of insecurity. What is different can be perceived as a threat when there is no real understanding, giving rise to fear, rejection, and the barriers we build between one another.',
+    'universo-s2-p3':'And yet, learning begins the moment we dare to question what we believe we already know, to listen to new perspectives, and to approach others from a place of respect and compassion.',
+    'universo-s3-h2':'Learning as a path of transformation',
+    'universo-s3-p1':'Learning doesn\'t mean only acquiring knowledge. It also means observing ourselves honestly, acknowledging our limitations, and allowing our experiences to transform us.',
+    'universo-s3-p2':'Learning invites us to grow, to understand our own nature more deeply, and to meet the world with greater wisdom.',
+    'universo-s4-h2':'Themes that run through the story',
+    'universo-t1-h3':'Self-knowledge and identity',
+    'universo-t1-p':'The path of understanding who we are, recognizing the particularities that define us, and building a more honest relationship with ourselves.',
+    'universo-t2-h3':'Memory and oblivion',
+    'universo-t2-p':'Memory as an essential part of our identity, and oblivion as an experience that confronts us with human fragility.',
+    'universo-t3-h3':'Ignorance and learning',
+    'universo-t3-p':'The tension between remaining within what we already know and daring to discover new ways of understanding the world.',
+    'universo-t4-h3':'Attachment and inner freedom',
+    'universo-t4-p':'What we cling to in search of safety can become an invisible prison, one that limits our capacity to change and evolve.',
+    'universo-t5-h3':'Resilience',
+    'universo-t5-p1':'The capacity to rebuild ourselves after passing through moments of darkness, finding within ourselves the strength needed to continue the path.',
+    'universo-t5-p2':'In Gael, resilience represents the possibility of rising again, learning from our wounds, and allowing difficult experiences to become the engine of our transformation.',
+    'universo-t6-h3':'Transformation',
+    'universo-t6-p':'Change as a natural part of the human path. The possibility of leaving behind old ways of understanding ourselves in order to discover new perspectives on who we are and on others.',
+    'universo-t7-h3':'Empathy and compassion',
+    'universo-t7-p':'The capacity to recognize the suffering and shared humanity that exists in every person, understanding that our differences do not erase what unites us.',
+    'universo-t8-h3':'Peace',
+    'universo-t8-p':'The search for inner balance, and the hope for a more harmonious coexistence built on respect, understanding, and unity among people and nations.',
+    'universo-t9-h3':'Nature',
+    'universo-t9-p':'The connection between human beings and the world we inhabit, reminding us that we are part of something greater than ourselves.',
+    'universo-s5-h2':'Influences and the author\'s perspective',
+    'universo-s5-p1':'The creation of Gael is guided by a deep attentiveness to human experience, to the bonds between people, and to their inner worlds.',
+    'universo-s5-p2':'The author\'s training as a Social Educator, along with his interest in social pedagogy, human rights, and mental health, has helped shape a literary perspective centered on emotion, connection, and transformation.',
+    'universo-s5-p3':'Nature and philosophical reflection are also part of the sensibility that runs through this work.',
+    'universo-s6-h2':'An invitation to the reader',
+    'universo-s6-p1':'Every person finds their own path within a story.',
+    'universo-s6-p2':'Gael is an invitation to observe our silences, to enjoy the process of knowing ourselves, to accept our own light and shadow, to learn from them, and to let personal growth become a bridge toward others.',
     'footer-tagline':"Follow Gael's journey",
     'footer-a11y-text':'This page has been designed with digital accessibility principles in mind, aiming to offer a navigation experience that is clear, comfortable, and inclusive for everyone.',
-    'footer-a11y-link':'Accessibility'
+    'footer-a11y-link':'Accessibility','share-copied':'Link copied'
   },
   pt: {
     'skip-link':'Pular para o conteúdo',
     'back-link':'← Gael',
-    'universo-h1':'Universo Gael',
-    'universo-placeholder':'Estamos preparando esta seção com o mesmo cuidado que o resto do universo de Gael. Volte em breve.',
+    'universo-h1':'O universo de Gael',
+    'universo-s1-h2':'Uma viagem para dentro',
+    'universo-s1-p1':'Gael nasce como uma reflexão sobre a busca daquilo que nos define como seres humanos. Através da fantasia e da introspecção, a obra convida a olhar para dentro, a reconhecer nossas próprias sombras e a compreender que o caminho do autoconhecimento é também um caminho rumo à compaixão.',
+    'universo-s1-p2':'Conhecer-nos sem medo nem vergonha, abraçar aquilo que somos e manter a intenção de crescer continuamente fazem parte de uma jornada que nos aproxima dos outros. Porque, ainda que nossas histórias sejam diferentes, compartilhamos muitas das mesmas perguntas, feridas e anseios.',
+    'universo-pullquote':'Não somos tão diferentes uns dos outros. Todos caminhamos com nossas próprias sombras e buscamos, de uma forma ou de outra, aprender a viver com elas.',
+    'universo-s2-h2':'A sombra da ignorância',
+    'universo-s2-p1':'A ignorância representa uma das maiores barreiras no caminho rumo ao conhecimento e à transformação.',
+    'universo-s2-p2':'Às vezes, aquilo que desconhecemos pode gerar uma falsa sensação de insegurança. O diferente pode ser percebido como uma ameaça quando não existe uma verdadeira compreensão, dando origem ao medo, à rejeição e à construção de barreiras entre as pessoas.',
+    'universo-s2-p3':'No entanto, o aprendizado começa quando ousamos questionar aquilo que acreditamos conhecer, escutar novas perspectivas e nos aproximar do outro a partir do respeito e da compaixão.',
+    'universo-s3-h2':'O aprendizado como caminho de transformação',
+    'universo-s3-p1':'Aprender não significa apenas adquirir conhecimento. Também implica observar-nos com honestidade, reconhecer as limitações e permitir que as experiências nos transformem.',
+    'universo-s3-p2':'O aprendizado nos convida a crescer, a compreender melhor nossa própria natureza e a nos aproximarmos do mundo com mais sabedoria.',
+    'universo-s4-h2':'Temas que acompanham a obra',
+    'universo-t1-h3':'Autoconhecimento e identidade',
+    'universo-t1-p':'O caminho de compreender quem somos, entender as particularidades que nos definem e construir uma relação mais sincera com nós mesmos.',
+    'universo-t2-h3':'Memória e esquecimento',
+    'universo-t2-p':'A memória como parte essencial da nossa identidade e o esquecimento como uma experiência que nos confronta com a fragilidade humana.',
+    'universo-t3-h3':'Ignorância e aprendizado',
+    'universo-t3-p':'A tensão entre permanecer naquilo que conhecemos e ousar descobrir novas formas de compreender o mundo.',
+    'universo-t4-h3':'Apego e liberdade interior',
+    'universo-t4-p':'Aquilo a que nos apegamos em busca de segurança pode se tornar uma prisão invisível que limita nossa capacidade de mudar e evoluir.',
+    'universo-t5-h3':'Resiliência',
+    'universo-t5-p1':'A capacidade de reconstruir-se depois de atravessar momentos de escuridão, encontrando dentro de si a força necessária para continuar o caminho.',
+    'universo-t5-p2':'Em Gael, a resiliência representa a possibilidade de levantar-se, aprender com as feridas e permitir que as experiências difíceis se tornem motor da nossa transformação.',
+    'universo-t6-h3':'Transformação',
+    'universo-t6-p':'A mudança como parte natural do caminho humano. A possibilidade de deixar para trás antigas formas de nos compreendermos para descobrir novas perspectivas sobre nós mesmos e sobre os outros.',
+    'universo-t7-h3':'Empatia e compaixão',
+    'universo-t7-p':'A capacidade de reconhecer o sofrimento e a humanidade compartilhada que existe em cada pessoa, compreendendo que nossas diferenças não eliminam aquilo que nos une.',
+    'universo-t8-h3':'Paz',
+    'universo-t8-p':'A busca pelo equilíbrio interior e a esperança de uma convivência mais harmoniosa baseada no respeito, na compreensão e na união entre pessoas e povos.',
+    'universo-t9-h3':'Natureza',
+    'universo-t9-p':'A conexão entre os seres humanos e o mundo que habitamos, lembrando-nos de que fazemos parte de algo mais amplo do que nós mesmos.',
+    'universo-s5-h2':'Influências e o olhar do autor',
+    'universo-s5-p1':'A criação de Gael é acompanhada por uma profunda atenção às experiências humanas, aos vínculos e ao mundo interior das pessoas.',
+    'universo-s5-p2':'A formação do autor como Educador Social e seu interesse pela sociopedagogia, pelos direitos humanos e pela saúde mental contribuíram para construir um olhar literário centrado nas emoções, na conexão e na transformação.',
+    'universo-s5-p3':'A natureza e a reflexão filosófica também fazem parte da sensibilidade que acompanha esta obra.',
+    'universo-s6-h2':'Um convite ao leitor',
+    'universo-s6-p1':'Cada pessoa encontra seu próprio caminho dentro de uma história.',
+    'universo-s6-p2':'Gael é um convite a observar nossos silêncios, a apreciar o autoconhecimento, a aceitar nossas luzes e sombras, a aprender com elas e a permitir que o crescimento pessoal se torne uma ponte em direção aos outros.',
     'footer-tagline':'Acompanhe a jornada de Gael',
     'footer-a11y-text':'Esta página foi desenvolvida levando em conta princípios de acessibilidade digital, buscando oferecer uma experiência de navegação clara, confortável e inclusiva para todas as pessoas.',
-    'footer-a11y-link':'Acessibilidade'
+    'footer-a11y-link':'Acessibilidade','share-copied':'Link copiado'
   }
 };
 
@@ -310,6 +493,27 @@ document.querySelectorAll('.lang-btn').forEach(btn=>{
 let savedLang = 'es';
 try{ savedLang = localStorage.getItem('gael-lang') || 'es'; }catch(e){}
 applyLanguage(savedLang);
+
+const shareFab = document.getElementById('shareFab');
+const shareToast = document.getElementById('shareToast');
+let toastTimer = null;
+shareFab.addEventListener('click', async ()=>{
+  const shareData = {
+    title: document.title,
+    text: document.querySelector('h1').textContent,
+    url: window.location.href
+  };
+  if(navigator.share){
+    try{ await navigator.share(shareData); }catch(err){ /* user cancelled the share sheet, nothing to do */ }
+    return;
+  }
+  try{
+    await navigator.clipboard.writeText(window.location.href);
+    shareToast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>{ shareToast.hidden = true; }, 2400);
+  }catch(err){ /* clipboard unavailable, fail silently */ }
+});
 </script>
 </body>
 </html>
