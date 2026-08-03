@@ -3,27 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contacto — Gael</title>
-<style>
-body{font-family:Georgia,serif;background:#0b0a13;color:#e9e2d0;max-width:700px;margin:0 auto;padding:40px 20px}
-h1{color:#e0c07f;text-align:center}
-form{display:flex;flex-direction:column;gap:15px}
-input,textarea{padding:12px;background:#17131f;color:#fff;border:1px solid #c9a35f}
-button{padding:12px;background:transparent;color:#e0c07f;border:1px solid #c9a35f;cursor:pointer}
-</style>
+<title>Contacto</title>
 </head>
 <body>
+
 <h1>Contacto</h1>
-<p>Si Gael te ha dejado algo —una pregunta, una reseña, un pensamiento que quieras compartir— este espacio es para ti.</p>
+
 <form action="https://formsubmit.co/el/kilubi" method="POST">
-<input type="hidden" name="_subject" value="Nuevo mensaje desde arrudavanderley.com">
-<input type="hidden" name="_template" value="table">
-<input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_next" value="https://arrudavanderley.com/contacto.html?enviado=1">
-<input type="text" name="Nombre" placeholder="Nombre" required>
-<input type="email" name="Correo" placeholder="Correo electrónico" required>
-<textarea name="Mensaje" placeholder="Mensaje" rows="8" required></textarea>
-<button type="submit">Enviar mensaje</button>
+    <input type="text" name="nombre" placeholder="Nombre" required>
+    <br><br>
+
+    <input type="email" name="email" placeholder="Correo electrónico" required>
+    <br><br>
+
+    <textarea name="mensaje" placeholder="Mensaje" required></textarea>
+    <br><br>
+
+    <input type="hidden" name="_next" value="https://arrudavanderley.com/contacto.html">
+    <input type="hidden" name="_captcha" value="false">
+
+    <button type="submit">Enviar mensaje</button>
 </form>
+
 </body>
 </html>
