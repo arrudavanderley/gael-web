@@ -246,6 +246,7 @@ footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0
     <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_url" value="https://arrudavanderley.com/contacto.html">
+    <input type="hidden" name="_next" value="https://arrudavanderley.com/contacto.html?enviado=1">
     <div class="form-honey"><label for="_honey">No llenar</label><input type="text" id="_honey" name="_honey"></div>
 
     <div class="form-field">
@@ -398,38 +399,16 @@ let savedLang = 'es';
 try{ savedLang = localStorage.getItem('gael-lang') || 'es'; }catch(e){}
 applyLanguage(savedLang);
 
-const contactForm = document.getElementById('contactForm');
-const cfSubmit = document.getElementById('cfSubmit');
 const cfStatus = document.getElementById('cfStatus');
 const currentDict = () => translations[document.documentElement.lang] || translations.es;
 
-contactForm.addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  cfSubmit.disabled = true;
-  cfStatus.hidden = true;
-  cfStatus.className = 'form-status';
-  try{
-    const response = await fetch(contactForm.action, {
-      method: 'POST',
-      body: new FormData(contactForm),
-      headers: { 'Accept': 'application/json' }
-    });
-    if(response.ok){
-      cfStatus.textContent = currentDict()['contact-success'];
-      cfStatus.className = 'form-status success';
-      cfStatus.hidden = false;
-      contactForm.reset();
-    } else {
-      throw new Error('Request failed');
-    }
-  }catch(err){
-    cfStatus.textContent = currentDict()['contact-error'];
-    cfStatus.className = 'form-status error';
-    cfStatus.hidden = false;
-  }finally{
-    cfSubmit.disabled = false;
-  }
-});
+if(window.location.search.includes('enviado=1')){
+  cfStatus.textContent = currentDict()['contact-success'];
+  cfStatus.className = 'form-status success';
+  cfStatus.hidden = false;
+  const cleanUrl = window.location.origin + window.location.pathname;
+  window.history.replaceState({}, document.title, cleanUrl);
+}
 </script>
 </body>
 </html>
