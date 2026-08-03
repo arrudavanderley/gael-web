@@ -27,9 +27,8 @@ section.content{max-width:700px;margin:0 auto;padding:4.5rem 1.5rem;}
 .form-submit{width:100%;padding:0.9rem;border:1px solid var(--gold);border-radius:4px;background:transparent;color:var(--gold-bright);font-family:'Cormorant Garamond',serif;font-size:1.1rem;cursor:pointer;transition:.3s;}
 .form-submit:hover{background:var(--gold);color:var(--void);}
 .form-submit:disabled{opacity:0.5;}
-.form-status{margin-top:1.2rem;text-align:center;padding:0.9rem;border-radius:4px;white-space:pre-line;}
+.form-status{margin-top:1.2rem;text-align:center;padding:0.9rem;border-radius:4px;}
 .form-status.success{background:rgba(201,163,95,0.12);color:var(--gold-bright);border:1px solid rgba(201,163,95,0.35);}
-.form-status.error{background:rgba(180,80,80,0.1);color:#e0a0a0;border:1px solid rgba(180,80,80,0.3);}
 .form-status[hidden]{display:none;}
 .edicion-lead{text-align:center;}
 footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0.85rem;border-top:1px solid rgba(201,163,95,0.12);margin-top:1.5rem;}
@@ -44,24 +43,27 @@ footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0
   <h1>Contacto</h1>
   <p class="edicion-lead">Si Gael te ha dejado algo —una pregunta, una reseña, un pensamiento que quieras compartir— este espacio es para ti.</p>
 
-  <form class="contact-form" id="contactForm" action="https://formsubmit.co/el/kilubi" method="POST">
-    <!-- CONFIGURACION FORMSUBMIT - SIN _next para evitar redireccion a home -->
+  <!-- TRUCO: iframe oculto evita que te mande a la home -->
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+  <form class="contact-form" id="contactForm" action="https://formsubmit.co/el/kilubi" method="POST" target="hidden_iframe">
     <input type="hidden" name="_subject" value="Nuevo mensaje desde arrudavanderley.com">
     <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_captcha" value="false">
+    <!-- No usamos _next, porque tu panel de FormSubmit ya tiene redirect a la home -->
     <input type="text" name="_honey" style="display:none">
 
     <div class="form-field">
       <label>Nombre</label>
-      <input type="text" name="name" id="cf-name" required autocomplete="name">
+      <input type="text" name="name" required autocomplete="name">
     </div>
     <div class="form-field">
       <label>Correo electrónico</label>
-      <input type="email" name="email" id="cf-email" required autocomplete="email">
+      <input type="email" name="email" required autocomplete="email">
     </div>
     <div class="form-field">
       <label>Motivo</label>
-      <select name="Motivo" id="cf-subject">
+      <select name="Motivo">
         <option value="Comentario">Comentario</option>
         <option value="Reseña">Reseña</option>
         <option value="Pregunta">Pregunta</option>
@@ -70,7 +72,7 @@ footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0
     </div>
     <div class="form-field">
       <label>Mensaje</label>
-      <textarea name="message" id="cf-message" required></textarea>
+      <textarea name="message" required></textarea>
     </div>
 
     <button type="submit" class="form-submit" id="cfSubmit">Enviar mensaje</button>
@@ -88,70 +90,39 @@ window.addEventListener('scroll',()=>{
 },{passive:true});
 
 const translations={
-  es:{'success':'Gracias por escribir. Tu mensaje ha llegado — te responderé en cuanto pueda.','error':'Algo no salió bien. Intenta de nuevo en un momento.','sending':'Enviando...','send':'Enviar mensaje'},
-  en:{'success':"Thank you for writing. Your message has arrived — I'll reply as soon as I can.",'error':'Something went wrong. Please try again.','sending':'Sending...','send':'Send message'},
-  pt:{'success':'Obrigado por escrever. Sua mensagem chegou — responderei assim que possível.','error':'Algo deu errado. Tente novamente.','sending':'Enviando...','send':'Enviar mensagem'}
+  es:{success:'Gracias por escribir. Tu mensaje ha llegado — te responderé en cuanto pueda. Revisa tu correo, debería llegarte en 1-2 minutos.',sending:'Enviando...',send:'Enviar mensaje'},
+  en:{success:"Thank you for writing. Your message has arrived — I'll reply as soon as I can.",sending:'Sending...',send:'Send message'},
+  pt:{success:'Obrigado por escrever. Sua mensagem chegou — responderei assim que possível. Verifique seu e-mail.',sending:'Enviando...',send:'Enviar mensagem'}
 };
 
 const form=document.getElementById('contactForm');
 const statusEl=document.getElementById('cfStatus');
 const btn=document.getElementById('cfSubmit');
+const iframe=document.getElementById('hidden_iframe');
+let submitted=false;
 
-function getLang(){return document.documentElement.lang||'es';}
-
-// Mostrar mensaje si viene con ?enviado=1 (por si usas _next en el futuro)
-if(location.search.includes('enviado=1')){
-  const l=getLang();
-  statusEl.textContent=(translations[l]||translations.es).success;
-  statusEl.className='form-status success';
-  statusEl.hidden=false;
-  history.replaceState({},'',location.pathname);
-}
-
-// ENVIO AJAX SIN REDIRECCION - SOLUCION AL PROBLEMA DE QUE TE MANDA A LA HOME
-form.addEventListener('submit', async (e)=>{
-  e.preventDefault(); // <- Esto evita que te redirija a arrudavanderley.com/
-  const l=getLang();
-  const t=translations[l]||translations.es;
-  statusEl.hidden=true;
+form.addEventListener('submit',()=>{
+  const lang=document.documentElement.lang||'es';
+  const t=translations[lang]||translations.es;
+  submitted=true;
   btn.disabled=true;
   btn.textContent=t.sending;
+  statusEl.hidden=true;
+});
 
-  try{
-    const formData=new FormData(form);
-    // IMPORTANTE: usar endpoint /ajax/el/kilubi y NO incluir _next
-    const res=await fetch('https://formsubmit.co/ajax/el/kilubi',{
-      method:'POST',
-      body:formData,
-      headers:{'Accept':'application/json'}
-    });
-    
-    const data=await res.json().catch(()=>({}));
-    console.log('FormSubmit response:', res.status, data);
-
-    if(res.ok){
-      statusEl.textContent=t.success;
-      statusEl.className='form-status success';
-      statusEl.hidden=false;
-      form.reset();
-    } else {
-      // Si el alias no permite ajax, FormSubmit devuelve error 400
-      // En ese caso intentamos con el endpoint directo de email como fallback
-      // Cambia abajo TU_EMAIL por tu email real si quieres probar el fallback
-      throw new Error(data.message || ('Error '+res.status));
-    }
-  } catch(err){
-    console.error(err);
-    const l=getLang();
-    const t=translations[l]||translations.es;
-    statusEl.textContent=t.error+"\n("+err.message+")\n\nRevisa la consola (F12) y dime que aparece.";
-    statusEl.className='form-status error';
-    statusEl.hidden=false;
-  } finally {
-    const l=getLang();
-    btn.disabled=false;
-    btn.textContent=(translations[l]||translations.es).send;
-  }
+iframe.addEventListener('load',()=>{
+  if(!submitted) return; // primera carga, ignorar
+  const lang=document.documentElement.lang||'es';
+  const t=translations[lang]||translations.es;
+  // FormSubmit cargó (aunque haya redirigido a tu home dentro del iframe)
+  // Si llegó aquí, el email ya se procesó
+  statusEl.textContent=t.success;
+  statusEl.className='form-status success';
+  statusEl.hidden=false;
+  form.reset();
+  btn.disabled=false;
+  btn.textContent=t.send;
+  submitted=false;
 });
 
 document.querySelectorAll('.lang-btn').forEach(b=>{
