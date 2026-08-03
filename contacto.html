@@ -241,26 +241,24 @@ footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0
   <h1 data-i18n="contact-h1">Contacto</h1>
   <p class="edicion-lead" data-i18n="contact-intro">Si Gael te ha dejado algo &mdash;una pregunta, una reseña, un pensamiento que quieras compartir&mdash; este espacio es para ti.</p>
 
-  <form class="contact-form" id="contactForm" action="https://formsubmit.co/el/kilubi" method="POST">
+  <form class="contact-form" id="contactForm" action="https://formspree.io/f/xgogggpk" method="POST">
     <input type="hidden" name="_subject" value="Nuevo mensaje desde arrudavanderley.com">
-    <input type="hidden" name="_template" value="table">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_url" value="https://arrudavanderley.com/contacto.html">
+    <input type="hidden" name="_next" value="https://arrudavanderley.com/contacto.html?enviado=1">
     <div class="form-honey"><label for="_honey">No llenar</label><input type="text" id="_honey" name="_honey"></div>
 
     <div class="form-field">
       <label for="cf-name" data-i18n="contact-label-name">Nombre</label>
-      <input type="text" id="cf-name" name="Nombre" required>
+      <input type="text" id="cf-name" name="name" required>
     </div>
 
     <div class="form-field">
       <label for="cf-email" data-i18n="contact-label-email">Correo electrónico</label>
-      <input type="email" id="cf-email" name="Correo" required>
+      <input type="email" id="cf-email" name="email" required>
     </div>
 
     <div class="form-field">
       <label for="cf-subject" data-i18n="contact-label-subject">Motivo</label>
-      <select id="cf-subject" name="Motivo">
+      <select id="cf-subject" name="subject">
         <option data-i18n="contact-opt-comment">Comentario</option>
         <option data-i18n="contact-opt-review">Reseña</option>
         <option data-i18n="contact-opt-question">Pregunta</option>
@@ -270,7 +268,7 @@ footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0
 
     <div class="form-field">
       <label for="cf-message" data-i18n="contact-label-message">Mensaje</label>
-      <textarea id="cf-message" name="Mensaje" required></textarea>
+      <textarea id="cf-message" name="message" required></textarea>
     </div>
 
     <button type="submit" class="form-submit" id="cfSubmit" data-i18n="contact-submit">Enviar mensaje</button>
