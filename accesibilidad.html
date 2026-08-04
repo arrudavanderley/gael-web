@@ -205,6 +205,31 @@ footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0
 .review-quote::before{content:"\201C";font-family:'Cormorant Garamond',Georgia,serif;font-style:normal;color:var(--gold);font-size:2.4rem;line-height:0;vertical-align:-0.5rem;margin-right:0.15rem;}
 .review-quote::after{content:"\201D";font-family:'Cormorant Garamond',Georgia,serif;font-style:normal;color:var(--gold);font-size:2.4rem;line-height:0;vertical-align:-0.5rem;margin-left:0.15rem;}
 .review-meta{font-family:'Cormorant Garamond',serif;font-size:0.85rem;letter-spacing:0.04em;color:var(--muted);margin-top:1.1rem;}
+
+.contact-cta-wrap{text-align:center;margin-top:2.2rem;}
+.contact-cta{
+  display:inline-block;
+  font-family:'Cormorant Garamond',serif;
+  font-weight:600;
+  font-size:0.88rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--void);
+  background:var(--gold);
+  padding:0.95rem 2.4rem;
+  border-radius:2px;
+  border:1px solid var(--gold);
+  transition:all 0.3s ease;
+  text-decoration:none;
+}
+.contact-cta:hover{
+  background:var(--gold-bright);
+  border-color:var(--gold-bright);
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(201,163,95,0.22);
+  color:var(--void);
+}
+
 </style>
 </head>
 <body>
@@ -253,7 +278,10 @@ footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0
 
   <h2 data-i18n="a11y-h2-2">Un compromiso continuo</h2>
   <p class="edicion-lead" data-i18n="a11y-honesty">La accesibilidad forma parte del cuidado con el que construimos este espacio. Seguimos revisando y mejorando estos aspectos con el tiempo, aplicando buenas prácticas digitales y prestando atención a nuevas oportunidades de mejora.</p>
-  <p class="edicion-lead" data-i18n="a11y-contact">Si en algún momento encuentras una barrera para acceder al contenido, o tienes alguna sugerencia, puedes escribirnos a través de nuestras redes sociales — nos ayuda a seguir cuidando este espacio.</p>
+  <p class="edicion-lead" data-i18n="a11y-contact">Si en algún momento encuentras una barrera para acceder al contenido, o tienes alguna sugerencia, no dudes en contactar; esto me ayuda a seguir cuidando este espacio.</p>
+  <div class="contact-cta-wrap">
+    <a href="contacto.html" class="contact-cta" data-i18n="a11y-contact-link">CONTACTO</a>
+  </div>
 </section>
 </main>
 
@@ -265,6 +293,8 @@ footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0
   <div class="footer-a11y">
     <p data-i18n="footer-a11y-text">Esta página ha sido diseñada teniendo en cuenta principios de accesibilidad digital, buscando ofrecer una experiencia de navegación clara, cómoda e inclusiva para todas las personas.</p>
     <a href="accesibilidad.html" data-i18n="footer-a11y-link">Accesibilidad</a>
+    <span aria-hidden="true" style="margin:0 0.5rem;opacity:0.5;">·</span>
+    <a href="contacto.html" data-i18n="footer-contact-link">Contacto</a>
   </div>
 </footer>
 
@@ -309,10 +339,12 @@ const translations = {
     'a11y-p6':'Buscamos que la experiencia sea agradable tanto en móviles, tablets y ordenadores, teniendo en cuenta la diversidad funcional y las distintas formas de relacionarse con el contenido.',
     'a11y-h2-2':'Un compromiso continuo',
     'a11y-honesty':'La accesibilidad forma parte del cuidado con el que construimos este espacio. Seguimos revisando y mejorando estos aspectos con el tiempo, aplicando buenas prácticas digitales y prestando atención a nuevas oportunidades de mejora.',
-    'a11y-contact':'Si en algún momento encuentras una barrera para acceder al contenido, o tienes alguna sugerencia, puedes escribirnos a través de nuestras redes sociales — nos ayuda a seguir cuidando este espacio.',
+    'a11y-contact':'Si en algún momento encuentras una barrera para acceder al contenido, o tienes alguna sugerencia, no dudes en contactar; esto me ayuda a seguir cuidando este espacio.',
+    'a11y-contact-link':'CONTACTO',
     'footer-tagline':'Sigue el viaje de Gael',
     'footer-a11y-text':'Esta página ha sido diseñada teniendo en cuenta principios de accesibilidad digital, buscando ofrecer una experiencia de navegación clara, cómoda e inclusiva para todas las personas.',
-    'footer-a11y-link':'Accesibilidad'
+    'footer-a11y-link':'Accesibilidad',
+    'footer-contact-link':'Contacto'
   },
   en: {
     'skip-link':'Skip to content',
@@ -334,10 +366,12 @@ const translations = {
     'a11y-p6':'We want the experience to be pleasant on mobile, tablet, and desktop alike, keeping in mind functional diversity and the different ways people relate to content.',
     'a11y-h2-2':'An ongoing commitment',
     'a11y-honesty':'Accessibility is part of the care we put into building this space. We continue reviewing and improving these aspects over time, applying good digital practices and paying attention to new opportunities for improvement.',
-    'a11y-contact':'If you ever run into a barrier accessing the content, or have a suggestion, feel free to reach out through our social channels — it helps us keep taking care of this space.',
+    'a11y-contact':'If you ever run into a barrier accessing the content, or have a suggestion, feel free to get in touch; it helps me keep taking care of this space.',
+    'a11y-contact-link':'CONTACT',
     'footer-tagline':"Follow Gael's journey",
     'footer-a11y-text':'This page has been designed with digital accessibility principles in mind, aiming to offer a navigation experience that is clear, comfortable, and inclusive for everyone.',
-    'footer-a11y-link':'Accessibility'
+    'footer-a11y-link':'Accessibility',
+    'footer-contact-link':'Contact'
   },
   pt: {
     'skip-link':'Pular para o conteúdo',
@@ -359,10 +393,12 @@ const translations = {
     'a11y-p6':'Buscamos que a experiência seja agradável tanto em celulares, tablets e computadores, levando em conta a diversidade funcional e as diferentes formas de se relacionar com o conteúdo.',
     'a11y-h2-2':'Um compromisso contínuo',
     'a11y-honesty':'A acessibilidade faz parte do cuidado com que construímos este espaço. Continuamos revisando e aprimorando esses aspectos com o tempo, aplicando boas práticas digitais e prestando atenção a novas oportunidades de melhoria.',
-    'a11y-contact':'Se em algum momento você encontrar uma barreira para acessar o conteúdo, ou tiver alguma sugestão, pode nos escrever através das nossas redes sociais — isso nos ajuda a continuar cuidando deste espaço.',
+    'a11y-contact':'Se em algum momento você encontrar uma barreira para acessar o conteúdo, ou tiver alguma sugestão, não hesite em entrar em contato; isso me ajuda a continuar cuidando deste espaço.',
+    'a11y-contact-link':'CONTATO',
     'footer-tagline':'Acompanhe a jornada de Gael',
     'footer-a11y-text':'Esta página foi desenvolvida levando em conta princípios de acessibilidade digital, buscando oferecer uma experiência de navegação clara, confortável e inclusiva para todas as pessoas.',
-    'footer-a11y-link':'Acessibilidade'
+    'footer-a11y-link':'Acessibilidade',
+    'footer-contact-link':'Contato'
   }
 };
 
