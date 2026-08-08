@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0a13">
+<meta name="color-scheme" content="dark">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="canonical" href="https://arrudavanderley.com/aventurasintrospectivas.html">
+<title>Aventuras Introspectivas — Gael</title>
+<meta name="description" content="Un espacio interactivo dentro del Universo Gael: invocaciones, mapas y fragmentos que responden a quien los visita.">
+<meta property="og:title" content="Aventuras Introspectivas — Gael">
+<meta property="og:description" content="Un espacio interactivo dentro del Universo Gael: invocaciones, mapas y fragmentos que responden a quien los visita.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://arrudavanderley.com/aventurasintrospectivas.html">
+<meta property="og:image" content="https://arrudavanderley.com/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --void:#0b0a13;
+  --panel:#17131f;
+  --gold:#c9a35f;
+  --gold-bright:#e0c07f;
+  --cream:#e9e2d0;
+  --muted:#8f8272;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;background:var(--void);}
+body{
+  background:var(--void);
+  color:var(--cream);
+  font-family:'EB Garamond',Georgia,serif;
+  font-size:1.125rem;
+  line-height:1.75;
+  overflow-x:hidden;
+}
+h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;color:var(--gold-bright);}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px;}
+.skip-link{position:absolute;top:0;left:0.6rem;z-index:200;background:var(--gold);color:var(--void);padding:0.6rem 1.1rem;border-radius:4px;text-decoration:none;font-weight:600;line-height:1.3;max-width:calc(100vw - 1.2rem);transform:translateY(-100%);transition:transform 0.2s ease;}
+.skip-link:focus-visible{transform:translateY(0.6rem);}
+
+/* HILO CONDUCTOR */
+.thread-track{position:fixed;left:10px;top:0;bottom:0;width:2px;background:rgba(201,163,95,0.15);z-index:40;}
+.thread-fill{position:absolute;top:0;left:0;width:100%;height:0%;background:linear-gradient(var(--gold-bright),var(--gold));}
+@media(max-width:640px){.thread-track{left:6px;}}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:center;gap:1.8rem;flex-wrap:wrap;
+  padding:1.2rem 7rem;
+  opacity:0;transform:translateY(-8px);
+  transition:opacity 0.5s ease,transform 0.5s ease,background 0.4s ease;
+  pointer-events:none;
+}
+nav.scrolled{
+  opacity:1;transform:translateY(0);pointer-events:auto;
+  background:rgba(11,10,19,0.78);backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(201,163,95,0.15);
+}
+nav a{font-family:'Cormorant Garamond',serif;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);transition:color 0.3s ease;}
+nav a:hover{color:var(--gold-bright);}
+.lang-switch{position:fixed;top:1rem;right:1rem;z-index:101;display:flex;gap:0.5rem;align-items:center;background:rgba(11,10,19,0.55);backdrop-filter:blur(6px);padding:0.4rem 0.7rem;border-radius:20px;border:1px solid rgba(201,163,95,0.28);}
+.lang-btn{font-family:'Cormorant Garamond',serif;font-size:0.72rem;letter-spacing:0.08em;color:var(--muted);background:none;border:none;padding:0.15rem 0.2rem;cursor:pointer;transition:color 0.3s ease;}
+.lang-btn:hover{color:var(--gold-bright);}
+.lang-btn.active{color:var(--gold);border-bottom:1px solid var(--gold);}
+@media(max-width:640px){.lang-switch{top:0.7rem;right:0.7rem;padding:0.3rem 0.5rem;}}
+.share-fab{position:fixed;bottom:1.3rem;right:1.3rem;z-index:101;width:46px;height:46px;border-radius:50%;background:rgba(11,10,19,0.55);backdrop-filter:blur(6px);border:1px solid rgba(201,163,95,0.28);color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color 0.3s ease,border-color 0.3s ease,transform 0.3s ease;}
+.share-fab:hover{color:var(--gold-bright);border-color:rgba(201,163,95,0.55);transform:translateY(-2px);}
+.share-toast{position:fixed;bottom:5rem;right:1.3rem;z-index:101;background:rgba(11,10,19,0.9);border:1px solid rgba(201,163,95,0.3);color:var(--cream);padding:0.55rem 1rem;border-radius:4px;font-size:0.78rem;letter-spacing:0.03em;font-family:'Cormorant Garamond',serif;}
+@media(max-width:640px){.share-fab{bottom:1rem;right:1rem;width:42px;height:42px;} .share-toast{bottom:4.4rem;right:1rem;}}
+
+/* PAGE HEADER */
+.page-head{max-width:700px;margin:0 auto;padding:6.5rem 1.5rem 1rem;text-align:center;}
+.page-head h1{font-size:clamp(2.1rem,5.5vw,3rem);margin-bottom:1.2rem;}
+.page-head p{max-width:520px;margin:0 auto;color:var(--cream);opacity:0.85;font-size:1.02rem;}
+.divider{display:flex;justify-content:center;padding:2.2rem 0;color:var(--gold);opacity:0.55;}
+.divider svg{width:56px;height:22px;}
+
+/* SECCIONES */
+section.content{max-width:700px;margin:0 auto;padding:1.5rem 1.5rem 4.5rem;scroll-margin-top:80px;}
+footer{text-align:center;padding:4rem 1.5rem 3rem;color:var(--muted);font-size:0.85rem;border-top:1px solid rgba(201,163,95,0.12);margin-top:1.5rem;}
+.footer-mark{width:96px;height:auto;margin:0 auto 1.5rem;opacity:0.9;}
+.social-links{display:flex;gap:1.5rem;justify-content:center;margin-bottom:1.2rem;}
+.social-links a{color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.3s ease;}
+.social-links a:hover{color:var(--gold-bright);}
+.footer-a11y{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(201,163,95,0.12);max-width:440px;margin-left:auto;margin-right:auto;}
+.footer-a11y p{font-size:0.75rem;line-height:1.6;}
+.footer-a11y a{font-size:0.75rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px;}
+.footer-a11y a:hover{color:var(--gold);}
+
+/* EL CIELO DE GAEL */
+.gs-eyebrow{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;letter-spacing:0.14em;color:rgba(201,163,95,0.6);text-transform:uppercase;font-size:0.78rem;margin:0 0 10px;text-align:center;}
+.gs-title{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem,5vw,2.7rem);margin:0 0 14px;text-align:center;color:var(--gold-bright);}
+.gs-epigraph{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:1.18rem;color:var(--gold-bright);max-width:480px;margin:0 auto 34px;line-height:1.7;text-align:center;}
+.gs-sky-frame{position:relative;border:1px solid rgba(201,163,95,0.18);border-radius:3px;padding:6px;background:var(--panel);}
+svg#gsSky{width:100%;height:auto;display:block;border-radius:2px;}
+.gs-bg-star{fill:var(--gold-bright);}
+.gs-const-star{fill:var(--gold-bright);filter:drop-shadow(0 0 2.5px var(--gold));transition:cx 1.8s cubic-bezier(.4,0,.2,1),cy 1.8s cubic-bezier(.4,0,.2,1),opacity .6s ease;}
+.gs-const-line{stroke:var(--gold);stroke-width:0.6;opacity:0;transition:opacity 1.1s ease;}
+.gs-const-line.show{opacity:0.55;}
+@keyframes gsTwinkle{0%,100%{opacity:.15;}50%{opacity:.8;}}
+.gs-moon-wrap{margin:30px auto 6px;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.gs-moon-btn{background:radial-gradient(circle,rgba(255,255,255,0.03) 0%,transparent 72%);border:none;cursor:pointer;padding:8px;border-radius:50%;line-height:0;}
+.gs-moon-btn:focus-visible{outline:2px solid var(--gold-bright);outline-offset:4px;}
+.gs-moon-btn:disabled{cursor:default;}
+.gs-moon-svg{filter:drop-shadow(0 0 7px rgba(224,192,127,0.4));}
+.gs-moon-shadow{fill:url(#gsMoonDark);transition:transform 1.6s cubic-bezier(.4,0,.2,1);}
+.gs-moon-caption{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.95rem;color:var(--muted);min-height:1.4em;}
+.gs-reveal{margin-top:28px;opacity:0;transform:translateY(8px);transition:opacity 1s ease,transform 1s ease;}
+.gs-reveal.show{opacity:1;transform:translateY(0);}
+.gs-shape-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.4rem;color:var(--gold-bright);margin:0 0 16px;text-align:center;}
+.gs-excerpt-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(201,163,95,0.6);margin:0 0 8px;text-align:left;max-width:490px;margin-left:auto;margin-right:auto;}
+.gs-excerpt{font-size:1.04rem;line-height:1.78;color:var(--cream);max-width:490px;margin:0 auto;text-align:left;padding-left:16px;border-left:2px solid rgba(201,163,95,0.35);}
+.gs-excerpt em{color:var(--gold-bright);font-style:italic;}
+.gs-reflection{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--gold-bright);max-width:460px;margin:22px auto 0;line-height:1.6;text-align:center;}
+.gs-again-btn{display:block;margin:26px auto 0;font-family:'EB Garamond',serif;font-style:italic;font-size:0.9rem;color:var(--muted);background:none;border:none;border-bottom:1px solid transparent;cursor:pointer;padding:4px 2px;}
+.gs-again-btn:hover,.gs-again-btn:focus-visible{color:var(--gold-bright);border-bottom-color:rgba(201,163,95,0.4);outline:none;}
+.gs-again-btn[hidden]{display:none;}
+
+@media(prefers-reduced-motion:reduce){
+  .gs-const-star,.gs-const-line,.gs-moon-shadow,.gs-reveal{transition:none !important;}
+}
+</style>
+</head>
+<body>
+<a href="#contenido" class="skip-link" data-i18n="skip-link">Saltar al contenido</a>
+
+<div class="thread-track" aria-hidden="true"><div class="thread-fill" id="threadFill"></div></div>
+
+<div class="lang-switch" role="group" aria-label="Idioma / Language">
+  <button type="button" class="lang-btn active" data-lang="es">ES</button>
+  <button type="button" class="lang-btn" data-lang="en">EN</button>
+  <button type="button" class="lang-btn" data-lang="pt">PT</button>
+</div>
+
+<nav id="nav">
+  <a href="index.html" data-i18n="back-link">&larr; Gael</a>
+</nav>
+
+<main id="contenido" tabindex="-1">
+
+<div class="page-head reveal" id="pageHead">
+  <h1 data-i18n="ai-h1">Aventuras Introspectivas</h1>
+  <p data-i18n="ai-intro">Un espacio interactivo dentro del Universo Gael. Un lugar que crece poco a poco, con experiencias pensadas para detenerse, mirar hacia adentro y llevarse algo distinto cada vez.</p>
+</div>
+
+<div class="divider" aria-hidden="true"><svg viewBox="0 0 56 22"><circle cx="22" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/><circle cx="33" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/></svg></div>
+
+<section class="content reveal" id="cielo-de-gael" aria-label="El Cielo Nocturno, mapa interactivo">
+  <p class="gs-eyebrow" data-i18n="cielo-eyebrow">Universo Gael</p>
+  <h2 class="gs-title" data-i18n="cielo-h2">El Cielo Nocturno</h2>
+  <p class="gs-epigraph" data-i18n="cielo-intro">El mapa, tejido en una piel misteriosa y cálida al tacto, delineaba constelaciones que se reacomodaban cada noche, como si el destino se rescribiera con el impulso de los vientos nocturnos.</p>
+
+  <div class="gs-sky-frame">
+    <svg id="gsSky" viewBox="0 0 300 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="El mapa estelar de Gael, grabado en piel de luna" data-i18n-aria="sky-aria">
+      <defs>
+        <radialGradient id="gsSkyGrad" cx="48%" cy="42%" r="78%">
+          <stop offset="0%" stop-color="#8c7248"/>
+          <stop offset="45%" stop-color="#5e4b2f"/>
+          <stop offset="100%" stop-color="#241c12"/>
+        </radialGradient>
+        <filter id="gsHideTexture" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.09" numOctaves="4" seed="17" result="noise"/>
+          <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.22  0 0 0 0 0.16  0 0 0 0 0.08  0 0 0 0.45 0"/>
+        </filter>
+        <radialGradient id="gsMark1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#6b5636" stop-opacity="0.22"/>
+          <stop offset="100%" stop-color="#6b5636" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="gsMark2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#7a6440" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#7a6440" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="gsMark3" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#2f2415" stop-opacity="0.24"/>
+          <stop offset="100%" stop-color="#2f2415" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect x="0" y="0" width="300" height="170" fill="url(#gsSkyGrad)"/>
+      <rect x="0" y="0" width="300" height="170" filter="url(#gsHideTexture)"/>
+      <ellipse cx="88" cy="48" rx="70" ry="34" fill="url(#gsMark1)"/>
+      <ellipse cx="228" cy="118" rx="58" ry="30" fill="url(#gsMark2)"/>
+      <ellipse cx="178" cy="36" rx="42" ry="18" fill="url(#gsMark3)"/>
+    </svg>
+  </div>
+
+  <div class="gs-moon-wrap">
+    <button class="gs-moon-btn" id="gsMoonBtn" aria-label="Invocar la luna llena" data-i18n-aria="moon-aria">
+      <svg class="gs-moon-svg" width="66" height="66" viewBox="0 0 66 66">
+        <defs>
+          <radialGradient id="gsMoonShade" cx="36%" cy="32%" r="72%">
+            <stop offset="0%" stop-color="#fbf6e9"/>
+            <stop offset="60%" stop-color="#e9dfc2"/>
+            <stop offset="100%" stop-color="#c7b98f"/>
+          </radialGradient>
+          <radialGradient id="gsCrater" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#a89968" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#a89968" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="gsMoonDark" cx="50%" cy="50%" r="65%">
+            <stop offset="0%" stop-color="#050506"/>
+            <stop offset="100%" stop-color="#0d0d10"/>
+          </radialGradient>
+          <clipPath id="gsMoonClip">
+            <circle cx="33" cy="33" r="23"/>
+          </clipPath>
+        </defs>
+        <circle cx="33" cy="33" r="23" fill="url(#gsMoonShade)"/>
+        <ellipse cx="25" cy="24" rx="4.2" ry="3.6" fill="url(#gsCrater)"/>
+        <ellipse cx="41" cy="38" rx="3.4" ry="3" fill="url(#gsCrater)"/>
+        <ellipse cx="30" cy="43" rx="2.6" ry="2.2" fill="url(#gsCrater)"/>
+        <ellipse cx="43" cy="22" rx="2.2" ry="2" fill="url(#gsCrater)"/>
+        <ellipse cx="20" cy="36" rx="2" ry="1.8" fill="url(#gsCrater)"/>
+        <circle class="gs-moon-shadow" id="gsMoonShadow" cx="38.5" cy="33" r="23" clip-path="url(#gsMoonClip)"/>
+      </svg>
+    </button>
+    <span class="gs-moon-caption" id="gsMoonCaption" data-i18n="moon-idle">Toca la luna para invocarla llena</span>
+  </div>
+
+  <div class="gs-reveal" id="gsReveal" aria-live="polite">
+    <p class="gs-shape-name" id="gsShapeName"></p>
+    <p class="gs-excerpt-label" data-i18n="excerpt-label">De Gael</p>
+    <p class="gs-excerpt" id="gsExcerptText"></p>
+    <p class="gs-reflection" id="gsReflectionText"></p>
+    <button class="gs-again-btn" id="gsAgainBtn" data-i18n="again-btn" hidden>Invocar otra noche</button>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <img src="data:image/png;base64,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" alt="Marca de autor de Arruda Van der Ley" class="footer-mark">
+  <div class="social-links"><a href="https://www.threads.com/@authorarrudavanderley" target="_blank" rel="noopener noreferrer">Threads</a></div>
+  <p data-i18n="footer-tagline">Sigue el viaje de Gael</p>
+  <p style="margin-top:1rem;">© 2026 Arruda Van der Ley</p>
+  <div class="footer-a11y">
+    <p data-i18n="footer-a11y-text">Esta página ha sido diseñada teniendo en cuenta principios de accesibilidad digital, buscando ofrecer una experiencia de navegación clara, cómoda e inclusiva para todas las personas.</p>
+    <a href="accesibilidad.html" data-i18n="footer-a11y-link">Accesibilidad</a>
+    <span aria-hidden="true" style="margin:0 0.5rem;opacity:0.5;">·</span>
+    <a href="contacto.html" data-i18n="footer-contact-link">Contacto</a>
+  </div>
+</footer>
+
+<button type="button" class="share-fab" id="shareFab" aria-label="Compartir este fragmento" data-i18n-aria="share-aria">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"/><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"/></svg>
+</button>
+<div class="share-toast" id="shareToast" role="status" hidden></div>
+
+<script>
+const nav = document.getElementById('nav');
+const threadFill = document.getElementById('threadFill');
+
+function onScroll(){
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  threadFill.style.height = pct + '%';
+  if(scrollTop > 120){ nav.classList.add('scrolled'); } else { nav.classList.remove('scrolled'); }
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); } });
+},{threshold:0,rootMargin:'0px 0px -10% 0px'});
+revealEls.forEach(el=>io.observe(el));
+
+const translations = {
+  "es": {
+    "skip-link": "Saltar al contenido",
+    "back-link": "← Gael",
+    "ai-h1": "Aventuras Introspectivas",
+    "ai-intro": "Un espacio interactivo dentro del Universo Gael. Un lugar que crece poco a poco, con experiencias pensadas para detenerse, mirar hacia adentro y llevarse algo distinto cada vez.",
+    "cielo-eyebrow": "Universo Gael",
+    "cielo-h2": "El Cielo Nocturno",
+    "cielo-intro": "El mapa, tejido en una piel misteriosa y cálida al tacto, delineaba constelaciones que se reacomodaban cada noche, como si el destino se rescribiera con el impulso de los vientos nocturnos.",
+    "moon-aria": "Invocar la luna llena",
+    "moon-idle": "Toca la luna para invocarla llena",
+    "moon-growing": "La luna crece…",
+    "moon-full": "Luna llena",
+    "sky-aria": "El mapa estelar de Gael, grabado en piel de luna",
+    "excerpt-label": "De Gael",
+    "again-btn": "Invocar otra noche",
+    "share-aria": "Compartir este fragmento",
+    "share-copied": "Copiado al portapapeles",
+    "footer-tagline": "Sigue el viaje de Gael",
+    "footer-a11y-text": "Esta página ha sido diseñada teniendo en cuenta principios de accesibilidad digital, buscando ofrecer una experiencia de navegación clara, cómoda e inclusiva para todas las personas.",
+    "footer-a11y-link": "Accesibilidad",
+    "footer-contact-link": "Contacto"
+  },
+  "en": {
+    "skip-link": "Skip to content",
+    "back-link": "← Gael",
+    "ai-h1": "Introspective Adventures",
+    "ai-intro": "An interactive space within the Gael Universe. A place that grows little by little, with experiences meant to make you pause, look inward, and carry away something different each time.",
+    "cielo-eyebrow": "Gael Universe",
+    "cielo-h2": "The Night Sky",
+    "cielo-intro": "The map, woven into a mysterious skin warm to the touch, traced constellations that rearranged themselves each night, as if destiny rewrote itself with the impulse of the night winds.",
+    "moon-aria": "Summon the full moon",
+    "moon-idle": "Touch the moon to summon it full",
+    "moon-growing": "The moon is waxing…",
+    "moon-full": "Full moon",
+    "sky-aria": "Gael’s star map, engraved in moon-skin",
+    "excerpt-label": "From Gael",
+    "again-btn": "Summon another night",
+    "share-aria": "Share this fragment",
+    "share-copied": "Copied to clipboard",
+    "footer-tagline": "Follow Gael’s journey",
+    "footer-a11y-text": "This page has been designed with digital accessibility principles in mind, aiming to offer a navigation experience that is clear, comfortable, and inclusive for everyone.",
+    "footer-a11y-link": "Accessibility",
+    "footer-contact-link": "Contact"
+  },
+  "pt": {
+    "skip-link": "Pular para o conteúdo",
+    "back-link": "← Gael",
+    "ai-h1": "Aventuras Introspectivas",
+    "ai-intro": "Um espaço interativo dentro do Universo Gael. Um lugar que cresce aos poucos, com experiências pensadas para fazer você parar, olhar para dentro e levar algo diferente a cada vez.",
+    "cielo-eyebrow": "Universo Gael",
+    "cielo-h2": "O Céu Noturno",
+    "cielo-intro": "O mapa, tecido numa pele misteriosa e quente ao toque, delineava constelações que se reacomodavam a cada noite, como se o destino se reescrevesse pelo impulso dos ventos noturnos.",
+    "moon-aria": "Invocar a lua cheia",
+    "moon-idle": "Toque a lua para invocá-la cheia",
+    "moon-growing": "A lua está crescendo…",
+    "moon-full": "Lua cheia",
+    "sky-aria": "O mapa estelar de Gael, gravado em pele de lua",
+    "excerpt-label": "De Gael",
+    "again-btn": "Invocar outra noite",
+    "share-aria": "Compartilhar este fragmento",
+    "share-copied": "Copiado para a área de transferência",
+    "footer-tagline": "Acompanhe a jornada de Gael",
+    "footer-a11y-text": "Esta página foi desenvolvida levando em conta princípios de acessibilidade digital, buscando oferecer uma experiência de navegação clara, confortável e inclusiva para todas as pessoas.",
+    "footer-a11y-link": "Acessibilidade",
+    "footer-contact-link": "Contato"
+  }
+};
+
+let currentLang = 'es';
+
+function applyLanguage(lang){
+  if(!translations[lang]) lang = 'es';
+  currentLang = lang;
+  const dict = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(dict[key] !== undefined){ el.textContent = dict[key]; }
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el=>{
+    const key = el.getAttribute('data-i18n-aria');
+    if(dict[key] !== undefined){ el.setAttribute('aria-label', dict[key]); }
+  });
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-btn').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+  try{ localStorage.setItem('gael-lang', lang); }catch(e){}
+  updateMoonCaption();
+  if(currentShape){ renderShape(currentShape); }
+}
+
+document.querySelectorAll('.lang-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=> applyLanguage(btn.dataset.lang));
+});
+
+/* ---------- El Cielo Nocturno ---------- */
+(function(){
+  const NS = "http://www.w3.org/2000/svg";
+  const sky = document.getElementById('gsSky');
+  const W = 300, H = 170;
+
+  const shapes = [
+    { key:"arbol", name:{es:`El Árbol`,en:`The Tree`,pt:`A Árvore`}, excerpt:{es:`No era un hombre ni un árbol, sino ambos. Un ser de madera, con un cuerpo surcado por el paso de las estaciones y una corteza con marcas dibujadas como mapas de antiguas batallas. Sus ojos, de un verde tan profundo que amenazaban con arrastrar el alma a otras vidas, se posaron sobre Gael. Un nombre floreció en su mente, una vibración que provino de su propia sangre: Lyrion.`,en:`He was neither a man nor a tree, but both. A being of wood, his body furrowed by the passage of seasons, his bark marked like maps of ancient battles. His eyes, a green so deep it threatened to drag the soul into other lives, settled on Gael. A name bloomed in his mind, a vibration that rose from his own blood: Lyrion.`,pt:`Não era homem nem árvore, mas ambos. Um ser de madeira, o corpo sulcado pela passagem das estações e uma casca com marcas desenhadas como mapas de antigas batalhas. Seus olhos, de um verde tão profundo que ameaçava arrastar a alma para outras vidas, pousaram sobre Gael. Um nome floresceu em sua mente, uma vibração vinda do próprio sangue: Lyrion.`}, reflection:{es:`Hay guardianes que dejaron de elegir entre ser raíz o ser hombre, y por eso pueden sostener a los dos a la vez.`,en:`There are guardians who stopped choosing between being root or being man, and that is why they can hold both at once.`,pt:`Há guardiões que deixaram de escolher entre ser raiz ou ser homem, e por isso conseguem sustentar os dois ao mesmo tempo.`}, points:[[150,152],[150,122],[135,107],[165,107],[150,86],[140,96],[160,96]], edges:[[0,1],[1,2],[1,3],[1,4],[4,5],[4,6]] },
+    { key:"flor", name:{es:`La Flor`,en:`The Flower`,pt:`A Flor`}, excerpt:{es:`Delgaducho y de mirada nostálgica, Gael lucía el tatuaje de una flor en la altura de su garganta que brillaba cuando mentía, revelando la cruel paradoja de un mundo en que, si la verdad quema, las mentiras son refugios frágiles.`,en:`Thin, with a nostalgic gaze, Gael bore the tattoo of a flower at the height of his throat, one that glowed whenever he lied, revealing the cruel paradox of a world where, if the truth burns, lies are only fragile shelters.`,pt:`Magricela e de olhar nostálgico, Gael trazia a tatuagem de uma flor na altura da garganta que brilhava quando ele mentia, revelando o paradoxo cruel de um mundo em que, se a verdade queima, as mentiras são abrigos frágeis.`}, reflection:{es:`Hay verdades que decidieron vivir en la piel, porque ya no confiaban en que la voz las dijera primero.`,en:`Some truths chose to live in the skin, because they no longer trusted the voice to say them first.`,pt:`Há verdades que decidiram viver na pele, porque já não confiavam que a voz as dissesse primeiro.`}, points:[[150,92],[150,72],[168,84],[161,105],[139,105],[132,84],[150,112],[150,148]], edges:[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[6,7]] },
+    { key:"casa", name:{es:`La Casa`,en:`The House`,pt:`A Casa`}, excerpt:{es:`Más tarde, al regresar a casa, la abuela Presente aguardaba en la entrada del jardín con una lámpara de aceite. Gael la abrazó y, mientras apretaba su rostro contra la barriga de su abuela, el último susurro de la ballena llegó como una promesa en el viento: "Tejeremos contigo".`,en:`Later, on his way home, grandmother Presente waited at the garden gate with an oil lamp. Gael embraced her, and as he pressed his face against his grandmother’s belly, the whale’s last whisper arrived like a promise on the wind: "We will weave with you."`,pt:`Mais tarde, ao voltar para casa, a avó Presente esperava na entrada do jardim com um lampião a óleo. Gael a abraçou e, enquanto pressionava o rosto contra a barriga da avó, o último sussurro da baleia chegou como uma promessa no vento: "Teceremos contigo".`}, reflection:{es:`Volver a casa también es dejar que alguien más termine de tejer lo que uno no pudo terminar solo.`,en:`Coming home is also letting someone else finish weaving what you couldn't finish alone.`,pt:`Voltar para casa também é deixar que outra pessoa termine de tecer o que a gente não conseguiu terminar sozinho.`}, points:[[128,150],[128,110],[152,82],[176,110],[176,150]], edges:[[0,1],[1,2],[2,3],[3,4],[4,0]] },
+    { key:"hilo", name:{es:`El Hilo y la Aguja`,en:`The Thread and the Needle`,pt:`O Fio e a Agulha`}, excerpt:{es:`Gael asintió, concentrándose en la aguja que subía y bajaba entre la tela áspera. El acto mecánico de coser le trajo un momento de paz inesperada. Por un instante, no fue más que un prisionero remendando ropa. El olor a hilo encerado y el sonido del <em>plip… plop…</em> crearon una burbuja de sensatez dentro de la agonía. Un refugio de cordura, transitorio y fútil, para su mente.`,en:`Gael nodded, focusing on the needle rising and falling through the rough cloth. The mechanical act of sewing brought him a moment of unexpected peace. For an instant, he was nothing more than a prisoner mending clothes. The smell of waxed thread and the sound of the <em>drip… drop…</em> built a small bubble of sense within the agony. A refuge of sanity, brief and futile, for his mind.`,pt:`Gael assentiu, concentrando-se na agulha que subia e descia entre o tecido áspero. O ato mecânico de costurar lhe trouxe um momento de paz inesperada. Por um instante, não foi mais que um prisioneiro remendando roupas. O cheiro de linha encerada e o som do <em>pingo… pingo…</em> criaram uma bolha de sensatez dentro da agonia. Um refúgio de sanidade, breve e fútil, para sua mente.`}, reflection:{es:`Hay refugios que no cambian nada afuera, y aun así alcanzan para sostener un rato más la cordura de adentro.`,en:`Some refuges change nothing on the outside, and still, they're enough to hold on to a little more sanity within.`,pt:`Há refúgios que não mudam nada lá fora, e mesmo assim bastam para sustentar, por mais um instante, a sanidade lá dentro.`}, points:[[150,78],[144,85],[156,85],[150,152],[132,95],[142,112],[128,128],[138,145]], edges:[[0,1],[1,2],[2,0],[0,3],[1,4],[4,5],[5,6],[6,7]] },
+    { key:"gato", name:{es:`El Gato`,en:`The Cat`,pt:`O Gato`}, excerpt:{es:`—Mi gata tuvo cuatro gatitos. Uno es negro como la noche sin luna—dijo, clavando flores marchitas en un aro. —Duerme, duerme, gato negro… que las sombras morderán tu cuna.`,en:`"My cat had four kittens. One is black as a moonless night," she said, pinning withered flowers to a wreath. "Sleep, sleep, black cat… the shadows will gnaw at your cradle."`,pt:`— Minha gata teve quatro filhotes. Um é preto como a noite sem lua — disse ela, cravando flores murchas numa grinalda. — Dorme, dorme, gato preto… que as sombras vão morder teu berço.`}, reflection:{es:`Hay canciones de cuna que enseñan a temer antes de enseñar a soñar, y aun así se siguen cantando.`,en:`Some lullabies teach fear before they teach dreaming, and still, they go on being sung.`,pt:`Há canções de ninar que ensinam a temer antes de ensinar a sonhar, e mesmo assim continuam sendo cantadas.`}, points:[[138,90],[160,90],[149,107],[132,146],[166,146],[182,124]], edges:[[0,2],[1,2],[2,3],[2,4],[4,5]] },
+    { key:"ballena", name:{es:`La Ballena`,en:`The Whale`,pt:`A Baleia`}, excerpt:{es:`Gael asintió. Y caminó solo sin sentir soledad. El bosque entero respiraba con él. El Ángel del Bosque no apareció, pero una pluma dorada brilló en su camino. Y entonces, en un claro bañado por la luz del sol, un impulso lo detuvo. Algo tiró de su mente hacia el bolsillo secreto de su chaqueta. El mapa estelar de Kaelen. Al desplegarlo sobre una piedra plana, el cosmos grabado en piel de luna cobró vida. Las constelaciones se movían dibujando una ballena jorobada entre nebulosas al tiempo que arrastraban una red opaca de hilos negros. La estrella violeta, El Pan de Ainara, brillaba sobre Maceibreth. Nueve estrellas fugaces orbitaban como planetas frenéticos alrededor de la silueta de un reloj de arena. <em>¿Qué intenta decirme?</em>`,en:`Gael nodded. And he walked on alone without feeling lonely. The whole forest breathed with him. The Forest Angel did not appear, but a golden feather shone along his path. And then, in a clearing bathed in sunlight, an impulse stopped him. Something pulled his mind toward the secret pocket of his jacket. Kaelen's star map. As he unfolded it over a flat stone, the cosmos engraved in moon-skin came alive. The constellations shifted, tracing a humpback whale among nebulae while dragging behind it an opaque net of black threads. The violet star, Ainara's Bread, shone over Maceibreth. Nine shooting stars orbited like frantic planets around the silhouette of an hourglass. <em>What is it trying to tell me?</em>`,pt:`Gael assentiu. E caminhou sozinho sem sentir solidão. A floresta inteira respirava com ele. O Anjo da Floresta não apareceu, mas uma pena dourada brilhou em seu caminho. E então, numa clareira banhada de sol, um impulso o deteve. Algo puxava sua mente para o bolso secreto do casaco. O mapa estelar de Kaelen. Ao desdobrá-lo sobre uma pedra plana, o cosmos gravado em pele de lua ganhou vida. As constelações se moviam desenhando uma baleia jubarte entre nebulosas, arrastando consigo uma rede opaca de fios negros. A estrela violeta, O Pão de Ainara, brilhava sobre Maceibreth. Nove estrelas cadentes orbitavam como planetas frenéticos ao redor da silhueta de uma ampulheta. <em>O que está tentando me dizer?</em>`}, reflection:{es:`El cielo también hace preguntas; solo que las hace despacio, y espera generaciones enteras por una respuesta.`,en:`The sky asks questions too; it just asks them slowly, and waits whole generations for an answer.`,pt:`O céu também faz perguntas; só que as faz devagar, e espera gerações inteiras por uma resposta.`}, points:[[105,112],[138,92],[172,92],[202,107],[218,92],[218,122],[157,127]], edges:[[0,1],[1,2],[2,3],[3,4],[3,5],[0,6],[6,3]] },
+    { key:"pajaro", name:{es:`El Pájaro`,en:`The Bird`,pt:`O Pássaro`}, excerpt:{es:`—El invierno será crudo—dijo el primero tallando un lobo con uñas agrietadas—. Las cornejas volaron al sur antes del equinoccio. —Mi nieta cumple nueve lunas—respondió el otro puliendo un pájaro de madera—. Le regalaré esta golondrina cuando descubra la cosecha podrida. Hasta ellos, ancianos que esculpían belleza con las manos, emitían voces huecas. <em>¿Cómo puede ser?</em> La madera respiraba, pero sus voces eran ataúdes cerrados que negaban la vida.`,en:`"Winter will be harsh," said the first, carving a wolf with cracked fingernails. "The crows flew south before the equinox." "My granddaughter turns nine moons old," the other answered, polishing a wooden bird. "I’ll give her this swallow when she discovers the rotten harvest." Even they, old men who sculpted beauty with their hands, gave off hollow voices. <em>How could that be?</em> The wood breathed, but their voices were sealed coffins denying life.`,pt:`— O inverno será rigoroso — disse o primeiro, esculpindo um lobo com unhas rachadas. — As gralhas voaram para o sul antes do equinócio. — Minha neta completa nove luas — respondeu o outro, polindo um pássaro de madeira. — Vou dar esta andorinha a ela quando descobrir a colheita podre. Até eles, anciãos que esculpiam beleza com as mãos, emitiam vozes ocas. <em>Como podia ser?</em> A madeira respirava, mas suas vozes eram caixões fechados que negavam a vida.`}, reflection:{es:`Se puede tallar belleza con las manos y aun así olvidar cómo suena la propia voz.`,en:`You can carve beauty with your hands and still forget what your own voice sounds like.`,pt:`Dá para esculpir beleza com as mãos e, mesmo assim, esquecer como soa a própria voz.`}, points:[[118,101],[144,116],[151,110],[158,116],[184,101],[151,128]], edges:[[0,1],[1,2],[2,3],[3,4],[2,5]] },
+    { key:"flecha", name:{es:`La Flecha`,en:`The Arrow`,pt:`A Flecha`}, excerpt:{es:`Una flecha silbó tan cerca que sintió el beso frío de su estela en la mejilla. Su paso vaciló por un instante. El peligro era real. La crueldad era real. Pero la verdad que portaba en sus manos pesaba más que el miedo. Siguió avanzando. Al llegar al punto exacto donde mil hombres habían sido masacrados, clavó una semilla en el suelo y sopló sobre ella.`,en:`An arrow whistled so close he felt the cold kiss of its wake on his cheek. His step faltered for an instant. The danger was real. The cruelty was real. But the truth he carried in his hands weighed more than the fear. He kept walking. When he reached the exact spot where a thousand men had been slaughtered, he planted a seed in the ground and breathed over it.`,pt:`Uma flecha assobiou tão perto que ele sentiu o beijo frio de seu rastro na bochecha. Seu passo vacilou por um instante. O perigo era real. A crueldade era real. Mas a verdade que carregava nas mãos pesava mais que o medo. Continuou avançando. Ao chegar ao ponto exato onde mil homens haviam sido massacrados, cravou uma semente no chão e soprou sobre ela.`}, reflection:{es:`A veces responder al miedo no es huir de él, sino plantar algo justo donde más duele.`,en:`Sometimes answering fear isn't running from it, but planting something exactly where it hurts most.`,pt:`Às vezes responder ao medo não é fugir dele, mas plantar algo bem onde mais dói.`}, points:[[118,122],[160,101],[201,80],[113,111],[113,133]], edges:[[0,1],[1,2],[0,3],[0,4]] },
+    { key:"celda", name:{es:`La Celda`,en:`The Cell`,pt:`A Cela`}, excerpt:{es:`La celda era pequeña, un cubo de tal vez tres pasos de lado. El suelo era de piedra fría y porosa. Pero lo que capturó inmediatamente su atención fueron las paredes. Estas lucían unos dibujos que parecían cicatrices escritas en distintos idiomas, y espejos enormes que se alzaban desde el suelo hasta un techo que no se podía ver por la oscuridad. No eran espejos normales, eran espejos deformantes. Cada uno de ellos desprendía una malevolencia propia.`,en:`The cell was small, a cube perhaps three paces to a side. The floor was cold, porous stone. But what immediately seized his attention were the walls. They bore markings that looked like scars written in different languages, and enormous mirrors rising from the floor to a ceiling lost in the dark. They were not ordinary mirrors — they were warped, distorting mirrors. Each one gave off a malevolence entirely its own.`,pt:`A cela era pequena, um cubo de talvez três passos de lado. O chão era de pedra fria e porosa. Mas o que capturou de imediato sua atenção foram as paredes. Elas exibiam desenhos que pareciam cicatrizes escritas em idiomas diferentes, e espelhos enormes que se erguiam do chão até um teto que a escuridão não deixava ver. Não eram espelhos comuns — eram espelhos deformantes. Cada um deles exalava uma malevolência própria.`}, reflection:{es:`Las prisiones más crueles no encierran el cuerpo; encierran el reflejo, hasta que uno deja de reconocerse.`,en:`The cruelest prisons don't lock up the body; they lock up the reflection, until you stop recognizing yourself.`,pt:`As prisões mais cruéis não aprisionam o corpo; aprisionam o reflexo, até que a pessoa deixa de se reconhecer.`}, points:[[134,82],[176,82],[142,82],[142,150],[157,82],[157,150],[172,82],[172,150]], edges:[[0,1],[2,3],[4,5],[6,7]] },
+    { key:"nina", name:{es:`La Niña`,en:`The Girl`,pt:`A Menina`}, excerpt:{es:`Fue entonces cuando una sombra pequeña se interpuso entre él y el pozo. Una niña, no mayor de ocho años, con trenzas deshilachadas como nidos abandonados y un vestido remendado en tonos decolorados. En sus brazos sostenía con solemnidad una muñeca de trapo, grotescamente incompleta, sin brazos, con un ojo de botón ausente, y un hilo negro cosido torpemente donde debería estar la boca. La niña miró la muñeca con una tristeza que no pertenecía a su edad, mientras sus dedos sucios acariciaban la tela desgastada. —Duérmete, Mile—balbuceó, como un hilillo quebradizo en el silencio de la plaza. Depositó un beso en la cabeza descosida de la muñeca—. Adonde vas, el dolor ya no puede alcanzarte. Adonde vas, nadie volverá a hacerte daño.`,en:`That was when a small shadow stepped between him and the well. A girl, no older than eight, her braids frayed like abandoned nests, wearing a dress mended in faded tones. In her arms she solemnly held a rag doll, grotesquely incomplete, missing its arms, missing a button eye, with a black thread clumsily stitched where its mouth should be. The girl looked at the doll with a sadness that did not belong to her age, her dirty fingers stroking the worn cloth. "Sleep now, Mile," she murmured, like a brittle thread of sound in the silence of the square. She pressed a kiss to the doll’s unstitched head. "Where you’re going, pain can’t reach you anymore. Where you’re going, no one will ever hurt you again."`,pt:`Foi então que uma sombra pequena se interpôs entre ele e o poço. Uma menina, não mais de oito anos, com tranças desfiadas como ninhos abandonados e um vestido remendado em tons desbotados. Nos braços, sustentava com solenidade uma boneca de pano, grotescamente incompleta, sem braços, com um olho de botão ausente, e um fio preto costurado toscamente onde deveria estar a boca. A menina olhou para a boneca com uma tristeza que não pertencia à sua idade, enquanto os dedos sujos acariciavam o tecido gasto. — Dorme, Mile — balbuciou, como um fio quebradiço no silêncio da praça. Depositou um beijo na cabeça descosturada da boneca. — Para onde você vai, a dor já não pode te alcançar. Para onde você vai, ninguém vai machucar você de novo.`}, reflection:{es:`Practicar la ternura empieza, a veces, con lo que ya no puede sentir el daño.`,en:`Practicing tenderness sometimes begins with what can no longer feel harm.`,pt:`Praticar a ternura, às vezes, começa com aquilo que já não pode sentir dor.`}, points:[[150,86],[150,104],[128,108],[172,108],[150,128],[138,151],[162,151]], edges:[[0,1],[1,2],[1,3],[1,4],[4,5],[4,6]] },
+    { key:"esposa", name:{es:`La Esposa`,en:`The Wife`,pt:`A Esposa`}, excerpt:{es:`—Mira—Kaelen puso sus manos sobre la roca. Las raíces brillaron, abriendo ventanas de luz donde aparecieron imágenes. Ainara, de niña, llorando porque rompió el jarrón favorito de Presente… y nunca lo contó; Gareth, jurando no volver a amar después de perder a su esposa… y enterrando su dolor en el hierro; la pescadera, aprovechándose de la vejez de una cliente para cobrar mucho más de lo que valdría aquel pescado; y, hasta el niño Pipo, escondiendo su miedo a la oscuridad tras historias de dragones.`,en:`"Look," Kaelen laid his hands on the rock. The roots glowed, opening windows of light where images appeared. Ainara, as a girl, crying because she'd broken Presente's favorite vase… and never told her; Gareth, swearing never to love again after losing his wife… and burying his grief in iron; the fishmonger, taking advantage of an old customer to charge far more than the fish was worth; and even little Pipo, hiding his fear of the dark behind stories of dragons.`,pt:`— Olhe — Kaelen pôs as mãos sobre a rocha. As raízes brilharam, abrindo janelas de luz onde surgiram imagens. Ainara, ainda menina, chorando por ter quebrado o vaso favorito de Presente… e nunca ter contado; Gareth, jurando nunca mais amar depois de perder a esposa… e enterrando sua dor no ferro; a peixeira, aproveitando-se da velhice de uma cliente para cobrar bem mais do que valia o peixe; e até o pequeno Pipo, escondendo o medo do escuro atrás de histórias de dragões.`}, reflection:{es:`El duelo también sabe esconderse en el oficio de las manos, donde el hierro no exige respuestas.`,en:`Grief also knows how to hide inside the work of the hands, where iron never demands an answer.`,pt:`O luto também sabe se esconder no ofício das mãos, onde o ferro não exige respostas.`}, points:[[150,82],[150,100],[130,112],[170,112],[150,118],[132,150],[168,150]], edges:[[0,1],[1,2],[1,3],[1,4],[4,5],[4,6]] },
+    { key:"martillo", name:{es:`El Martillo`,en:`The Hammer`,pt:`O Martelo`}, excerpt:{es:`Bajo su chaqueta, Gael sintió un calor familiar. El martillo. Latía contra su piel, vibrando como un corazón inquieto, soñando con ser útil como el día en que Gareth se lo entregó. Una calidez pura, herencia directa de la lágrima de Lyrion, se filtró en sus venas, chocando contra la frialdad de la desesperación. Recordó vagamente que al tocar aquella lágrima su luz había sellado el martillo y el mapa con runas élficas, haciéndolos invisibles a ojos profanos. Un poder que no sabía usar. Un consuelo amargo en un lugar donde el abandono era la ley.`,en:`Beneath his jacket, Gael felt a familiar warmth. The hammer. It throbbed against his skin, vibrating like a restless heart, dreaming of being useful the way it was the day Gareth gave it to him. A pure warmth, the direct inheritance of Lyrion's tear, filtered into his veins, colliding with the coldness of despair. He vaguely remembered that touching that tear, its light had sealed the hammer and the map with elven runes, making them invisible to profane eyes. A power he didn't know how to use. A bitter comfort in a place where abandonment was the law.`,pt:`Sob o casaco, Gael sentiu um calor familiar. O martelo. Latejava contra sua pele, vibrando como um coração inquieto, sonhando em ser útil como no dia em que Gareth o entregou a ele. Um calor puro, herança direta da lágrima de Lyrion, filtrou-se em suas veias, chocando-se contra a frieza do desespero. Lembrou vagamente que, ao tocar aquela lágrima, sua luz havia selado o martelo e o mapa com runas élficas, tornando-os invisíveis a olhos profanos. Um poder que não sabia usar. Um consolo amargo num lugar onde o abandono era a lei.`}, reflection:{es:`Algunas herramientas esperan tanto para ser útiles que terminan por aprender a latir.`,en:`Some tools wait so long to be useful that they end up learning how to beat like a heart.`,pt:`Algumas ferramentas esperam tanto para ser úteis que acabam aprendendo a pulsar.`}, points:[[133,84],[177,84],[177,99],[133,99],[155,99],[155,152]], edges:[[0,1],[1,2],[2,3],[3,0],[4,5]] },
+    { key:"barco", name:{es:`El Barco`,en:`The Ship`,pt:`O Barco`}, excerpt:{es:`Al alzar la vista, sus ojos quedaron atrapados por la imagen del barco. Se exhibía majestuoso y extraño. Un navío de raíces vivas, un coloso nudoso que parecía haber brotado directamente del corazón de la tierra. Su tamaño descomunal impresionaba; sus mástiles eran ramas gigantes, y su proa parecía una mano abierta hacia el horizonte. Gael sintió un escalofrío. Subir a ese barco no era solo partir, era dejar atrás todo lo que había sido, alejarse de su nombre, de sus calles, de sus abrazos. Con manos temblorosas, rozó el costado del barco. La madera estaba viva, tibia por la savia que corría bajo la corteza. Tragó saliva, respiró hondo… y dio el primer paso. Luego otro. Estaba subiendo. El eco de su vida en Maceibreth quedó suspendido en el aire detrás de él. Llevaba consigo su martillo dormido, su mapa estrellado y un profundo deseo de desaparecer para encontrarse.`,en:`As he lifted his eyes, they were caught by the sight of the ship. It stood majestic and strange. A vessel of living roots, a knotted colossus that seemed to have sprouted straight from the heart of the earth. Its enormous size was staggering; its masts were giant branches, and its bow looked like a hand open toward the horizon. Gael felt a chill. Boarding that ship wasn't just leaving — it was leaving behind everything he had been, moving away from his name, his streets, his embraces. With trembling hands, he brushed the ship's hull. The wood was alive, warm with sap running beneath the bark. He swallowed, took a deep breath… and took the first step. Then another. He was climbing aboard. The echo of his life in Maceibreth hung suspended in the air behind him. He carried with him his sleeping hammer, his star map, and a deep longing to disappear in order to find himself.`,pt:`Ao erguer o olhar, seus olhos ficaram presos à imagem do barco. Exibia-se majestoso e estranho. Um navio de raízes vivas, um colosso nodoso que parecia ter brotado direto do coração da terra. Seu tamanho descomunal impressionava; os mastros eram galhos gigantes, e a proa parecia uma mão aberta rumo ao horizonte. Gael sentiu um calafrio. Subir naquele barco não era apenas partir, era deixar para trás tudo o que havia sido, afastar-se de seu nome, de suas ruas, de seus abraços. Com as mãos trêmulas, roçou o costado do barco. A madeira estava viva, morna pela seiva que corria sob a casca. Engoliu em seco, respirou fundo… e deu o primeiro passo. Depois outro. Estava subindo. O eco de sua vida em Maceibreth ficou suspenso no ar atrás dele. Levava consigo seu martelo adormecido, seu mapa estelar e um profundo desejo de desaparecer para se reencontrar.`}, reflection:{es:`Partir también puede sentirse como que la propia tierra decide acompañarte un trecho más.`,en:`Leaving can also feel like the earth itself deciding to walk with you a little further.`,pt:`Partir também pode parecer que a própria terra decidiu te acompanhar por mais um trecho.`}, points:[[115,135],[150,148],[185,135],[150,135],[150,85],[178,105]], edges:[[0,1],[1,2],[3,4],[4,5],[5,3]] },
+    { key:"pluma", name:{es:`La Pluma`,en:`The Feather`,pt:`A Pena`}, excerpt:{es:`Esa tarde, en el taller de costura donde los prisioneros remendaban uniformes de carceleros con un hilo áspero como espinas, Gael encontró una pluma. Minúscula, dorada, atrapada entre los harapos de una manta. La escondió bajo la lengua mientras los guardianes sin rostro vigilaban. Al regresar a su celda, la examinó a la luz de una grieta en el techo. No era de ningún pájaro conocido. Brillaba con una luz propia, cálida y tenaz. Una luz que parecía respirar, suave y orgánica. Al girarla entre sus dedos, le recordó el color de la miel al trasluz, o quizás el de una hoja en otoño justo antes de caer. <em>¿De dónde viene esa imagen?</em> Era como oír una melodía a través de un muro grueso. Reconoció que había música, pero no podía distinguir la canción. <em>¿Es una señal? ¿Un mensaje de otro mundo?</em> Fuera como fuese, la enterró bajo una piedra suelta, junto al lugar donde, sin saberlo, otrora escondió Memoria de Estrellas.`,en:`That afternoon, in the sewing workshop where prisoners mended jailers' uniforms with thread as rough as thorns, Gael found a feather. Tiny, golden, caught among the rags of a blanket. He hid it under his tongue while the faceless guards kept watch. Back in his cell, he examined it by the light of a crack in the ceiling. It belonged to no bird he knew. It glowed with a light of its own, warm and persistent. A light that seemed to breathe, soft and organic. Turning it between his fingers, it reminded him of honey held up to the light, or perhaps an autumn leaf right before it falls. <em>Where does that image come from?</em> It was like hearing a melody through a thick wall. He knew there was music, but couldn't make out the song. <em>Is it a sign? A message from another world?</em> Whatever it was, he buried it beneath a loose stone, right beside the place where, without knowing it, he had once hidden Memory of Stars.`,pt:`Naquela tarde, na oficina de costura onde os prisioneiros remendavam uniformes de carcereiros com um fio áspero como espinhos, Gael encontrou uma pena. Minúscula, dourada, presa entre os trapos de um cobertor. Escondeu-a sob a língua enquanto os guardas sem rosto vigiavam. Ao voltar para a cela, examinou-a à luz de uma fresta no teto. Não era de nenhum pássaro conhecido. Brilhava com luz própria, quente e tenaz. Uma luz que parecia respirar, suave e orgânica. Ao girá-la entre os dedos, lembrou-lhe a cor do mel contra a luz, ou talvez a de uma folha de outono um instante antes de cair. <em>De onde vem essa imagem?</em> Era como ouvir uma melodia através de uma parede espessa. Reconhecia que havia música, mas não conseguia distinguir a canção. <em>Será um sinal? Uma mensagem de outro mundo?</em> Fosse o que fosse, enterrou-a sob uma pedra solta, bem ao lado do lugar onde, sem saber, escondera outrora Memória de Estrelas.`}, reflection:{es:`Incluso en el lugar que quiere borrarlo todo, algo diminuto insiste en brillar con luz propia.`,en:`Even in the place that wants to erase everything, something tiny insists on shining with its own light.`,pt:`Mesmo no lugar que quer apagar tudo, algo minúsculo insiste em brilhar com luz própria.`}, points:[[150,78],[142,155],[133,110],[157,100]], edges:[[0,1],[0,2],[0,3]] },
+    { key:"llave", name:{es:`La Llave`,en:`The Key`,pt:`A Chave`}, excerpt:{es:`La pregunta flotó en el aire helado. Gael intentó localizarlo en su memoria, aunque solo encontró hojas en blanco. —¿Nombre? No lo sé—susurró. La propia palabra "nombre" le sonó extraña en la boca, como una llave que no encajaba en ninguna cerradura.`,en:`The question hung in the frozen air. Gael tried to find it in his memory, but found only blank pages. "Name? I don’t know," he whispered. The very word "name" felt strange in his mouth, like a key that fit no lock.`,pt:`A pergunta flutuou no ar gelado. Gael tentou localizá-la na memória, mas só encontrou páginas em branco. — Nome? Não sei — sussurrou. A própria palavra "nome" soou estranha em sua boca, como uma chave que não encaixava em nenhuma fechadura.`}, reflection:{es:`Perder el nombre es notar que hasta las palabras más simples empiezan a no encajar en la boca.`,en:`Losing your name means noticing that even the simplest words start to stop fitting in your mouth.`,pt:`Perder o nome é perceber que até as palavras mais simples começam a não caber na boca.`}, points:[[150,85],[140,95],[150,105],[160,95],[150,145],[158,138],[158,128]], edges:[[0,1],[1,2],[2,3],[3,0],[2,4],[4,5],[4,6]] },
+    { key:"reloj", name:{es:`El Reloj de Arena`,en:`The Hourglass`,pt:`A Ampulheta`}, excerpt:{es:`Sintió la tierra fría del huerto en sus manos infantiles y el peso imposible de aquel reloj de arena antiguo. La visión lo partió en dos. Fue tan real que cuando se desvaneció, Gael trastabilló hacia atrás, jadeando, con el corazón martilleando contra sus costillas como un pájaro enjaulado. El mapa se le resbaló de sus dedos estremecidos. En el suelo, antes de que pudiera recogerlo, vio una última imagen. Una sola palabra que latía con la luz fría de las estrellas: DESPIERTA.`,en:`He felt the cold earth of the orchard in his child hands, and the impossible weight of that ancient hourglass. The vision split him in two. It was so real that when it faded, Gael staggered backward, gasping, his heart hammering against his ribs like a caged bird. The map slipped from his trembling fingers. On the ground, before he could pick it up, he saw one last image. A single word pulsing with the cold light of the stars: WAKE UP.`,pt:`Sentiu a terra fria do pomar em suas mãos infantis e o peso impossível daquela ampulheta antiga. A visão o partiu ao meio. Foi tão real que, quando se desfez, Gael cambaleou para trás, ofegante, o coração martelando contra as costelas como um pássaro engaiolado. O mapa escorregou de seus dedos trêmulos. No chão, antes que pudesse recolhê-lo, viu uma última imagem. Uma única palavra pulsando com a luz fria das estrelas: ACORDA.`}, reflection:{es:`El tiempo no siempre pesa hacia adelante; a veces cae entero sobre un solo instante del pasado.`,en:`Time doesn't always weigh forward; sometimes it falls, whole, onto a single instant of the past.`,pt:`O tempo nem sempre pesa para a frente; às vezes cai inteiro sobre um único instante do passado.`}, points:[[135,85],[165,85],[150,117],[135,150],[165,150]], edges:[[0,1],[1,2],[2,0],[2,3],[3,4],[4,2]] },
+    { key:"espiral", name:{es:`La Espiral`,en:`The Spiral`,pt:`A Espiral`}, excerpt:{es:`De nuevo, la imagen mutó. La negrura del purgatorio que lo aguardaba se transformó en una constelación en movimiento. Miles de puntos de luz danzaban en el aire vacío, trazando un sinfín de formas. Círculos, espirales, figuras efímeras y hermosas. Una sinfonía silenciosa de hermosura en el corazón mismo de las tinieblas. Era la belleza que persiste, la que se crea en lo imposible.`,en:`Once again, the image shifted. The blackness of the purgatory awaiting him transformed into a moving constellation. Thousands of points of light danced in the empty air, tracing endless shapes. Circles, spirals, fleeting and beautiful figures. A silent symphony of beauty at the very heart of the darkness. It was the beauty that persists, the kind that is created within the impossible.`,pt:`De novo, a imagem mudou. A escuridão do purgatório que o esperava se transformou numa constelação em movimento. Milhares de pontos de luz dançavam no ar vazio, traçando infinitas formas. Círculos, espirais, figuras efêmeras e belas. Uma sinfonia silenciosa de beleza no próprio coração das trevas. Era a beleza que persiste, a que se cria dentro do impossível.`}, reflection:{es:`Incluso en medio de lo más oscuro, algo sigue insistiendo en dibujar belleza porque sí.`,en:`Even in the middle of the darkest place, something keeps insisting on drawing beauty, just because.`,pt:`Mesmo no meio do que há de mais escuro, algo continua insistindo em desenhar beleza, só porque sim.`}, points:[[150,80],[172,90],[178,112],[160,128],[138,122],[140,102],[155,98]], edges:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6]] },
+    { key:"mano", name:{es:`La Mano`,en:`The Hand`,pt:`A Mão`}, excerpt:{es:`Gael, por el contrario, se acercó. No habló. Simplemente se sentó a su lado. Sus dedos, torpes y acostumbrados solo al hilo y la aguja, se sintieron extraños al extenderse hacia el suelo. Por un instante, dudó. <em>¿Qué voy a hacer?</em> Las formas estaban difuminadas en su mente. Pero, entonces, su mano se movió por sí sola, guiada por un instinto compasivo. El dedo índice trazó una línea en el polvo y, de repente, la línea quiso ser un círculo. El círculo quiso tener rayos. Era un lenguaje que su cuerpo no había olvidado del todo. Dibujó un sol torcido con rayos que eran espirales; un barco de inmensas velas; una estrella de cinco puntas, con una de ellas tan larga como una flecha.`,en:`Gael, instead, drew near. He didn't speak. He simply sat beside him. His fingers, clumsy and accustomed only to thread and needle, felt strange reaching toward the ground. For a moment, he hesitated. <em>What am I going to do?</em> The shapes were blurred in his mind. But then his hand moved on its own, guided by a compassionate instinct. His index finger traced a line in the dust, and suddenly, the line wanted to be a circle. The circle wanted rays. It was a language his body hadn't entirely forgotten. He drew a crooked sun with rays that were spirals; a ship with immense sails; a five-pointed star, one point as long as an arrow.`,pt:`Gael, ao contrário, aproximou-se. Não falou. Apenas se sentou ao lado dele. Seus dedos, desajeitados e acostumados apenas ao fio e à agulha, sentiram-se estranhos ao se estenderem em direção ao chão. Por um instante, hesitou. <em>O que vou fazer?</em> As formas estavam borradas em sua mente. Mas, então, sua mão se moveu sozinha, guiada por um instinto compassivo. O dedo indicador traçou uma linha na poeira e, de repente, a linha quis ser um círculo. O círculo quis ter raios. Era uma linguagem que seu corpo não havia esquecido de todo. Desenhou um sol torto com raios que eram espirais; um barco de velas imensas; uma estrela de cinco pontas, uma delas tão longa quanto uma flecha.`}, reflection:{es:`El cuerpo recuerda lenguajes que la mente ya dio por perdidos, si se le deja moverse solo.`,en:`The body remembers languages the mind has already given up for lost, if you let it move on its own.`,pt:`O corpo lembra línguas que a mente já deu por perdidas, se a deixarmos se mover sozinha.`}, points:[[150,150],[150,125],[128,115],[138,90],[146,82],[155,82],[163,90]], edges:[[0,1],[1,2],[1,3],[1,4],[1,5],[1,6]] },
+    { key:"vela", name:{es:`La Vela`,en:`The Candle`,pt:`A Vela`}, excerpt:{es:`Esa noche, mientras observaba la luna desde su ventana, una corriente de aire helado entró en la habitación y, a pesar de que no soplaba brisa, la llama de su vela parpadeó. Al estabilizarse, iluminó un pergamino enrollado que no estaba allí un segundo antes. Yacía sobre su alféizar, sellado con cera de color azul. Desprendía un inconfundible olor a salvia y a mar abierto. Cuando Gael lo abrió, la letra fluida de Aurora danzó ante sus ojos.`,en:`That night, as he watched the moon from his window, a current of icy air entered the room, and although there was no breeze, his candle's flame flickered. When it steadied, it lit up a rolled parchment that hadn't been there a second before. It lay on his windowsill, sealed with blue wax. It gave off an unmistakable scent of sage and open sea. When Gael opened it, Aurora's flowing handwriting danced before his eyes.`,pt:`Naquela noite, enquanto observava a lua de sua janela, uma corrente de ar gelado entrou no quarto e, apesar de não soprar nenhuma brisa, a chama de sua vela tremeluziu. Ao se estabilizar, iluminou um pergaminho enrolado que não estava ali um segundo antes. Jazia sobre o parapeito, selado com cera azul. Exalava um inconfundível cheiro de sálvia e de mar aberto. Quando Gael o abriu, a letra fluida de Aurora dançou diante de seus olhos.`}, reflection:{es:`Ciertos mensajes solo llegan cuando, por fin, algo deja de sostener tanto la respiración.`,en:`Certain messages only arrive once something, at last, stops holding its breath so tightly.`,pt:`Certas mensagens só chegam quando, enfim, algo deixa de prender tanto a respiração.`}, points:[[150,150],[150,95],[145,85],[150,72],[155,85]], edges:[[0,1],[1,2],[2,3],[3,4],[4,1]] },
+    { key:"mariposa", name:{es:`La Mariposa`,en:`The Butterfly`,pt:`A Borboleta`}, excerpt:{es:`—¿Kael?—preguntó, mientras la tomaba con una suavidad exquisita, como si sostuviera las alas de una mariposa. La leyó despacio. Su sonrisa no desapareció, pero se transformó en algo frágil. Sus ojos se anegaron de lágrimas que no derramó. Al terminar, alzó la vista, transmitiendo una profunda y desgarradora ternura.`,en:`"Kael?" he asked, taking it with an exquisite gentleness, as if he were holding a butterfly’s wings. He read it slowly. His smile didn’t disappear, but it turned into something fragile. His eyes filled with tears he didn’t let fall. When he finished, he looked up, radiating a deep and heartbreaking tenderness.`,pt:`— Kael? — perguntou, pegando-a com uma delicadeza requintada, como se segurasse as asas de uma borboleta. Leu devagar. Seu sorriso não desapareceu, mas se transformou em algo frágil. Os olhos se encheram de lágrimas que não derramou. Ao terminar, ergueu o olhar, transmitindo uma ternura profunda e comovente.`}, reflection:{es:`Algunas noticias son tan frágiles que sostenerlas exige aprender un cuidado nuevo.`,en:`Some news is so fragile that holding it means learning an entirely new kind of care.`,pt:`Algumas notícias são tão frágeis que sustentá-las exige aprender um cuidado novo.`}, points:[[150,90],[150,130],[122,80],[178,80],[125,115],[175,115]], edges:[[0,1],[0,2],[0,3],[1,4],[1,5]] },
+    { key:"ancla", name:{es:`El Ancla`,en:`The Anchor`,pt:`A Âncora`}, excerpt:{es:`Hasta que la chaqueta dejó de ser un lastre. Se convirtió en un ancla, en la única prueba tangible de que él, Gael, había existido antes de que el abandono se lo tragara. Una voz distante, aunque familiar, resonó entre las paredes de piedra de la plaza, cargada de una fuerza que solo los años podían forjar. Era Gareth, el viejo herrero. Su rostro curtido en siglos de artesanía y sus manos negras de hollín contaban historias de trabajos interminables y de secretos compartidos.`,en:`Until the jacket stopped being a burden. It became an anchor, the one tangible proof that he, Gael, had existed before abandonment swallowed him whole. A distant yet familiar voice echoed among the stone walls of the square, carrying a strength only years could forge. It was Gareth, the old blacksmith. His face, weathered by centuries of craft, and his soot-blackened hands told stories of endless labor and shared secrets.`,pt:`Até que o casaco deixou de ser um peso morto. Tornou-se uma âncora, a única prova tangível de que ele, Gael, havia existido antes que o abandono o engolisse. Uma voz distante, ainda que familiar, ressoou entre as paredes de pedra da praça, carregada de uma força que só os anos podiam forjar. Era Gareth, o velho ferreiro. Seu rosto curtido em séculos de ofício e suas mãos negras de fuligem contavam histórias de trabalhos intermináveis e segredos compartilhados.`}, reflection:{es:`Cuando todo lo demás lo niega, basta un solo objeto para seguir sabiendo que uno existió.`,en:`When everything else denies it, a single object is enough to keep knowing that you once existed.`,pt:`Quando tudo o mais nega, basta um único objeto para continuar sabendo que a gente existiu.`}, points:[[150,78],[150,90],[150,130],[135,105],[165,105],[130,145],[170,145]], edges:[[0,1],[1,2],[3,4],[2,5],[2,6]] },
+    { key:"puente", name:{es:`El Puente`,en:`The Bridge`,pt:`A Ponte`}, excerpt:{es:`Cruzaron un puente de huesos que crujía bajo sus pies. Las puertas, dos planchas de hierro comidas por el óxido, se abrieron con el chirrido de un animal moribundo. Gael sintió un escalofrío que le recorrió la columna vertebral. Al cruzar el paso, un guardia maloliente se inclinó hacia él, su aliento fétido le golpeó en la cara. En ese instante, la flor de su garganta brilló con un fulgor violeta intenso, delatándolo. El tatuaje saboteaba incluso su último intento de esquivar la realidad, revelando al ser del umbral la paradoja desgarradora de su existencia.`,en:`They crossed a bridge of bones that creaked beneath their feet. The doors, two iron slabs eaten by rust, opened with the screech of a dying animal. Gael felt a chill run down his spine. As he passed through, a foul-smelling guard leaned toward him, his rank breath striking his face. In that instant, the flower on his throat flared with an intense violet glow, betraying him. The tattoo sabotaged even his last attempt to dodge the truth, revealing to the creature at the threshold the wrenching paradox of his existence.`,pt:`Atravessaram uma ponte de ossos que rangia sob seus pés. As portas, duas placas de ferro corroídas pela ferrugem, abriram-se com o rangido de um animal agonizante. Gael sentiu um calafrio percorrer sua espinha. Ao cruzar a passagem, um guarda malcheiroso se inclinou para ele, seu hálito fétido bateu em seu rosto. Naquele instante, a flor de sua garganta brilhou com um fulgor violeta intenso, denunciando-o. A tatuagem sabotava até sua última tentativa de esquivar-se da realidade, revelando ao ser do umbral o paradoxo doloroso de sua existência.`}, reflection:{es:`Ciertas verdades se niegan a escondernos, aun cuando escondernos sería lo único sensato.`,en:`Certain truths refuse to hide us, even when hiding would be the only sensible thing to do.`,pt:`Certas verdades se recusam a nos esconder, mesmo quando esconder-se seria a única coisa sensata a fazer.`}, points:[[120,150],[120,110],[150,90],[180,110],[180,150]], edges:[[0,1],[1,2],[2,3],[3,4]] },
+    { key:"ojo", name:{es:`El Ojo`,en:`The Eye`,pt:`O Olho`}, excerpt:{es:`—No entiendo…—murmuró, y su voz perdió la dureza—. ¿Cómo no la vi? Revisé una y otra vez… Una calma repentina lo invadió. Le miró con una intensidad que le abrazó el alma. En ese momento, Gael vio detrás de sus ojos de cristal algo que reconocía. <em>Es la misma soledad que llevo en mi alma</em>.`,en:`"I don’t understand…" he murmured, his voice losing its edge. "How did I not see it? I checked it again and again…" A sudden calm washed over him. He looked at him with an intensity that embraced his soul. In that moment, Gael saw behind his glass eyes something he recognized. <em>It’s the same solitude I carry in my own soul.</em>`,pt:`— Não entendo…—murmurou, e sua voz perdeu a dureza. — Como não vi isso? Revisei de novo e de novo… Uma calma repentina o invadiu. Olhou para ele com uma intensidade que abraçou sua alma. Naquele momento, Gael viu por trás de seus olhos de vidro algo que reconhecia. <em>É a mesma solidão que carrego em minha alma.</em>`}, reflection:{es:`A veces reconocer a alguien no es verle la cara, sino reconocer la misma soledad detrás de sus ojos.`,en:`Sometimes recognizing someone isn't about seeing their face, but recognizing the same solitude behind their eyes.`,pt:`Às vezes reconhecer alguém não é ver seu rosto, mas reconhecer a mesma solidão por trás dos olhos.`}, points:[[120,110],[150,95],[180,110],[150,125],[150,110]], edges:[[0,1],[1,2],[2,3],[3,0]] },
+    { key:"semilla", name:{es:`La Semilla`,en:`The Seed`,pt:`A Semente`}, excerpt:{es:`La visión cambió. Una pequeña semilla, dura como una piedrecita, cayó sobre la tierra negra y húmeda. La lluvia la nutría. El sol la calentaba. Entonces, con una fuerza callada pero imparable, un diminuto brote verde rompía la cáscara, alzándose hacia la luz en una curva perfecta de vida que germinaba de la oscuridad. Era la tenacidad, la promesa de renacimiento, encapsulada en un solo instante de milagro renovado.`,en:`The vision changed. A small seed, hard as a little stone, fell onto the black, damp earth. The rain nourished it. The sun warmed it. Then, with a quiet but unstoppable force, a tiny green shoot broke through its shell, rising toward the light in a perfect curve of life germinating out of darkness. It was tenacity, the promise of rebirth, held inside a single instant of renewed miracle.`,pt:`A visão mudou. Uma pequena semente, dura como uma pedrinha, caiu sobre a terra negra e úmida. A chuva a nutria. O sol a aquecia. Então, com uma força silenciosa mas imparável, um minúsculo broto verde rompia a casca, erguendo-se em direção à luz numa curva perfeita de vida germinando da escuridão. Era a tenacidade, a promessa de renascimento, encapsulada num único instante de milagre renovado.`}, reflection:{es:`Lo que crece no necesita que la oscuridad termine primero; solo necesita seguir intentándolo dentro de ella.`,en:`What grows doesn't need the darkness to end first; it only needs to keep trying from within it.`,pt:`O que cresce não precisa que a escuridão termine primeiro; só precisa continuar tentando dentro dela.`}, points:[[150,90],[160,110],[150,130],[140,110]], edges:[[0,1],[1,2],[2,3],[3,0]] },
+    { key:"faro", name:{es:`El Faro`,en:`The Lighthouse`,pt:`O Farol`}, excerpt:{es:`Gael no obedeció. Alzó su martillo y se plantó junto a su padre. Pero las raíces blancas de Kaelen tuvieron otra idea. Una de ellas se enroscó en la cintura de Gael con una suavidad que no admitía protesta y lo condujo acantilado abajo, hacia el huerto de Presente, antes de que pudiera pronunciar una sola palabra. Lo último que vio fue la silueta de su padre recortada contra la sombra, solo y brillante como un faro en el temporal. Su corazón se encogió como un puño.`,en:`Gael didn't obey. He raised his hammer and planted himself beside his father. But Kaelen's white roots had another idea. One of them coiled around Gael's waist with a gentleness that allowed no protest and carried him down the cliff, toward Presente's orchard, before he could utter a single word. The last thing he saw was his father's silhouette cut against the shadow, alone and shining like a lighthouse in the storm. His heart clenched like a fist.`,pt:`Gael não obedeceu. Ergueu o martelo e se plantou ao lado do pai. Mas as raízes brancas de Kaelen tinham outra ideia. Uma delas se enroscou na cintura de Gael com uma suavidade que não admitia protesto e o conduziu penhasco abaixo, rumo ao pomar de Presente, antes que ele pudesse pronunciar uma única palavra. A última coisa que viu foi a silhueta do pai recortada contra a sombra, sozinho e brilhante como um farol na tempestade. Seu coração se contraiu como um punho.`}, reflection:{es:`Algunos se quedan atrás solo para que la última imagen que llevemos sea la de su luz.`,en:`Some stay behind only so that the last image we carry with us is the one of their light.`,pt:`Alguns ficam para trás só para que a última imagem que levamos seja a da sua luz.`}, points:[[150,150],[150,95],[142,85],[158,85],[175,80],[178,100]], edges:[[0,1],[1,2],[2,3],[3,1],[1,4],[1,5]] },
+    { key:"espejo", name:{es:`El Espejo`,en:`The Mirror`,pt:`O Espelho`}, excerpt:{es:`—El mar de espejos no refleja rostros—murmuró una vez, ofreciéndole otro fruto estelar—, sino las fisuras del alma que navegan en él.`,en:`"The sea of mirrors doesn’t reflect faces," he murmured once, offering her another star-fruit, "but the fractures of the soul that sail across it."`,pt:`— O mar de espelhos não reflete rostos — murmurou certa vez, oferecendo-lhe outro fruto estelar —, e sim as fissuras da alma que navegam nele.`}, reflection:{es:`Lo que devuelve un espejo rara vez es un rostro; casi siempre es la grieta que uno prefiere no nombrar.`,en:`What a mirror gives back is rarely a face; it's almost always the crack you'd rather not name.`,pt:`O que um espelho devolve raramente é um rosto; quase sempre é a rachadura que preferimos não nomear.`}, points:[[150,82],[168,105],[150,128],[132,105],[150,150]], edges:[[0,1],[1,2],[2,3],[3,0],[2,4]] },
+    { key:"nido", name:{es:`El Nido`,en:`The Nest`,pt:`O Ninho`}, excerpt:{es:`Ya a bordo, buscó un rincón apartado en la cubierta, desde donde pudiera observar su ciudad natal sin ser molestado. Encontró un espacio entre raíces entrelazadas, como un pequeño nido de madera, y allí se dejó caer. Lo primero que hizo fue presionar una oreja contra el suelo. Le pareció escuchar un latido pausado y antiguo. <em>¿El barco es como yo?</em>, pensó con una sonrisa ingenua. <em>Un ser arrancado de su tierra, flotando a la deriva, hecho de raíces que ya no tocan el suelo.</em>`,en:`Once aboard, he sought out a secluded corner on the deck, somewhere he could watch his home city without being disturbed. He found a space among interwoven roots, like a small wooden nest, and let himself sink into it. The first thing he did was press an ear against the floor. He thought he could hear a slow, ancient heartbeat. <em>Is the ship like me?</em>, he thought with a naive smile. <em>A being torn from its own earth, drifting adrift, made of roots that no longer touch the ground.</em>`,pt:`Já a bordo, procurou um canto reservado no convés, de onde pudesse observar sua cidade natal sem ser incomodado. Encontrou um espaço entre raízes entrelaçadas, como um pequeno ninho de madeira, e deixou-se cair ali. A primeira coisa que fez foi pressionar uma orelha contra o chão. Pareceu-lhe ouvir um batimento pausado e antigo. <em>Será que o barco é como eu?</em>, pensou com um sorriso ingênuo. <em>Um ser arrancado de sua terra, à deriva, feito de raízes que já não tocam o solo.</em>`}, reflection:{es:`Hasta lo que fue arrancado de raíz encuentra, tarde o temprano, un rincón donde volver a latir.`,en:`Even what was torn out by the root finds, sooner or later, a corner where it can beat again.`,pt:`Até o que foi arrancado pela raiz encontra, cedo ou tarde, um canto onde voltar a pulsar.`}, points:[[125,120],[138,135],[150,140],[162,135],[175,120]], edges:[[0,1],[1,2],[2,3],[3,4]] },
+    { key:"telarana", name:{es:`La Telaraña`,en:`The Spiderweb`,pt:`A Teia de Aranha`}, excerpt:{es:`Ese nuevo silencio que imperaba no era el que le enseñó Orín, armonizado por el latido de las raíces y el susurro de la brisa entre las hojas. Ese era otro, totalmente diferente y siniestro. Tóxico. Denso. Sucio. Como la injusticia misma. Se colaba en sus oídos, pesaba en sus pulmones y enturbiaba sus pensamientos. Un silencio opresivo que no escuchaba y que lo atrapaba, como telaraña en el fondo de un pozo seco. Las preguntas, aquellas ventanas abiertas a un mundo más amplio, se habían sellado una a una. "¿Quién robó mi nombre?", "¿Por qué duermen los metales?", "¿Qué esconde el mapa estrellado?"… Esos umbrales de curiosidad, de dolor activo incluso, se habían cegado con el cemento gris de la rutina. Ya no había fisuras por donde pudiera colarse la angustia o el anhelo. Únicamente existía la superficie lisa del ahora perpetuo.`,en:`This new silence that reigned wasn’t the one Orín had taught him, harmonized by the pulse of roots and the whisper of breeze through leaves. This was another kind, entirely different and sinister. Toxic. Dense. Filthy. Like injustice itself. It seeped into his ears, weighed on his lungs, and clouded his thoughts. An oppressive silence that did not listen, and that trapped him, like a spiderweb at the bottom of a dry well. The questions — those windows open onto a wider world — had sealed shut one by one. "Who stole my name?" "Why do the metals sleep?" "What does the star map hide?"… Those thresholds of curiosity, even of active pain, had been blinded by the gray cement of routine. There were no longer any cracks for anguish or longing to slip through. Only the smooth surface of a perpetual now remained.`,pt:`Aquele novo silêncio que imperava não era o que Orín lhe ensinara, harmonizado pelo pulsar das raízes e o sussurro da brisa entre as folhas. Era outro, totalmente diferente e sinistro. Tóxico. Denso. Sujo. Como a própria injustiça. Infiltrava-se em seus ouvidos, pesava em seus pulmões e turvava seus pensamentos. Um silêncio opressivo que não escutava e que o aprisionava, como teia de aranha no fundo de um poço seco. As perguntas, aquelas janelas abertas para um mundo mais amplo, haviam se selado uma a uma. "Quem roubou meu nome?", "Por que os metais dormem?", "O que esconde o mapa estelar?"… Esses limiares de curiosidade, até de dor ativa, haviam se cegado com o cimento cinza da rotina. Já não havia fissuras por onde pudessem se infiltrar a angústia ou o anseio. Existia apenas a superfície lisa do agora perpétuo.`}, reflection:{es:`Ciertos silencios no descansan: tejen, despacio, hasta que dejamos de notar que estamos atrapados.`,en:`Certain silences never rest: they weave, slowly, until we stop noticing that we're trapped.`,pt:`Certos silêncios não descansam: tecem, devagar, até que deixamos de notar que estamos presos.`}, points:[[150,112],[150,85],[168,95],[178,112],[168,129],[150,139],[132,129],[122,112],[132,95]], edges:[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[0,8]] },
+    { key:"rio", name:{es:`El Río`,en:`The River`,pt:`O Rio`}, excerpt:{es:`El sol de la mañana acarició el rostro de Gael con dedos tibios. Ainara había dejado en su mesilla un vaso de leche fresca y un panecillo de queso. Pero algo lo llamaba más allá de las paredes de su habitación. Era la Cascada de la Barriga. Un paraíso ubicado en Ipioston, el pueblo vecino que siempre había sido sinónimo de diversión colectiva. Gael se desperezó y bebió un sorbo de leche. A través de la ventana abierta le llegaba el aroma de la hierba mojada y el rumor lejano del río. Recordó que hoy era un día especial.`,en:`The morning sun stroked Gael's face with warm fingers. Ainara had left a glass of fresh milk and a small cheese roll on his nightstand. But something was calling him beyond the walls of his room. It was the Belly Waterfall. A paradise located in Ipioston, the neighboring village that had always been synonymous with communal joy. Gael stretched and took a sip of milk. Through the open window came the smell of wet grass and the distant murmur of the river. He remembered that today was a special day.`,pt:`O sol da manhã acariciou o rosto de Gael com dedos mornos. Ainara havia deixado em sua mesinha um copo de leite fresco e um pãozinho de queijo. Mas algo o chamava além das paredes de seu quarto. Era a Cachoeira da Barriga. Um paraíso situado em Ipioston, a vila vizinha que sempre fora sinônimo de alegria coletiva. Gael espreguiçou-se e bebeu um gole de leite. Pela janela aberta chegava o aroma da relva molhada e o rumor distante do rio. Lembrou-se de que hoje era um dia especial.`}, reflection:{es:`Algunas mañanas avisan, sin palabras, que algo distinto está por suceder.`,en:`Some mornings give warning, without words, that something different is about to happen.`,pt:`Algumas manhãs avisam, sem palavras, que algo diferente está prestes a acontecer.`}, points:[[100,120],[125,105],[150,125],[175,105],[200,120]], edges:[[0,1],[1,2],[2,3],[3,4]] },
+    { key:"montana", name:{es:`La Montaña`,en:`The Mountain`,pt:`A Montanha`}, excerpt:{es:`Las montañas alzaban sus picos a través de la bruma en un intento de tocar el cielo. Los ríos resplandecían como venas de azul líquido en continuo movimiento. La arena, áurea y perfectamente asentada, se fundía con los bosques como dos enamorados.`,en:`The mountains raised their peaks through the mist in an attempt to touch the sky. Rivers shimmered like veins of liquid blue in ceaseless motion. The sand, golden and perfectly settled, melted into the forests like two lovers.`,pt:`As montanhas erguiam seus picos através da bruma numa tentativa de tocar o céu. Os rios reluziam como veias de azul líquido em movimento contínuo. A areia, dourada e perfeitamente assentada, fundia-se com as florestas como dois amantes.`}, reflection:{es:`Hasta la tierra más quieta tiene un pulso propio, si uno se queda el tiempo suficiente para escucharlo.`,en:`Even the stillest land has a pulse of its own, if you stay long enough to hear it.`,pt:`Até a terra mais quieta tem um pulso próprio, se ficarmos tempo suficiente para escutá-lo.`}, points:[[115,150],[140,95],[160,115],[185,80],[210,150]], edges:[[0,1],[1,2],[2,3],[3,4]] },
+    { key:"corazon", name:{es:`El Corazón`,en:`The Heart`,pt:`O Coração`}, excerpt:{es:`¿Por qué el bosque profundo? Quizá porque el latido de Sendanthria, vibrante de vida y misterio, resonaba con su propio corazón herido; un corazón que anhelaba respuestas que el murmullo de las aldeas no podía ofrecer. O, quizá, porque un instinto más antiguo que la razón le susurraba que el bosque había sido siempre el santuario de quienes han elegido encontrarse. Se adentró en una catedral de troncos que parecían esperarlo. La luz, al filtrarse por el dosel de hojas, tejía tapices dorados sobre el suelo. El aire, espeso, olía a tierra húmeda y a flores nunca vistas. El bosque lo envolvía como un abrazo.`,en:`Why the deep forest? Perhaps because the pulse of Sendanthria, vibrant with life and mystery, resonated with his own wounded heart; a heart that longed for answers the murmur of villages could never offer. Or perhaps because an instinct older than reason whispered to him that the forest had always been the sanctuary of those who have chosen to find themselves. He entered a cathedral of trunks that seemed to be waiting for him. The light, filtering through the canopy of leaves, wove golden tapestries across the ground. The thick air smelled of damp earth and flowers never before seen. The forest wrapped around him like an embrace.`,pt:`Por que a floresta profunda? Talvez porque o pulsar de Sendanthria, vibrante de vida e mistério, ressoasse com seu próprio coração ferido; um coração que ansiava por respostas que o murmúrio das aldeias não podia oferecer. Ou, talvez, porque um instinto mais antigo que a razão lhe sussurrasse que a floresta sempre fora o santuário de quem escolheu se encontrar. Adentrou uma catedral de troncos que pareciam esperá-lo. A luz, ao filtrar-se pelo dossel de folhas, tecia tapetes dourados sobre o chão. O ar, denso, cheirava a terra úmida e a flores nunca vistas. A floresta o envolvia como um abraço.`}, reflection:{es:`Elegimos ciertos lugares no por lógica, sino porque laten al mismo ritmo que la herida que cargamos.`,en:`We choose certain places not out of logic, but because they beat to the same rhythm as the wound we carry.`,pt:`Escolhemos certos lugares não por lógica, mas porque pulsam no mesmo ritmo da ferida que carregamos.`}, points:[[133,100],[150,90],[167,100],[140,115],[160,115],[150,140]], edges:[[0,1],[1,2],[0,3],[3,5],[2,4],[4,5]] }
+  ];
+
+  let lastIndex = -1;
+  window.currentShape = null;
+  let moonState = 'idle'; // idle | growing | full
+
+  function rand(min, max){ return Math.random() * (max - min) + min; }
+
+  function makeBackgroundStars(n){
+    for (let i = 0; i < n; i++){
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx', rand(6, W-6));
+      c.setAttribute('cy', rand(6, H-6));
+      c.setAttribute('r', rand(0.3, 1.1));
+      c.setAttribute('class', 'gs-bg-star');
+      c.style.opacity = rand(0.15, 0.7);
+      c.style.animation = `gsTwinkle ${rand(3,7)}s ease-in-out ${rand(0,4)}s infinite`;
+      sky.appendChild(c);
+    }
+  }
+  makeBackgroundStars(70);
+
+  let constStarEls = [];
+  let lineEls = [];
+
+  function clearConstellation(){
+    constStarEls.forEach(el => el.remove());
+    lineEls.forEach(el => el.remove());
+    constStarEls = [];
+    lineEls = [];
+  }
+
+  function pickShape(){
+    let idx;
+    do { idx = Math.floor(rand(0, shapes.length)); } while (idx === lastIndex && shapes.length > 1);
+    lastIndex = idx;
+    return shapes[idx];
+  }
+
+  window.updateMoonCaption = function(){
+    const cap = document.getElementById('gsMoonCaption');
+    const dict = translations[currentLang];
+    if(moonState === 'growing'){ cap.textContent = dict['moon-growing']; }
+    else if(moonState === 'full'){ cap.textContent = dict['moon-full']; }
+    else { cap.textContent = dict['moon-idle']; }
+  };
+
+  window.renderShape = function(shape){
+    document.getElementById('gsShapeName').textContent = shape.name[currentLang];
+    document.getElementById('gsExcerptText').innerHTML = shape.excerpt[currentLang];
+    document.getElementById('gsReflectionText').textContent = shape.reflection[currentLang];
+  };
+
+  function invoke(){
+    const moonBtn = document.getElementById('gsMoonBtn');
+    const moonShadow = document.getElementById('gsMoonShadow');
+    const reveal = document.getElementById('gsReveal');
+    const againBtn = document.getElementById('gsAgainBtn');
+
+    moonBtn.disabled = true;
+    reveal.classList.remove('show');
+    moonState = 'growing';
+    updateMoonCaption();
+    moonShadow.style.transform = 'translateX(44px)';
+
+    clearConstellation();
+    const shape = pickShape();
+
+    const startPositions = shape.points.map(() => [rand(20, W-20), rand(15, H-15)]);
+    startPositions.forEach(([x, y]) => {
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx', x);
+      c.setAttribute('cy', y);
+      c.setAttribute('r', 1.6);
+      c.setAttribute('class', 'gs-const-star');
+      c.style.opacity = 0;
+      sky.appendChild(c);
+      constStarEls.push(c);
+    });
+
+    shape.edges.forEach(([a, b]) => {
+      const line = document.createElementNS(NS, 'line');
+      const [x1, y1] = shape.points[a];
+      const [x2, y2] = shape.points[b];
+      line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+      line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+      line.setAttribute('class', 'gs-const-line');
+      sky.appendChild(line);
+      lineEls.push(line);
+    });
+
+    requestAnimationFrame(() => {
+      constStarEls.forEach(el => { el.style.opacity = 1; });
+    });
+
+    setTimeout(() => {
+      constStarEls.forEach((el, i) => {
+        const [tx, ty] = shape.points[i];
+        el.style.transitionDelay = (i * 90) + 'ms';
+        el.setAttribute('cx', tx);
+        el.setAttribute('cy', ty);
+      });
+    }, 500);
+
+    setTimeout(() => {
+      lineEls.forEach(l => l.classList.add('show'));
+    }, 2400);
+
+    setTimeout(() => {
+      currentShape = shape;
+      window.currentShape = shape;
+      renderShape(shape);
+      reveal.classList.add('show');
+      moonState = 'full';
+      updateMoonCaption();
+      moonBtn.disabled = false;
+      againBtn.hidden = false;
+    }, 3000);
+  }
+
+  document.getElementById('gsMoonBtn').addEventListener('click', invoke);
+  document.getElementById('gsAgainBtn').addEventListener('click', () => {
+    document.getElementById('gsMoonShadow').style.transform = 'translateX(0px)';
+    setTimeout(invoke, 60);
+  });
+})();
+
+/* ---------- Compartir ---------- */
+let currentShape = null;
+const shareFab = document.getElementById('shareFab');
+const shareToast = document.getElementById('shareToast');
+let shareToastTimer = null;
+
+function showShareToast(msg){
+  shareToast.textContent = msg;
+  shareToast.hidden = false;
+  clearTimeout(shareToastTimer);
+  shareToastTimer = setTimeout(()=>{ shareToast.hidden = true; }, 2600);
+}
+
+shareFab.addEventListener('click', async () => {
+  const dict = translations[currentLang];
+  const shape = window.currentShape;
+  let text;
+  if(shape){
+    const plainExcerpt = shape.excerpt[currentLang].replace(/<[^>]+>/g,'');
+    text = shape.name[currentLang] + ' — ' + plainExcerpt + '\n\n' + location.href;
+  } else {
+    text = document.title + '\n' + location.href;
+  }
+  if(navigator.share){
+    try{ await navigator.share({ title: document.title, text: text, url: location.href }); }catch(e){}
+  } else {
+    try{
+      await navigator.clipboard.writeText(text);
+      showShareToast(dict['share-copied']);
+    }catch(e){
+      showShareToast(dict['share-copied']);
+    }
+  }
+});
+
+let savedLang = 'es';
+try{ savedLang = localStorage.getItem('gael-lang') || 'es'; }catch(e){}
+applyLanguage(savedLang);
+</script>
+</body>
+</html>
