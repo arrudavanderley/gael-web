@@ -942,7 +942,7 @@ function soltar(){
 
 async function cargarOfrendas(){
   const status=document.getElementById('supabaseStatus');
-  if(supabaseClient){ try{ const {data, error} = await supabaseClient.from('ofrendas').select('*').order('created_at', {ascending:false}).limit(1000); if(!error && data && data.length>0){ ofrendas = data.map(d=>({categoria:d.categoria, texto:d.texto, forma:d.forma, icono:d.icono})); localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas)); if(status) status.innerText='● POZO COLECTIVO'; return; } }catch(e){} }
+  if(supabaseClient){ try{ const {data, error} = await supabaseClient.from('ofrendas').select('*').order('created_at', {ascending:false}).limit(1000); if(!error && data){ ofrendas = data.map(d=>({categoria:d.categoria, texto:d.texto, forma:d.forma, icono:d.icono})); localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas)); if(status) status.innerText='● POZO COLECTIVO'; return; } if(error) console.error('Supabase (cargarOfrendas):', error); }catch(e){ console.error('Supabase (cargarOfrendas) excepción:', e); } }
   if(status) status.innerText='○ POZO LOCAL';
   const local=localStorage.getItem('aventuras_v7');
   if(local){ try{ ofrendas=JSON.parse(local); if(ofrendas.length>0) return; }catch(e){} }
@@ -952,7 +952,7 @@ async function cargarOfrendas(){
 async function guardarOfrenda(){
   const texto=document.getElementById('textoOfrenda').value.trim();
   const nueva={categoria:seleccion.categoria.nombre, texto:texto, forma:seleccion.forma.nombre, icono:seleccion.forma.icono, lang:currentLang};
-  if(supabaseClient){ try{ const {error} = await supabaseClient.from('ofrendas').insert([nueva]); if(!error){ ofrendas.unshift(nueva); localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas)); return; } }catch(e){} }
+  if(supabaseClient){ try{ const {error} = await supabaseClient.from('ofrendas').insert([nueva]); if(!error){ ofrendas.unshift(nueva); localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas)); return; } console.error('Supabase (guardarOfrenda):', error); }catch(e){ console.error('Supabase (guardarOfrenda) excepción:', e); } }
   ofrendas.unshift(nueva); localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas));
 }
 
