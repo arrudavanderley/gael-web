@@ -951,7 +951,7 @@ async function cargarOfrendas(){
 
 async function guardarOfrenda(){
   const texto=document.getElementById('textoOfrenda').value.trim();
-  const nueva={categoria:seleccion.categoria.nombre, texto:texto, forma:seleccion.forma.nombre, icono:seleccion.forma.icono, lang:currentLang};
+  const nueva={categoria:seleccion.categoria.nombre, texto:texto, forma:seleccion.forma.nombre, icono:seleccion.forma.icono};
   if(supabaseClient){ try{ const {error} = await supabaseClient.from('ofrendas').insert([nueva]); if(!error){ ultimoGuardadoRemoto=true; ofrendas.unshift(nueva); localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas)); return; } console.error('Supabase (guardarOfrenda):', error); ultimoGuardadoRemoto=false; }catch(e){ console.error('Supabase (guardarOfrenda) excepción:', e); ultimoGuardadoRemoto=false; } }
   ofrendas.unshift(nueva); localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas));
 }
