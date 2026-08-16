@@ -170,6 +170,7 @@ svg#gsSky{width:100%;height:auto;display:block;border-radius:2px;}
   <div class="ai-nav-btns">
     <a href="#cielo-de-gael" class="ai-nav-btn" data-i18n="ai-nav-cielo">El Cielo Nocturno</a>
     <a href="#pozo-tocafondos" class="ai-nav-btn" data-i18n="ai-nav-pozo">El Pozo de los Tocafondos</a>
+    <a href="#correspondencia" class="ai-nav-btn" data-i18n="ai-nav-correspondencia">La Correspondencia</a>
   </div>
 </div>
 
@@ -337,6 +338,844 @@ svg#gsSky{width:100%;height:auto;display:block;border-radius:2px;}
 </div>
 </section>
 
+<div class="divider" aria-hidden="true"><svg viewBox="0 0 56 22"><circle cx="22" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/><circle cx="33" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/></svg></div>
+
+<!-- ============ CAPÍTULO II: EL JUEGO DE LA CORRESPONDENCIA - UNIVERSO GAEL ============ -->
+<section id="correspondencia" class="content" style="border-top:1px solid rgba(201,163,95,0.12); margin-top:1.5rem; padding-top:4.5rem;">
+  <p class="gs-eyebrow" data-i18n="corr-eyebrow">Universo Gael</p>
+  <h2 class="gs-title" style="text-align:center; margin-bottom:1rem;" data-i18n="corr-title">La Correspondencia</h2>
+  <p style="text-align:center; max-width:540px; margin:0 auto 1rem; color:var(--cream); opacity:0.85;" data-i18n="corr-intro-p1">
+    Gael encontró en la montaña una gruta donde el viento no soplaba hacia afuera. Soplaba hacia adentro. Dejaba una carta y, días después, volvía con otra letra. No era su letra, pero era su voz. Más vieja. Más en paz.
+  </p>
+  <p style="text-align:center; max-width:540px; margin:0 auto 2.5rem; color:var(--muted); font-style:italic; font-size:0.95rem;" data-i18n="corr-intro-p2">
+    Entendió que hay lugares donde el tiempo no forma una línea. Forma un círculo. Un lugar donde tu yo del futuro puede escribirte, si te atreves a escucharlo primero.
+  </p>
+
+  <div id="corr-progress" style="display:flex; justify-content:center; gap:1.5rem; margin-bottom:2.8rem;">
+    <div class="corr-sello" data-sello="1"><span data-i18n="corr-sello-actoI">Acto I</span><div class="dot"></div><small data-i18n="corr-sello-carta">Carta</small></div>
+    <div class="corr-sello" data-sello="2"><span data-i18n="corr-sello-actoII">Acto II</span><div class="dot"></div><small data-i18n="corr-sello-equipaje">Equipaje</small></div>
+    <div class="corr-sello" data-sello="3"><span data-i18n="corr-sello-actoIII">Acto III</span><div class="dot"></div><small data-i18n="corr-sello-talisman">Talismán</small></div>
+  </div>
+
+  <!-- ESTADO 0 -->
+  <div id="corr-estado0">
+    <div style="background:var(--panel); border:1px solid rgba(201,163,95,0.15); border-radius:16px; padding:2.4rem 1.8rem; text-align:center;">
+      <p style="font-family:'Cormorant Garamond',serif; font-size:1.18rem; color:var(--gold-bright); margin-bottom:1.6rem; letter-spacing:0.03em; line-height:1.6;" data-i18n="corr-estado0-text">Este no es un test. No hay respuestas correctas.<br>Es un ritual en 3 actos, guiado por fragmentos de la historia de Gael.</p>
+      <button onclick="corrIrEstado1()" class="corr-btn-primary" data-i18n="corr-estado0-btn">Acepto la correspondencia →</button>
+      <p style="margin-top:1rem; font-size:0.8rem; color:var(--muted);" data-i18n="corr-estado0-sub">Te tomará 15-20 minutos. Toma tu tiempo.</p>
+    </div>
+  </div>
+
+  <!-- ESTADO 1 - CARTA -->
+  <div id="corr-estado1" class="hidden">
+    <h3 style="font-size:1.7rem; margin-bottom:0.6rem;" data-i18n="corr-acto1-h3">Acto I — Escríbete desde dentro de 3 años</h3>
+    <p style="color:var(--muted); font-size:0.95rem; margin-bottom:1.6rem; line-height:1.6;" data-i18n="corr-acto1-intro">No escribas desde quien eres hoy. Escribe desde quien ya logró lo que hoy deseas. Cierra los ojos. Son 3 años después. Estás bien. Estás en paz. Mírate.</p>
+
+    <div id="corr-chips" style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.2rem;">
+      <button onclick="corrInsertPrompt(0)" class="corr-chip" data-chip="0">Hola, soy...</button>
+      <button onclick="corrInsertPrompt(1)" class="corr-chip" data-chip="1">Para agradecerte...</button>
+      <button onclick="corrInsertPrompt(2)" class="corr-chip" data-chip="2">Estoy orgulloso...</button>
+      <button onclick="corrInsertPrompt(3)" class="corr-chip" data-chip="3">Lo que más me gusta...</button>
+      <button onclick="corrInsertPrompt(4)" class="corr-chip" data-chip="4">Un consejo...</button>
+      <button onclick="corrInsertPrompt(5)" class="corr-chip" data-chip="5">Sobre tu miedo...</button>
+    </div>
+
+    <textarea id="corr-carta" placeholder="Hola, soy [tu nombre] de dentro de tres años, te escribo desde...
+
+Escribo para agradecerte por haber tenido el valor de...
+
+Hoy estoy orgulloso de ti porque finalmente...
+
+Lo que más me gusta de nuestra vida ahora es...
+
+Un consejo que te doy desde aquí es: no te olvides de...
+
+Y por último, quería decirte que todo aquello que te preocupa hoy por [miedo actual]...
+
+Con amor,
+Tu yo del [AÑO_FUTURO]" style="width:100%; min-height:380px; background:var(--panel); border:1px solid rgba(201,163,95,0.22); border-radius:12px; padding:1.2rem; color:var(--cream); font-family:'EB Garamond',serif; font-style:italic; font-size:1.05rem; line-height:1.75; resize:vertical;"></textarea>
+    <div style="display:flex; justify-content:space-between; margin-top:0.5rem; font-size:0.8rem; color:var(--muted);"><span id="corr-contador">0 <span data-i18n="corr-caracteres">caracteres</span></span><span data-i18n="corr-toma-tu-tiempo-corto">Toma tu tiempo</span></div>
+
+    <div style="margin-top:1.8rem; background:rgba(23,19,31,0.6); border:1px solid rgba(201,163,95,0.12); border-radius:12px; padding:1.3rem;">
+      <label style="font-family:'Cormorant Garamond',serif; color:var(--gold); font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase;" data-i18n="corr-frase-label">Una frase de tu carta que quieras compartir (anónima)</label>
+      <input id="corr-frase" type="text" placeholder="Ej: Estoy orgulloso de ti porque finalmente te atreviste a irte..." style="width:100%; margin-top:0.6rem; background:#0b0a13; border:1px solid rgba(201,163,95,0.18); border-radius:8px; padding:0.75rem 0.9rem; color:var(--cream); font-family:'EB Garamond',serif;">
+
+      <label style="display:flex; gap:0.6rem; align-items:center; margin-top:1.2rem; cursor:pointer; font-size:0.9rem; color:var(--cream);">
+        <input type="checkbox" id="corr-wants-email" onchange="document.getElementById('corr-email-box').classList.toggle('hidden', !this.checked)" style="accent-color:var(--gold);"> <span data-i18n="corr-email-checkbox">Quiero que esta carta me vuelva por email dentro de 3 años</span>
+      </label>
+      <div id="corr-email-box" class="hidden" style="margin-top:0.8rem;">
+        <input id="corr-email" type="email" placeholder="tu@email.com" style="width:100%; background:#0b0a13; border:1px solid rgba(201,163,95,0.18); border-radius:8px; padding:0.75rem 0.9rem; color:var(--cream);">
+        <small style="color:var(--muted); font-size:0.75rem; margin-top:0.4rem; display:block;" data-i18n="corr-email-nota">Usaremos tu email solo para esto. Guardado de forma segura en la gruta de la correspondencia.</small>
+      </div>
+    </div>
+
+    <button onclick="corrGuardarActo1()" class="corr-btn-primary" style="width:100%; margin-top:1.6rem;" data-i18n="corr-enviar-btn">Enviar mi carta al futuro →</button>
+  </div>
+
+  <!-- ESTADO 2 - EQUIPAJE -->
+  <div id="corr-estado2" class="hidden">
+    <h3 style="font-size:1.7rem; margin-bottom:0.6rem;" data-i18n="corr-acto2-h3">Acto II — Lo que no puedes llevar</h3>
+    <p style="color:var(--muted); font-size:0.95rem; margin-bottom:1.8rem; line-height:1.6;" data-i18n="corr-acto2-intro">Gael nunca viajaba ligero, hasta que entendió que el peso no estaba en la mochila. Si vas a ir a ese futuro que acabas de describir, ¿qué no puedes llevar contigo?</p>
+
+    <div style="display:flex; flex-direction:column; gap:1rem;">
+      <div class="corr-equipaje-item"><span class="num">01</span><input id="corr-dejar1" type="text" placeholder="Para llegar a donde estoy, tuve que dejar atrás..." oninput="corrPiedra(1)"><div id="piedra1" class="piedra hidden">🪨</div></div>
+      <div class="corr-equipaje-item"><span class="num">02</span><input id="corr-dejar2" type="text" placeholder="También dejé atrás..." oninput="corrPiedra(2)"><div id="piedra2" class="piedra hidden">🪨</div></div>
+      <div class="corr-equipaje-item"><span class="num">03</span><input id="corr-dejar3" type="text" placeholder="Y por último, solté..." oninput="corrPiedra(3)"><div id="piedra3" class="piedra hidden">🪨</div></div>
+    </div>
+    <div id="corr-pozo-mini" style="margin-top:1.5rem; text-align:center; opacity:0.6; font-size:0.85rem; color:var(--muted); font-family:'Cormorant Garamond',serif; font-style:italic;" data-i18n="corr-equipaje-nota">Cada cosa que sueltas queda atrás, en la gruta ↓</div>
+    <button onclick="corrGuardarActo2()" class="corr-btn-primary" style="width:100%; margin-top:1.6rem;" data-i18n="corr-equipaje-btn">Dejar este equipaje atrás →</button>
+  </div>
+
+  <!-- ESTADO 3 - TALISMAN -->
+  <div id="corr-estado3" class="hidden">
+    <h3 style="font-size:1.7rem; margin-bottom:0.6rem;" data-i18n="corr-acto3-h3">Acto III — El objeto que te acompañará</h3>
+    <p style="color:var(--muted); font-size:0.95rem; margin-bottom:1.5rem; line-height:1.6;" data-i18n="corr-acto3-intro">Todo viajero necesita un talismán. No lo lleva para protegerse del camino. Lo lleva para recordar por qué empezó. Gael llevaba una brújula. No apuntaba al norte. Apuntaba a casa.</p>
+
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0.8rem; margin-bottom:1.5rem;">
+      <button class="corr-talisman" data-talisman="brujula" onclick="corrSelectTalisman(this)"><span>◉</span> <span data-i18n="corr-tal-brujula-nombre">Brújula</span><br><small data-i18n="corr-tal-brujula-desc">que apunta a casa</small></button>
+      <button class="corr-talisman" data-talisman="llave" onclick="corrSelectTalisman(this)"><span>⚷</span> <span data-i18n="corr-tal-llave-nombre">Llave</span><br><small data-i18n="corr-tal-llave-desc">que abre puertas internas</small></button>
+      <button class="corr-talisman" data-talisman="pluma" onclick="corrSelectTalisman(this)"><span>✒</span> <span data-i18n="corr-tal-pluma-nombre">Pluma</span><br><small data-i18n="corr-tal-pluma-desc">para reescribir</small></button>
+      <button class="corr-talisman" data-talisman="piedra" onclick="corrSelectTalisman(this)"><span>⬙</span> <span data-i18n="corr-tal-piedra-nombre">Piedra</span><br><small data-i18n="corr-tal-piedra-desc">pulida por el río</small></button>
+      <button class="corr-talisman" data-talisman="hilo" onclick="corrSelectTalisman(this)"><span>~</span> <span data-i18n="corr-tal-hilo-nombre">Hilo dorado</span><br><small data-i18n="corr-tal-hilo-desc">que no se rompe</small></button>
+      <button class="corr-talisman" data-talisman="farol" onclick="corrSelectTalisman(this)"><span>◐</span> <span data-i18n="corr-tal-farol-nombre">Farol</span><br><small data-i18n="corr-tal-farol-desc">que no se apaga con viento</small></button>
+    </div>
+    <textarea id="corr-talisman-text" placeholder="Mi objeto es... y me recuerda que..." style="width:100%; min-height:120px; background:var(--panel); border:1px solid rgba(201,163,95,0.22); border-radius:12px; padding:1rem; color:var(--cream); font-family:'EB Garamond',serif;"></textarea>
+    <button onclick="corrGuardarActo3()" class="corr-btn-primary" style="width:100%; margin-top:1.6rem;" data-i18n="corr-sellar-btn">Sellar la correspondencia ✦</button>
+  </div>
+
+  <!-- ESTADO 4 - FINAL -->
+  <div id="corr-estado4" class="hidden">
+    <h3 style="text-align:center; font-size:1.9rem; margin-bottom:0.5rem;" data-i18n="corr-final-h3">Tu correspondencia ha quedado guardada en la gruta</h3>
+    <p style="text-align:center; color:var(--muted); margin-bottom:1.5rem; font-size:0.9rem;"><span data-i18n="corr-final-num">Correspondencia nº</span> <span id="corr-num">127</span> <span data-i18n="corr-final-viajara">· Viajará 3 años</span></p>
+    <canvas id="corr-constelacion" width="600" height="200" style="width:100%; max-width:600px; height:200px; margin:0 auto 2rem; display:block; background:radial-gradient(ellipse at center, rgba(201,163,95,0.08) 0%, transparent 70%); border-radius:12px; border:1px solid rgba(201,163,95,0.12);"></canvas>
+
+    <div id="corr-resumen" style="background:var(--panel); border:1px solid rgba(201,163,95,0.15); border-radius:12px; padding:1.6rem; margin-bottom:2rem; font-style:italic; line-height:1.7; font-size:1rem;"></div>
+
+    <div style="background:rgba(11,10,19,0.6); border:1px solid rgba(201,163,95,0.12); border-radius:12px; padding:1.5rem;">
+      <h4 style="font-family:'Cormorant Garamond',serif; color:var(--gold); letter-spacing:0.08em; text-transform:uppercase; font-size:0.85rem; margin-bottom:1rem;" data-i18n="corr-muro-titulo">Frases que han vuelto de otros viajeros</h4>
+      <div id="corr-muro" style="display:flex; flex-direction:column; gap:0.9rem; font-size:0.95rem; color:var(--cream); opacity:0.85; line-height:1.6;"></div>
+    </div>
+
+    <div style="display:flex; gap:1rem; margin-top:2rem; flex-wrap:wrap; justify-content:center;">
+      <button onclick="corrIrEstado1()" class="corr-btn-secondary" data-i18n="corr-volver-btn">Volver a leer mi carta</button>
+      <button onclick="corrReiniciar()" class="corr-btn-secondary" data-i18n="corr-reiniciar-btn">Empezar otra correspondencia</button>
+    </div>
+    <p style="text-align:center; margin-top:2.2rem; font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--gold); opacity:0.7;" data-i18n="corr-final-cierre">Gael decía que las cartas que vuelven nunca llegan tarde.</p>
+  </div>
+
+  <div class="divider" style="margin-top:3rem;"><svg viewBox="0 0 56 22" fill="none"><path d="M1 11 Q14 2 28 11 T55 11" stroke="currentColor" stroke-width="0.8" fill="none" opacity="0.6"/><circle cx="28" cy="11" r="2" fill="currentColor"/></svg></div>
+</section>
+
+<style>
+.corr-sello{ text-align:center; opacity:0.35; transition:all 0.4s ease; }
+.corr-sello.active{ opacity:1; }
+.corr-sello.done{ opacity:0.85; }
+.corr-sello .dot{ width:10px; height:10px; border-radius:50%; background:var(--muted); margin:0.45rem auto; border:1px solid rgba(201,163,95,0.3); transition:all 0.4s ease; }
+.corr-sello.active .dot{ background:var(--gold); box-shadow:0 0 14px rgba(201,163,95,0.7); transform:scale(1.35); }
+.corr-sello.done .dot{ background:var(--gold-bright); }
+.corr-sello span{ font-family:'Cormorant Garamond',serif; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
+.corr-sello small{ display:block; font-size:0.72rem; color:var(--muted); margin-top:0.15rem; font-family:'Inter',sans-serif; }
+
+.corr-btn-primary{ background:transparent; border:1px solid rgba(201,163,95,0.4); color:var(--gold-bright); font-family:'Cormorant Garamond',serif; letter-spacing:0.08em; text-transform:uppercase; font-size:0.85rem; padding:0.95rem 1.7rem; border-radius:28px; cursor:pointer; transition:all 0.3s ease; }
+.corr-btn-primary:hover{ background:rgba(201,163,95,0.1); border-color:var(--gold-bright); transform:translateY(-1px); box-shadow:0 4px 16px rgba(201,163,95,0.15); }
+.corr-btn-secondary{ background:rgba(23,19,31,0.6); border:1px solid rgba(201,163,95,0.15); color:var(--muted); font-family:'Cormorant Garamond',serif; font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase; padding:0.7rem 1.3rem; border-radius:22px; cursor:pointer; transition:all 0.3s ease; }
+.corr-btn-secondary:hover{ color:var(--gold); border-color:rgba(201,163,95,0.35); }
+
+.corr-chip{ background:rgba(23,19,31,0.85); border:1px solid rgba(201,163,95,0.18); color:var(--muted); font-family:'Cormorant Garamond',serif; font-size:0.78rem; padding:0.38rem 0.75rem; border-radius:18px; cursor:pointer; transition:all 0.2s ease; }
+.corr-chip:hover{ color:var(--gold-bright); border-color:rgba(201,163,95,0.45); background:rgba(201,163,95,0.08); }
+
+.corr-equipaje-item{ display:flex; align-items:center; gap:0.8rem; background:var(--panel); border:1px solid rgba(201,163,95,0.12); border-radius:12px; padding:0.9rem 1rem; position:relative; overflow:hidden; transition:border-color 0.3s ease; }
+.corr-equipaje-item:focus-within{ border-color:rgba(201,163,95,0.35); }
+.corr-equipaje-item .num{ font-family:'Cormorant Garamond',serif; color:var(--gold); opacity:0.6; font-size:0.9rem; min-width:26px; }
+.corr-equipaje-item input{ flex:1; background:transparent; border:none; color:var(--cream); font-family:'EB Garamond',serif; font-size:1.02rem; outline:none; }
+.corr-equipaje-item .piedra{ position:absolute; right:1.2rem; animation:corrCaida 0.9s ease forwards; font-size:1.1rem; }
+
+.corr-talisman{ background:var(--panel); border:1px solid rgba(201,163,95,0.14); border-radius:12px; padding:1.1rem 0.5rem; color:var(--muted); font-family:'Cormorant Garamond',serif; font-size:0.86rem; cursor:pointer; transition:all 0.3s ease; text-align:center; line-height:1.3; }
+.corr-talisman span{ display:block; font-size:1.5rem; color:var(--gold); margin-bottom:0.35rem; transition:transform 0.3s ease; }
+.corr-talisman small{ font-family:'EB Garamond',serif; font-style:italic; font-size:0.76rem; opacity:0.7; display:block; margin-top:0.2rem; }
+.corr-talisman:hover{ border-color:rgba(201,163,95,0.3); color:var(--cream); }
+.corr-talisman.selected{ border-color:var(--gold); background:rgba(201,163,95,0.09); color:var(--gold-bright); box-shadow:0 0 20px rgba(201,163,95,0.12); }
+.corr-talisman.selected span{ transform:scale(1.25); }
+
+@keyframes corrCaida{ 0%{ transform:translateY(-12px) scale(0.5); opacity:0; } 50%{ opacity:1; transform:translateY(5px) scale(1.1); } 100%{ transform:translateY(70px) scale(1); opacity:0; } }
+</style>
+
+<script>
+// ========= LÓGICA CORRESPONDENCIA - UNIVERSO GAEL =========
+const corrTranslations = {
+  es: {
+    eyebrow:`Universo Gael`,
+    navLabel:`La Correspondencia`,
+    title:`La Correspondencia`,
+    introP1:`Gael encontró en la montaña una gruta donde el viento no soplaba hacia afuera. Soplaba hacia adentro. Dejaba una carta y, días después, volvía con otra letra. No era su letra, pero era su voz. Más vieja. Más en paz.`,
+    introP2:`Entendió que hay lugares donde el tiempo no forma una línea. Forma un círculo. Un lugar donde tu yo del futuro puede escribirte, si te atreves a escucharlo primero.`,
+    selloActoI:`Acto I`,
+    selloCarta:`Carta`,
+    selloActoII:`Acto II`,
+    selloEquipaje:`Equipaje`,
+    selloActoIII:`Acto III`,
+    selloTalisman:`Talismán`,
+    estado0Text:`Este no es un test. No hay respuestas correctas.<br>Es un ritual en 3 actos, guiado por fragmentos de la historia de Gael.`,
+    estado0Btn:`Acepto la correspondencia →`,
+    estado0Sub:`Te tomará 15-20 minutos. Toma tu tiempo.`,
+    acto1H3:`Acto I — Escríbete desde dentro de 3 años`,
+    acto1Intro:`No escribas desde quien eres hoy. Escribe desde quien ya logró lo que hoy deseas. Cierra los ojos. Son 3 años después. Estás bien. Estás en paz. Mírate.`,
+    chips:[
+      {
+        label:`Hola, soy...`,
+        texto:`Hola, soy [tu nombre] de dentro de tres años, te escribo desde [lugar]...`
+      },
+      {
+        label:`Para agradecerte...`,
+        texto:`Escribo para agradecerte por haber tenido el valor de...`
+      },
+      {
+        label:`Estoy orgulloso...`,
+        texto:`Hoy estoy orgulloso de ti porque finalmente...`
+      },
+      {
+        label:`Lo que más me gusta...`,
+        texto:`Lo que más me gusta de nuestra vida ahora es...`
+      },
+      {
+        label:`Un consejo...`,
+        texto:`Un consejo que te doy desde aquí es: no te olvides de...`
+      },
+      {
+        label:`Sobre tu miedo...`,
+        texto:`Y aquello que hoy te preocupa por [miedo actual], quiero decirte que...`
+      }
+    ],
+    cartaPlaceholder:`Hola, soy [tu nombre] de dentro de tres años, te escribo desde...
+
+Escribo para agradecerte por haber tenido el valor de...
+
+Hoy estoy orgulloso de ti porque finalmente...
+
+Lo que más me gusta de nuestra vida ahora es...
+
+Un consejo que te doy desde aquí es: no te olvides de...
+
+Y por último, quería decirte que todo aquello que te preocupa hoy por [miedo actual]...
+
+Con amor,
+Tu yo del [AÑO_FUTURO]`,
+    caracteres:`caracteres`,
+    tomaTuTiempoCorto:`Toma tu tiempo`,
+    fraseLabel:`Una frase de tu carta que quieras compartir (anónima)`,
+    frasePlaceholder:`Ej: Estoy orgulloso de ti porque finalmente te atreviste a irte...`,
+    emailCheckbox:`Quiero que esta carta me vuelva por email dentro de 3 años`,
+    emailNota:`Usaremos tu email solo para esto. Guardado de forma segura en la gruta de la correspondencia.`,
+    enviarBtn:`Enviar mi carta al futuro →`,
+    alertCartaCorta:`Toma tu tiempo, escribe un poco más desde tu futuro. Al menos unas líneas.`,
+    alertEmailInvalido:`Revisa tu email, parece que hay un error.`,
+    acto2H3:`Acto II — Lo que no puedes llevar`,
+    acto2Intro:`Gael nunca viajaba ligero, hasta que entendió que el peso no estaba en la mochila. Si vas a ir a ese futuro que acabas de describir, ¿qué no puedes llevar contigo?`,
+    dejar1:`Para llegar a donde estoy, tuve que dejar atrás...`,
+    dejar2:`También dejé atrás...`,
+    dejar3:`Y por último, solté...`,
+    equipajeNota:`Cada cosa que sueltas queda atrás, en la gruta ↓`,
+    equipajeBtn:`Dejar este equipaje atrás →`,
+    alertEquipajeVacio:`Nombra al menos una cosa que dejas atrás para viajar ligero.`,
+    acto3H3:`Acto III — El objeto que te acompañará`,
+    acto3Intro:`Todo viajero necesita un talismán. No lo lleva para protegerse del camino. Lo lleva para recordar por qué empezó. Gael llevaba una brújula. No apuntaba al norte. Apuntaba a casa.`,
+    talismanes:{
+      brujula:{
+        nombre:`Brújula`,
+        desc:`que apunta a casa`
+      },
+      llave:{
+        nombre:`Llave`,
+        desc:`que abre puertas internas`
+      },
+      pluma:{
+        nombre:`Pluma`,
+        desc:`para reescribir`
+      },
+      piedra:{
+        nombre:`Piedra`,
+        desc:`pulida por el río`
+      },
+      hilo:{
+        nombre:`Hilo dorado`,
+        desc:`que no se rompe`
+      },
+      farol:{
+        nombre:`Farol`,
+        desc:`que no se apaga con viento`
+      }
+    },
+    talismanPlaceholder:`Mi objeto es... y me recuerda que...`,
+    sellarBtn:`Sellar la correspondencia ✦`,
+    alertSinTalisman:`Elige un talismán que te acompañe.`,
+    finalH3:`Tu correspondencia ha quedado guardada en la gruta`,
+    finalNum:`Correspondencia nº`,
+    finalViajara:`· Viajará 3 años`,
+    resumenIntro:`Tu carta desde`,
+    resumenDejasteAtras:`Dejaste atrás:`,
+    resumenTalisman:`Talismán:`,
+    muroTitulo:`Frases que han vuelto de otros viajeros`,
+    muroVacio:`Todavía nadie ha compartido una frase. La tuya podría ser la primera en volver.`,
+    muroViajero:`viajero`,
+    muroTuFrase:`tu frase, recién llegada`,
+    volverBtn:`Volver a leer mi carta`,
+    reiniciarBtn:`Empezar otra correspondencia`,
+    finalCierre:`Gael decía que las cartas que vuelven nunca llegan tarde.`,
+    confirmReiniciar:`¿Quieres empezar una nueva correspondencia? Tu carta actual seguirá guardada localmente hasta que la sobrescribas.`,
+    statusGuardada:`carta guardada en la gruta colectiva · volverá en 3 años`
+  },
+  en: {
+    eyebrow:`Gael Universe`,
+    navLabel:`The Correspondence`,
+    title:`The Correspondence`,
+    introP1:`Gael found a cave in the mountain where the wind didn't blow outward. It blew inward. He would leave a letter, and days later, it would return in another hand. It wasn't his handwriting, but it was his voice. Older. More at peace.`,
+    introP2:`He understood that there are places where time doesn't form a line. It forms a circle. A place where your future self can write to you, if you dare to listen to it first.`,
+    selloActoI:`Act I`,
+    selloCarta:`Letter`,
+    selloActoII:`Act II`,
+    selloEquipaje:`Baggage`,
+    selloActoIII:`Act III`,
+    selloTalisman:`Talisman`,
+    estado0Text:`This isn't a test. There are no right answers.<br>It's a ritual in 3 acts, guided by fragments of Gael's story.`,
+    estado0Btn:`I accept the correspondence →`,
+    estado0Sub:`It will take you 15-20 minutes. Take your time.`,
+    acto1H3:`Act I — Write to yourself from 3 years from now`,
+    acto1Intro:`Don't write as who you are today. Write as who already achieved what you wish for today. Close your eyes. It's 3 years later. You're well. You're at peace. Look at yourself.`,
+    chips:[
+      {
+        label:`Hi, I'm...`,
+        texto:`Hi, I'm [your name] from three years from now, writing to you from [place]...`
+      },
+      {
+        label:`To thank you...`,
+        texto:`I'm writing to thank you for having had the courage to...`
+      },
+      {
+        label:`I'm proud...`,
+        texto:`Today I'm proud of you because you finally...`
+      },
+      {
+        label:`What I love most...`,
+        texto:`What I love most about our life now is...`
+      },
+      {
+        label:`A piece of advice...`,
+        texto:`A piece of advice I'll give you from here is: don't forget to...`
+      },
+      {
+        label:`About your fear...`,
+        texto:`And about what worries you today because of [current fear], I want to tell you that...`
+      }
+    ],
+    cartaPlaceholder:`Hi, I'm [your name] from three years from now, writing to you from...
+
+I'm writing to thank you for having had the courage to...
+
+Today I'm proud of you because you finally...
+
+What I love most about our life now is...
+
+A piece of advice I'll give you from here is: don't forget to...
+
+And lastly, I wanted to tell you that everything that worries you today about [current fear]...
+
+With love,
+Your self from [AÑO_FUTURO]`,
+    caracteres:`characters`,
+    tomaTuTiempoCorto:`Take your time`,
+    fraseLabel:`A line from your letter you'd like to share (anonymous)`,
+    frasePlaceholder:`E.g.: I'm proud of you because you finally dared to leave...`,
+    emailCheckbox:`I want this letter to come back to me by email in 3 years`,
+    emailNota:`We'll only use your email for this. Kept safely in the correspondence's cave.`,
+    enviarBtn:`Send my letter to the future →`,
+    alertCartaCorta:`Take your time, write a bit more from your future. At least a few lines.`,
+    alertEmailInvalido:`Check your email, there seems to be an error.`,
+    acto2H3:`Act II — What you can't take with you`,
+    acto2Intro:`Gael never traveled light, until he understood the weight wasn't in the backpack. If you're going to that future you just described, what can't you take with you?`,
+    dejar1:`To get to where I am, I had to leave behind...`,
+    dejar2:`I also left behind...`,
+    dejar3:`And lastly, I let go of...`,
+    equipajeNota:`Everything you let go of stays behind, in the cave ↓`,
+    equipajeBtn:`Leave this baggage behind →`,
+    alertEquipajeVacio:`Name at least one thing you're leaving behind to travel light.`,
+    acto3H3:`Act III — The object that will accompany you`,
+    acto3Intro:`Every traveler needs a talisman. They don't carry it to protect themselves on the road. They carry it to remember why they started. Gael carried a compass. It didn't point north. It pointed home.`,
+    talismanes:{
+      brujula:{
+        nombre:`Compass`,
+        desc:`that points home`
+      },
+      llave:{
+        nombre:`Key`,
+        desc:`that opens inner doors`
+      },
+      pluma:{
+        nombre:`Quill`,
+        desc:`to rewrite`
+      },
+      piedra:{
+        nombre:`Stone`,
+        desc:`polished by the river`
+      },
+      hilo:{
+        nombre:`Golden thread`,
+        desc:`that doesn't break`
+      },
+      farol:{
+        nombre:`Lantern`,
+        desc:`that doesn't go out in the wind`
+      }
+    },
+    talismanPlaceholder:`My object is... and it reminds me that...`,
+    sellarBtn:`Seal the correspondence ✦`,
+    alertSinTalisman:`Choose a talisman to accompany you.`,
+    finalH3:`Your correspondence has been kept safe in the cave`,
+    finalNum:`Correspondence No.`,
+    finalViajara:`· Will travel 3 years`,
+    resumenIntro:`Your letter from`,
+    resumenDejasteAtras:`You left behind:`,
+    resumenTalisman:`Talisman:`,
+    muroTitulo:`Lines that have returned from other travelers`,
+    muroVacio:`No one has shared a line yet. Yours could be the first to return.`,
+    muroViajero:`traveler`,
+    muroTuFrase:`your line, just arrived`,
+    volverBtn:`Read my letter again`,
+    reiniciarBtn:`Start another correspondence`,
+    finalCierre:`Gael used to say that letters that return are never late.`,
+    confirmReiniciar:`Do you want to start a new correspondence? Your current letter will stay saved locally until you overwrite it.`,
+    statusGuardada:`letter saved in the collective cave · will return in 3 years`
+  },
+  pt: {
+    eyebrow:`Universo Gael`,
+    navLabel:`A Correspondência`,
+    title:`A Correspondência`,
+    introP1:`Gael encontrou na montanha uma gruta onde o vento não soprava para fora. Soprava para dentro. Deixava uma carta e, dias depois, voltava com outra letra. Não era a sua letra, mas era a sua voz. Mais velha. Mais em paz.`,
+    introP2:`Entendeu que há lugares onde o tempo não forma uma linha. Forma um círculo. Um lugar onde o seu eu do futuro pode te escrever, se você se atrever a escutá-lo primeiro.`,
+    selloActoI:`Ato I`,
+    selloCarta:`Carta`,
+    selloActoII:`Ato II`,
+    selloEquipaje:`Bagagem`,
+    selloActoIII:`Ato III`,
+    selloTalisman:`Talismã`,
+    estado0Text:`Este não é um teste. Não há respostas certas.<br>É um ritual em 3 atos, guiado por fragmentos da história de Gael.`,
+    estado0Btn:`Aceito a correspondência →`,
+    estado0Sub:`Vai levar de 15 a 20 minutos. Tome seu tempo.`,
+    acto1H3:`Ato I — Escreva-se de dentro de 3 anos`,
+    acto1Intro:`Não escreva a partir de quem você é hoje. Escreva a partir de quem já conquistou o que hoje deseja. Feche os olhos. São 3 anos depois. Você está bem. Você está em paz. Olhe para si.`,
+    chips:[
+      {
+        label:`Olá, sou...`,
+        texto:`Olá, sou [seu nome] de dentro de três anos, escrevo de [lugar]...`
+      },
+      {
+        label:`Para te agradecer...`,
+        texto:`Escrevo para te agradecer por ter tido a coragem de...`
+      },
+      {
+        label:`Estou orgulhoso...`,
+        texto:`Hoje estou orgulhoso de você porque finalmente...`
+      },
+      {
+        label:`O que mais gosto...`,
+        texto:`O que mais gosto na nossa vida agora é...`
+      },
+      {
+        label:`Um conselho...`,
+        texto:`Um conselho que te dou daqui é: não se esqueça de...`
+      },
+      {
+        label:`Sobre o seu medo...`,
+        texto:`E aquilo que hoje te preocupa por causa de [medo atual], quero te dizer que...`
+      }
+    ],
+    cartaPlaceholder:`Olá, sou [seu nome] de dentro de três anos, escrevo de...
+
+Escrevo para te agradecer por ter tido a coragem de...
+
+Hoje estou orgulhoso de você porque finalmente...
+
+O que mais gosto na nossa vida agora é...
+
+Um conselho que te dou daqui é: não se esqueça de...
+
+E por último, queria te dizer que tudo aquilo que hoje te preocupa por causa de [medo atual]...
+
+Com amor,
+Seu eu de [AÑO_FUTURO]`,
+    caracteres:`caracteres`,
+    tomaTuTiempoCorto:`Tome seu tempo`,
+    fraseLabel:`Uma frase da sua carta que queira compartilhar (anônima)`,
+    frasePlaceholder:`Ex.: Estou orgulhoso de você porque finalmente teve coragem de partir...`,
+    emailCheckbox:`Quero que esta carta volte para mim por email dentro de 3 anos`,
+    emailNota:`Usaremos seu email só para isso. Guardado com segurança na gruta da correspondência.`,
+    enviarBtn:`Enviar minha carta para o futuro →`,
+    alertCartaCorta:`Tome seu tempo, escreva um pouco mais a partir do seu futuro. Pelo menos algumas linhas.`,
+    alertEmailInvalido:`Confira seu email, parece que há um erro.`,
+    acto2H3:`Ato II — O que você não pode levar`,
+    acto2Intro:`Gael nunca viajava leve, até entender que o peso não estava na mochila. Se você vai para esse futuro que acabou de descrever, o que você não pode levar consigo?`,
+    dejar1:`Para chegar onde estou, tive que deixar para trás...`,
+    dejar2:`Também deixei para trás...`,
+    dejar3:`E por último, soltei...`,
+    equipajeNota:`Cada coisa que você solta fica para trás, na gruta ↓`,
+    equipajeBtn:`Deixar essa bagagem para trás →`,
+    alertEquipajeVacio:`Nomeie ao menos uma coisa que você deixa para trás para viajar leve.`,
+    acto3H3:`Ato III — O objeto que vai te acompanhar`,
+    acto3Intro:`Todo viajante precisa de um talismã. Não o carrega para se proteger do caminho. Carrega para lembrar por que começou. Gael levava uma bússola. Não apontava para o norte. Apontava para casa.`,
+    talismanes:{
+      brujula:{
+        nombre:`Bússola`,
+        desc:`que aponta para casa`
+      },
+      llave:{
+        nombre:`Chave`,
+        desc:`que abre portas internas`
+      },
+      pluma:{
+        nombre:`Pena`,
+        desc:`para reescrever`
+      },
+      piedra:{
+        nombre:`Pedra`,
+        desc:`polida pelo rio`
+      },
+      hilo:{
+        nombre:`Fio dourado`,
+        desc:`que não se rompe`
+      },
+      farol:{
+        nombre:`Farol`,
+        desc:`que não se apaga com o vento`
+      }
+    },
+    talismanPlaceholder:`Meu objeto é... e me lembra que...`,
+    sellarBtn:`Selar a correspondência ✦`,
+    alertSinTalisman:`Escolha um talismã para te acompanhar.`,
+    finalH3:`Sua correspondência ficou guardada na gruta`,
+    finalNum:`Correspondência nº`,
+    finalViajara:`· Viajará 3 anos`,
+    resumenIntro:`Sua carta de`,
+    resumenDejasteAtras:`Você deixou para trás:`,
+    resumenTalisman:`Talismã:`,
+    muroTitulo:`Frases que voltaram de outros viajantes`,
+    muroVacio:`Ainda ninguém compartilhou uma frase. A sua pode ser a primeira a voltar.`,
+    muroViajero:`viajante`,
+    muroTuFrase:`sua frase, recém-chegada`,
+    volverBtn:`Voltar a ler minha carta`,
+    reiniciarBtn:`Começar outra correspondência`,
+    finalCierre:`Gael dizia que as cartas que voltam nunca chegam tarde.`,
+    confirmReiniciar:`Você quer começar uma nova correspondência? Sua carta atual continuará salva localmente até que você a sobrescreva.`,
+    statusGuardada:`carta guardada na gruta coletiva · vai voltar em 3 anos`
+  },
+};
+function corrDict(){ return (typeof corrTranslations!=='undefined') ? (corrTranslations[currentLang] || corrTranslations.es) : null; }
+let corrData = JSON.parse(localStorage.getItem('gael-correspondencia')||'{}');
+let corrTalismanSel = corrData.talismanTipo || null;
+
+function corrUpdateSellos(activo){
+  document.querySelectorAll('.corr-sello').forEach(s=>{
+    const n = parseInt(s.dataset.sello);
+    s.classList.remove('active','done');
+    if(n < activo) s.classList.add('done');
+    if(n === activo) s.classList.add('active');
+  });
+}
+
+function corrIrEstado0(){
+  document.getElementById('corr-estado0').classList.remove('hidden');
+  document.getElementById('corr-estado1').classList.add('hidden');
+  document.getElementById('corr-estado2').classList.add('hidden');
+  document.getElementById('corr-estado3').classList.add('hidden');
+  document.getElementById('corr-estado4').classList.add('hidden');
+  corrUpdateSellos(0);
+  document.getElementById('correspondencia')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+function corrIrEstado1(){
+  document.getElementById('corr-estado0').classList.add('hidden');
+  document.getElementById('corr-estado1').classList.remove('hidden');
+  document.getElementById('corr-estado2').classList.add('hidden');
+  document.getElementById('corr-estado3').classList.add('hidden');
+  document.getElementById('corr-estado4').classList.add('hidden');
+  corrUpdateSellos(1);
+  if(corrData.carta) document.getElementById('corr-carta').value = corrData.carta;
+  if(corrData.frase) document.getElementById('corr-frase').value = corrData.frase;
+  if(corrData.email) document.getElementById('corr-email').value = corrData.email;
+  const cnt = document.getElementById('corr-carta').value.length;
+  document.getElementById('corr-contador').innerText = cnt + ' ' + corrDict().caracteres;
+  document.getElementById('correspondencia')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const ta = document.getElementById('corr-carta');
+  if(ta){
+    ta.addEventListener('input', e=>{
+      document.getElementById('corr-contador').innerText = e.target.value.length + ' ' + corrDict().caracteres;
+    });
+    if(corrData.carta) document.getElementById('corr-contador').innerText = corrData.carta.length + ' ' + corrDict().caracteres;
+  }
+});
+
+function corrInsertPrompt(idx){
+  const txt = (corrDict().chips[idx] || {}).texto || '';
+  const ta = document.getElementById('corr-carta');
+  const start = ta.selectionStart; const end = ta.selectionEnd;
+  ta.value = ta.value.substring(0,start) + txt + "\n\n" + ta.value.substring(end);
+  ta.focus(); ta.selectionStart = ta.selectionEnd = start + txt.length + 2;
+  document.getElementById('corr-contador').innerText = ta.value.length + ' ' + corrDict().caracteres;
+  ta.dispatchEvent(new Event('input'));
+}
+
+async function corrGuardarActo1(){
+  const carta = document.getElementById('corr-carta').value.trim();
+  const frase = document.getElementById('corr-frase').value.trim();
+  const email = document.getElementById('corr-email')?.value.trim() || '';
+  const wantsEmail = document.getElementById('corr-wants-email')?.checked || false;
+  if(!carta || carta.length < 30){ alert(corrDict().alertCartaCorta); return; }
+  if(wantsEmail && email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ alert(corrDict().alertEmailInvalido); return; }
+  corrData.carta = carta; corrData.frase = frase; corrData.email = wantsEmail?email:''; corrData.wantsEmail = wantsEmail;
+  corrData.createdAt = new Date().toISOString();
+  localStorage.setItem('gael-correspondencia', JSON.stringify(corrData));
+
+  document.getElementById('corr-estado1').classList.add('hidden');
+  document.getElementById('corr-estado2').classList.remove('hidden');
+  corrUpdateSellos(2);
+  if(corrData.equipaje){
+    document.getElementById('corr-dejar1').value = corrData.equipaje[0]||'';
+    document.getElementById('corr-dejar2').value = corrData.equipaje[1]||'';
+    document.getElementById('corr-dejar3').value = corrData.equipaje[2]||'';
+  }
+  document.getElementById('correspondencia')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function corrPiedra(n){
+  const el = document.getElementById('piedra'+n);
+  if(!el) return;
+  el.classList.remove('hidden'); el.classList.remove('piedra'); void el.offsetWidth; el.classList.add('piedra');
+  setTimeout(()=>el.classList.add('hidden'), 900);
+}
+
+function corrGuardarActo2(){
+  const e1 = document.getElementById('corr-dejar1').value.trim();
+  const e2 = document.getElementById('corr-dejar2').value.trim();
+  const e3 = document.getElementById('corr-dejar3').value.trim();
+  if(!e1 && !e2 && !e3){ alert(corrDict().alertEquipajeVacio); return; }
+  corrData.equipaje = [e1,e2,e3];
+  localStorage.setItem('gael-correspondencia', JSON.stringify(corrData));
+  
+  document.getElementById('corr-estado2').classList.add('hidden');
+  document.getElementById('corr-estado3').classList.remove('hidden');
+  corrUpdateSellos(3);
+  document.getElementById('correspondencia')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function corrSelectTalisman(btn){
+  document.querySelectorAll('.corr-talisman').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  corrTalismanSel = btn.dataset.talisman;
+  corrData.talismanTipo = corrTalismanSel;
+  localStorage.setItem('gael-correspondencia', JSON.stringify(corrData));
+}
+
+async function corrGuardarActo3(){
+  const talText = document.getElementById('corr-talisman-text').value.trim();
+  if(!corrTalismanSel){ alert(corrDict().alertSinTalisman); return; }
+  corrData.talismanTexto = talText;
+  corrData.talismanTipo = corrTalismanSel;
+  localStorage.setItem('gael-correspondencia', JSON.stringify(corrData));
+
+  // Guardado final en Supabase con fecha de devolución a 3 años
+  try{
+    if(typeof supabaseClient !== 'undefined' && supabaseClient){
+      const { data, error } = await supabaseClient.from('cartas_futuro').insert([{
+        carta_completa: corrData.carta || '',
+        frase_destacada: corrData.frase || null,
+        email_futuro: corrData.wantsEmail ? corrData.email : null,
+        quiere_email: !!corrData.wantsEmail,
+        email_enviado: false,
+        equipaje: corrData.equipaje || null,
+        talisman_tipo: corrTalismanSel,
+        talisman_texto: talText || null,
+        fecha_devolucion: new Date(Date.now() + 3*365.25*24*60*60*1000).toISOString()
+      }]).select();
+      if(error) console.error('Supabase cartas_futuro error:', error);
+      else {
+        console.log('Carta guardada:', data);
+        const status = document.getElementById('supabaseStatus');
+        if(status) status.innerText = '● ' + corrDict().statusGuardada;
+      }
+    }
+  }catch(e){ console.error('Supabase exception', e); }
+
+  document.getElementById('corr-estado3').classList.add('hidden');
+  document.getElementById('corr-estado4').classList.remove('hidden');
+  corrUpdateSellos(4);
+  corrRenderConstelacion();
+  corrRenderResumen();
+  try{
+    if(typeof supabaseClient !== 'undefined' && supabaseClient){
+      const { count, error: countErr } = await supabaseClient.from('cartas_futuro').select('*', {count:'exact', head:true});
+      document.getElementById('corr-num').innerText = (!countErr && typeof count === 'number') ? count : '—';
+    } else {
+      document.getElementById('corr-num').innerText = '—';
+    }
+  }catch(e){ document.getElementById('corr-num').innerText = '—'; }
+  corrCargarMuro();
+
+  if(corrData.frase){
+    const muro = document.getElementById('corr-muro');
+    const div = document.createElement('div');
+    div.style.color = 'var(--gold-bright)'; div.style.fontStyle='italic'; div.style.borderLeft='1px solid rgba(201,163,95,0.3)'; div.style.paddingLeft='0.8rem';
+    div.innerText = '“' + corrData.frase + '” — ' + corrDict().muroTuFrase;
+    muro.prepend(div);
+  }
+  document.getElementById('correspondencia')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// Cargar muro colectivo desde Supabase
+async function corrCargarMuro(){
+  const muro = document.getElementById('corr-muro');
+  if(!muro) return;
+  try{
+    if(typeof supabaseClient !== 'undefined' && supabaseClient){
+      const { data, error } = await supabaseClient.from('cartas_futuro').select('frase_destacada, talisman_tipo, created_at').not('frase_destacada','is',null).order('created_at', {ascending:false}).limit(12);
+      if(!error){
+        muro.innerHTML = '';
+        if(data && data.length>0){
+          data.forEach(row=>{
+            const div = document.createElement('div');
+            div.style.borderLeft = '1px solid rgba(201,163,95,0.18)';
+            div.style.paddingLeft = '0.8rem';
+            div.innerHTML = `“${row.frase_destacada}” <span style="color:var(--muted); font-size:0.8em;">— ${row.talisman_tipo||corrDict().muroViajero} · ${new Date(row.created_at).getFullYear()}</span>`;
+            muro.appendChild(div);
+          });
+        } else {
+          const vacioDiv = document.createElement('div');
+          vacioDiv.style.opacity = '0.6'; vacioDiv.style.fontStyle = 'italic';
+          vacioDiv.textContent = corrDict().muroVacio;
+          muro.appendChild(vacioDiv);
+        }
+      } else {
+        console.error('Muro error', error);
+      }
+    }
+  }catch(e){ console.error('Muro exception', e); }
+}
+
+
+function corrRenderResumen(){
+  const div = document.getElementById('corr-resumen');
+  if(!div) return;
+  const d = corrDict();
+  const equip = (corrData.equipaje||[]).filter(Boolean).join(', ') || '—';
+  const talNombre = (d.talismanes[corrData.talismanTipo] || {}).nombre || corrData.talismanTipo || '—';
+  div.innerHTML = `<p style="color:var(--gold-bright); font-family:'Cormorant Garamond',serif; margin-bottom:0.8rem; font-size:1.1rem;">${d.resumenIntro} ${new Date().getFullYear()+3}:</p>“${(corrData.carta||'').substring(0,500)}${(corrData.carta||'').length>500?'...':''}”<br><br><span style="color:var(--muted); font-size:0.88rem; line-height:1.6;">${d.resumenDejasteAtras} ${equip}<br>${d.resumenTalisman} ${talNombre} — ${corrData.talismanTexto||''}</span>`;
+}
+
+function corrRenderConstelacion(){
+  const canvas = document.getElementById('corr-constelacion');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle = 'rgba(233,226,208,0.14)';
+  for(let i=0;i<70;i++){ ctx.beginPath(); ctx.arc(Math.random()*w, Math.random()*h, Math.random()*1.3, 0, Math.PI*2); ctx.fill(); }
+  const pts = [{x:w*0.24,y:h*0.52},{x:w*0.5,y:h*0.34},{x:w*0.76,y:h*0.60}];
+  ctx.strokeStyle = 'rgba(201,163,95,0.32)'; ctx.setLineDash([5,7]); ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y); pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y)); ctx.stroke(); ctx.setLineDash([]);
+  pts.forEach((p,i)=>{
+    const grad = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,20);
+    grad.addColorStop(0,'rgba(224,192,127,0.9)'); grad.addColorStop(1,'rgba(201,163,95,0)');
+    ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(p.x,p.y,20,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#e0c07f'; ctx.beginPath(); ctx.arc(p.x,p.y,4.2,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = 'rgba(233,226,208,0.7)'; ctx.font='12px Cormorant Garamond'; ctx.fillText(['I','II','III'][i], p.x-4, p.y-16);
+  });
+}
+
+function corrReiniciar(){
+  if(!confirm(corrDict().confirmReiniciar)) return;
+  corrData = {}; corrTalismanSel=null;
+  localStorage.removeItem('gael-correspondencia');
+  ['corr-carta','corr-frase','corr-email','corr-dejar1','corr-dejar2','corr-dejar3','corr-talisman-text'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  document.querySelectorAll('.corr-talisman').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('corr-wants-email').checked=false;
+  document.getElementById('corr-email-box').classList.add('hidden');
+  document.getElementById('corr-contador').innerText='0 ' + corrDict().caracteres;
+  corrIrEstado0();
+}
+
+function corrApplyLanguage(lang){
+  const d = (typeof corrTranslations !== 'undefined') ? (corrTranslations[lang] || corrTranslations.es) : null;
+  if(!d) return;
+  const set = (key, val) => { const el = document.querySelector(`[data-i18n="${key}"]`); if(el) el.textContent = val; };
+
+  set('corr-eyebrow', d.eyebrow);
+  set('corr-title', d.title);
+  set('corr-intro-p1', d.introP1);
+  set('corr-intro-p2', d.introP2);
+  set('corr-sello-actoI', d.selloActoI); set('corr-sello-carta', d.selloCarta);
+  set('corr-sello-actoII', d.selloActoII); set('corr-sello-equipaje', d.selloEquipaje);
+  set('corr-sello-actoIII', d.selloActoIII); set('corr-sello-talisman', d.selloTalisman);
+
+  const est0 = document.querySelector('[data-i18n="corr-estado0-text"]'); if(est0) est0.innerHTML = d.estado0Text;
+  set('corr-estado0-btn', d.estado0Btn);
+  set('corr-estado0-sub', d.estado0Sub);
+
+  set('corr-acto1-h3', d.acto1H3);
+  set('corr-acto1-intro', d.acto1Intro);
+  document.querySelectorAll('.corr-chip').forEach((btn,i)=>{ if(d.chips[i]) btn.textContent = d.chips[i].label; });
+  const anio = new Date().getFullYear()+3;
+  const ta = document.getElementById('corr-carta');
+  if(ta) ta.placeholder = d.cartaPlaceholder.replace('[AÑO_FUTURO]', anio);
+  set('corr-caracteres', d.caracteres);
+  set('corr-toma-tu-tiempo-corto', d.tomaTuTiempoCorto);
+  set('corr-frase-label', d.fraseLabel);
+  const fraseInput = document.getElementById('corr-frase'); if(fraseInput) fraseInput.placeholder = d.frasePlaceholder;
+  set('corr-email-checkbox', d.emailCheckbox);
+  set('corr-email-nota', d.emailNota);
+  set('corr-enviar-btn', d.enviarBtn);
+
+  set('corr-acto2-h3', d.acto2H3);
+  set('corr-acto2-intro', d.acto2Intro);
+  const dj1 = document.getElementById('corr-dejar1'); if(dj1) dj1.placeholder = d.dejar1;
+  const dj2 = document.getElementById('corr-dejar2'); if(dj2) dj2.placeholder = d.dejar2;
+  const dj3 = document.getElementById('corr-dejar3'); if(dj3) dj3.placeholder = d.dejar3;
+  set('corr-equipaje-nota', d.equipajeNota);
+  set('corr-equipaje-btn', d.equipajeBtn);
+
+  set('corr-acto3-h3', d.acto3H3);
+  set('corr-acto3-intro', d.acto3Intro);
+  Object.keys(d.talismanes).forEach(key=>{
+    set(`corr-tal-${key}-nombre`, d.talismanes[key].nombre);
+    set(`corr-tal-${key}-desc`, d.talismanes[key].desc);
+  });
+  const talTa = document.getElementById('corr-talisman-text'); if(talTa) talTa.placeholder = d.talismanPlaceholder;
+  set('corr-sellar-btn', d.sellarBtn);
+
+  set('corr-final-h3', d.finalH3);
+  set('corr-final-num', d.finalNum);
+  set('corr-final-viajara', d.finalViajara);
+  set('corr-muro-titulo', d.muroTitulo);
+  const muroVacioEl = document.querySelector('#corr-muro > div'); // si hay un único div de estado vacío, refrescarlo
+  if(muroVacioEl && document.getElementById('corr-muro').children.length===1 && !muroVacioEl.querySelector('span')) muroVacioEl.textContent = d.muroVacio;
+  set('corr-volver-btn', d.volverBtn);
+  set('corr-reiniciar-btn', d.reiniciarBtn);
+  set('corr-final-cierre', d.finalCierre);
+
+  // contador: refrescar con el sufijo del idioma actual sin perder el número ya escrito
+  const contadorEl = document.getElementById('corr-contador');
+  if(contadorEl){
+    const n = ta ? ta.value.length : 0;
+    contadorEl.innerText = n + ' ' + d.caracteres;
+  }
+}
+
+// inicializar sellos
+setTimeout(()=>{ if(corrData.carta) corrUpdateSellos(1); else corrUpdateSellos(0); }, 300);
+</script>
+<!-- ============ FIN CAPÍTULO II ============ -->
+
+
 </main>
 
 <footer>
@@ -385,6 +1224,7 @@ const translations = {
     "ai-intro": "Un espacio interactivo dentro del Universo Gael. Un lugar que crece poco a poco, con experiencias pensadas para detenerse, mirar hacia adentro y llevarse algo distinto cada vez.",
     "ai-nav-cielo": "El Cielo Nocturno",
     "ai-nav-pozo": "El Pozo de los Tocafondos",
+    "ai-nav-correspondencia": "La Correspondencia",
     "cielo-eyebrow": "Universo Gael",
     "cielo-h2": "El Cielo Nocturno",
     "cielo-intro": "El mapa, tejido en una piel misteriosa y cálida al tacto, delineaba constelaciones que se reacomodaban cada noche, como si el destino se rescribiera con el impulso de los vientos nocturnos.",
@@ -409,6 +1249,7 @@ const translations = {
     "ai-intro": "An interactive space within the Gael Universe. A place that grows little by little, with experiences meant to make you pause, look inward, and carry away something different each time.",
     "ai-nav-cielo": "The Night Sky",
     "ai-nav-pozo": "The Well of the Tocafondos",
+    "ai-nav-correspondencia": "The Correspondence",
     "cielo-eyebrow": "Gael Universe",
     "cielo-h2": "The Night Sky",
     "cielo-intro": "The map, woven into a mysterious skin warm to the touch, traced constellations that rearranged themselves each night, as if destiny rewrote itself with the impulse of the night winds.",
@@ -433,6 +1274,7 @@ const translations = {
     "ai-intro": "Um espaço interativo dentro do Universo Gael. Um lugar que cresce aos poucos, com experiências pensadas para fazer você parar, olhar para dentro e levar algo diferente a cada vez.",
     "ai-nav-cielo": "O Céu Noturno",
     "ai-nav-pozo": "O Poço dos Tocafundos",
+    "ai-nav-correspondencia": "A Correspondência",
     "cielo-eyebrow": "Universo Gael",
     "cielo-h2": "O Céu Noturno",
     "cielo-intro": "O mapa, tecido numa pele misteriosa e quente ao toque, delineava constelações que se reacomodavam a cada noite, como se o destino se reescrevesse pelo impulso dos ventos noturnos.",
@@ -486,6 +1328,7 @@ function applyLanguage(lang){
     const estado4El = document.getElementById('estado4');
     if(estado4El && !estado4El.classList.contains('hidden')){ if(typeof renderReflexion === 'function') renderReflexion(); if(typeof renderLista === 'function') renderLista(); }
   }
+  if(typeof corrApplyLanguage === 'function') corrApplyLanguage(lang);
 }
 
 document.querySelectorAll('.lang-btn').forEach(btn=>{
