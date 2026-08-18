@@ -1065,10 +1065,7 @@ async function corrCargarMuro(){
             const esPropia = corrData.frase && row.frase_destacada === corrData.frase;
             div.style.borderLeft = esPropia ? '1px solid rgba(201,163,95,0.4)' : '1px solid rgba(201,163,95,0.18)';
             if(esPropia) div.style.color = 'var(--gold-bright)';
-            const tipoRaw = row.talisman_tipo || '';
-            const tipoMap = {farol: (d.talismanes['mini_candil']||{}).nombre || 'mini candil', 'mini_candil': (d.talismanes['mini_candil']||{}).nombre || 'mini candil'};
-            const tipoMostrar = tipoMap[tipoRaw] || tipoRaw || corrDict().muroViajero;
-            const atribucion = esPropia ? corrDict().muroTuFrase : (tipoMostrar + ' · ' + new Date(row.created_at).getFullYear());
+            const atribucion = esPropia ? corrDict().muroTuFrase : ((row.talisman_tipo||corrDict().muroViajero) + ' · ' + new Date(row.created_at).getFullYear());
             div.innerHTML = `“${row.frase_destacada}” <span style="color:var(--muted); font-size:0.8em;">— ${atribucion}</span>`;
             muro.appendChild(div);
           });
@@ -1091,7 +1088,7 @@ function corrRenderResumen(){
   if(!div) return;
   const d = corrDict();
   const equip = (corrData.equipaje||[]).filter(Boolean).join(', ') || '—';
-  const tipoKey = (corrData.talismanTipo === 'farol' ? 'mini_candil' : corrData.talismanTipo); const talNombre = (d.talismanes[tipoKey] || {}).nombre || (tipoKey === 'mini_candil' ? (d.talismanes['mini_candil']||{}).nombre : null) || corrData.talismanTipo || '—';
+  const talNombre = (d.talismanes[corrData.talismanTipo] || {}).nombre || corrData.talismanTipo || '—';
   div.innerHTML = `<p style="color:var(--gold-bright); font-family:'Cormorant Garamond',serif; margin-bottom:0.8rem; font-size:1.1rem;">${d.resumenIntro} ${new Date().getFullYear()+3}:</p>“${(corrData.carta||'').substring(0,500)}${(corrData.carta||'').length>500?'...':''}”<br><br><span style="color:var(--muted); font-size:0.88rem; line-height:1.6;">${d.resumenDejasteAtras} ${equip}<br>${d.resumenTalisman} ${talNombre} — ${corrData.talismanTexto||''}</span>`;
 }
 
