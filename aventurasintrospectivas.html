@@ -1066,7 +1066,12 @@ async function corrCargarMuro(){
             div.style.borderLeft = esPropia ? '1px solid rgba(201,163,95,0.4)' : '1px solid rgba(201,163,95,0.18)';
             if(esPropia) div.style.color = 'var(--gold-bright)';
             const atribucion = esPropia ? corrDict().muroTuFrase : ((row.talisman_tipo||corrDict().muroViajero) + ' · ' + new Date(row.created_at).getFullYear());
-            div.innerHTML = `“${row.frase_destacada}” <span style="color:var(--muted); font-size:0.8em;">— ${atribucion}</span>`;
+            div.appendChild(document.createTextNode(`“${row.frase_destacada}” `));
+            const corrAtribSpan = document.createElement('span');
+            corrAtribSpan.style.color = 'var(--muted)';
+            corrAtribSpan.style.fontSize = '0.8em';
+            corrAtribSpan.textContent = `— ${atribucion}`;
+            div.appendChild(corrAtribSpan);
             muro.appendChild(div);
           });
         } else {
