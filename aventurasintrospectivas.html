@@ -446,7 +446,8 @@ Tu yo del [AÑO_FUTURO]" style="width:100%; min-height:380px; background:var(--p
   <!-- ESTADO 4 - FINAL -->
   <div id="corr-estado4" class="hidden">
     <h3 style="text-align:center; font-size:1.9rem; margin-bottom:0.5rem;" data-i18n="corr-final-h3">Tu correspondencia ha quedado guardada en la gruta</h3>
-    <p style="text-align:center; color:var(--muted); margin-bottom:1.5rem; font-size:0.9rem;"><span data-i18n="corr-final-num">Correspondencia nº</span> <span id="corr-num">127</span> <span data-i18n="corr-final-viajara">· Viajará 3 años</span></p>
+    <p style="text-align:center; color:var(--muted); margin-bottom:0.4rem; font-size:0.9rem;"><span data-i18n="corr-final-num">Correspondencia nº</span> <span id="corr-num">127</span> <span data-i18n="corr-final-viajara">· Viajará 3 años</span></p>
+    <p id="corr-status" style="text-align:center; font-size:0.72rem; letter-spacing:0.04em; color:var(--gold); opacity:0.55; margin:0 0 1.8rem;"></p>
     <canvas id="corr-constelacion" width="600" height="200" style="width:100%; max-width:600px; height:200px; margin:0 auto 2rem; display:block; background:radial-gradient(ellipse at center, rgba(201,163,95,0.08) 0%, transparent 70%); border-radius:12px; border:1px solid rgba(201,163,95,0.12);"></canvas>
 
     <div id="corr-resumen" style="background:var(--panel); border:1px solid rgba(201,163,95,0.15); border-radius:12px; padding:1.6rem; margin-bottom:2rem; font-style:italic; line-height:1.7; font-size:1rem;"></div>
@@ -494,7 +495,7 @@ Tu yo del [AÑO_FUTURO]" style="width:100%; min-height:380px; background:var(--p
 .corr-talisman small{ font-family:'EB Garamond',serif; font-style:italic; font-size:0.76rem; opacity:0.7; display:block; margin-top:0.2rem; }
 .corr-talisman:hover{ border-color:rgba(201,163,95,0.3); color:var(--cream); }
 .corr-talisman.selected{ border-color:var(--gold); background:rgba(201,163,95,0.09); color:var(--gold-bright); box-shadow:0 0 20px rgba(201,163,95,0.12); }
-.corr-talisman.selected span{ transform:scale(1.25); }
+.corr-talisman.selected span{ transform:scale(1.15); }
 .corr-talisman.selected .talisman-img{ transform:scale(1.18); }
 
 .corr-talisman .talisman-img{
@@ -589,6 +590,7 @@ Tu yo del [AÑO_FUTURO]`,
     enviarBtn:`Enviar mi carta al futuro →`,
     alertCartaCorta:`Toma tu tiempo, escribe un poco más desde tu futuro. Al menos unas líneas.`,
     alertEmailInvalido:`Revisa tu email, parece que hay un error.`,
+    alertEmailFaltante:`Escribe tu email, o desmarca la casilla si prefieres no recibirlo.`,
     acto2H3:`Acto II — Lo que no puedes llevar`,
     acto2Intro:`Si vas a ir a ese futuro que acabas de describir, ¿qué no puedes llevar contigo?`,
     dejar1:`Para llegar a donde estoy, tuve que dejar atrás...`,
@@ -642,7 +644,8 @@ Tu yo del [AÑO_FUTURO]`,
     reiniciarBtn:`Empezar otra correspondencia`,
     finalCierre:`Quizás la gruta nunca estuvo en la montaña. Quizás siempre estuvo esperando dentro de ti.`,
     confirmReiniciar:`¿Quieres empezar una nueva correspondencia? Tu carta actual seguirá guardada localmente hasta que la sobrescribas.`,
-    statusGuardada:`carta guardada en la gruta colectiva · volverá en 3 años`
+    statusGuardada:`carta guardada en la gruta colectiva · volverá en 3 años`,
+    statusNoGuardada:`carta guardada en tu dispositivo · no pudimos confirmar que llegara a la gruta colectiva`
   },
   en: {
     eyebrow:`Gael Universe`,
@@ -710,6 +713,7 @@ Your self from [AÑO_FUTURO]`,
     enviarBtn:`Send my letter to the future →`,
     alertCartaCorta:`Take your time, write a bit more from your future. At least a few lines.`,
     alertEmailInvalido:`Check your email, there seems to be an error.`,
+    alertEmailFaltante:`Write your email, or uncheck the box if you'd rather not receive it.`,
     acto2H3:`Act II — What you can't take with you`,
     acto2Intro:`If you're going to that future you just described, what can't you take with you?`,
     dejar1:`To get to where I am, I had to leave behind...`,
@@ -763,7 +767,8 @@ Your self from [AÑO_FUTURO]`,
     reiniciarBtn:`Start another correspondence`,
     finalCierre:`Maybe the cave was never in the mountain. Maybe it was always waiting inside you.`,
     confirmReiniciar:`Do you want to start a new correspondence? Your current letter will stay saved locally until you overwrite it.`,
-    statusGuardada:`letter saved in the collective cave · will return in 3 years`
+    statusGuardada:`letter saved in the collective cave · will return in 3 years`,
+    statusNoGuardada:`letter saved on your device · we couldn't confirm it reached the collective cave`
   },
   pt: {
     eyebrow:`Universo Gael`,
@@ -831,6 +836,7 @@ Seu eu de [AÑO_FUTURO]`,
     enviarBtn:`Enviar minha carta para o futuro →`,
     alertCartaCorta:`Tome seu tempo, escreva um pouco mais a partir do seu futuro. Pelo menos algumas linhas.`,
     alertEmailInvalido:`Confira seu email, parece que há um erro.`,
+    alertEmailFaltante:`Escreva seu email, ou desmarque a caixa se preferir não recebê-lo.`,
     acto2H3:`Ato II — O que você não pode levar`,
     acto2Intro:`Se você vai para esse futuro que acabou de descrever, o que você não pode levar consigo?`,
     dejar1:`Para chegar onde estou, tive que deixar para trás...`,
@@ -884,12 +890,14 @@ Seu eu de [AÑO_FUTURO]`,
     reiniciarBtn:`Começar outra correspondência`,
     finalCierre:`Talvez a gruta nunca tenha estado na montanha. Talvez sempre estivesse esperando dentro de você.`,
     confirmReiniciar:`Você quer começar uma nova correspondência? Sua carta atual continuará salva localmente até que você a sobrescreva.`,
-    statusGuardada:`carta guardada na gruta coletiva · vai voltar em 3 anos`
+    statusGuardada:`carta guardada na gruta coletiva · vai voltar em 3 anos`,
+    statusNoGuardada:`carta guardada no seu dispositivo · não conseguimos confirmar que chegou à gruta coletiva`
   },
 };
 function corrDict(){ return (typeof corrTranslations!=='undefined') ? (corrTranslations[currentLang] || corrTranslations.es) : null; }
 let corrData = JSON.parse(localStorage.getItem('gael-correspondencia')||'{}');
 let corrTalismanSel = corrData.talismanTipo || null;
+let corrGuardadoOk = null; // null = aún no se completó ningún guardado; true/false = resultado del último intento
 
 function corrUpdateSellos(activo){
   document.querySelectorAll('.corr-sello').forEach(s=>{
@@ -919,6 +927,10 @@ function corrIrEstado1(){
   if(corrData.carta) document.getElementById('corr-carta').value = corrData.carta;
   if(corrData.frase) document.getElementById('corr-frase').value = corrData.frase;
   if(corrData.email) document.getElementById('corr-email').value = corrData.email;
+  if(corrData.wantsEmail){
+    document.getElementById('corr-wants-email').checked = true;
+    document.getElementById('corr-email-box').classList.remove('hidden');
+  }
   const cnt = document.getElementById('corr-carta').value.length;
   document.getElementById('corr-contador').innerText = cnt + ' ' + corrDict().caracteres;
   document.getElementById('corr-progress')?.scrollIntoView({behavior:'smooth', block:'start'});
@@ -950,6 +962,7 @@ async function corrGuardarActo1(){
   const email = document.getElementById('corr-email')?.value.trim() || '';
   const wantsEmail = document.getElementById('corr-wants-email')?.checked || false;
   if(!carta || carta.length < 30){ alert(corrDict().alertCartaCorta); return; }
+  if(wantsEmail && !email){ alert(corrDict().alertEmailFaltante); return; }
   if(wantsEmail && email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ alert(corrDict().alertEmailInvalido); return; }
   corrData.carta = carta; corrData.frase = frase; corrData.email = wantsEmail?email:''; corrData.wantsEmail = wantsEmail;
   corrData.createdAt = new Date().toISOString();
@@ -1003,6 +1016,7 @@ async function corrGuardarActo3(){
   localStorage.setItem('gael-correspondencia', JSON.stringify(corrData));
 
   // Guardado final en Supabase con fecha de devolución a 3 años
+  corrGuardadoOk = false;
   try{
     if(typeof supabaseClient !== 'undefined' && supabaseClient){
       const { data, error } = await supabaseClient.from('cartas_futuro').insert([{
@@ -1017,12 +1031,8 @@ async function corrGuardarActo3(){
         fecha_devolucion: new Date(Date.now() + 3*365.25*24*60*60*1000).toISOString()
       }]).select();
       if(error) console.error('Supabase cartas_futuro error:', error);
-      else {
-        console.log('Carta guardada:', data);
-        const status = document.getElementById('supabaseStatus');
-        if(status) status.innerText = '● ' + corrDict().statusGuardada;
-      }
-      if(corrData.frase){
+      else { console.log('Carta guardada:', data); corrGuardadoOk = true; }
+      if(corrGuardadoOk && corrData.frase){
         const { error: muroError } = await supabaseClient.from('muro_correspondencia').insert([{
           frase_destacada: corrData.frase,
           talisman_tipo: corrTalismanSel
@@ -1030,15 +1040,17 @@ async function corrGuardarActo3(){
         if(muroError) console.error('Supabase muro_correspondencia error:', muroError);
       }
     }
-  }catch(e){ console.error('Supabase exception', e); }
+  }catch(e){ console.error('Supabase exception', e); corrGuardadoOk = false; }
 
   document.getElementById('corr-estado3').classList.add('hidden');
   document.getElementById('corr-estado4').classList.remove('hidden');
   corrUpdateSellos(4);
   corrRenderConstelacion();
   corrRenderResumen();
+  const corrStatusEl = document.getElementById('corr-status');
+  if(corrStatusEl) corrStatusEl.textContent = corrGuardadoOk ? corrDict().statusGuardada : corrDict().statusNoGuardada;
   try{
-    if(typeof supabaseClient !== 'undefined' && supabaseClient){
+    if(corrGuardadoOk && typeof supabaseClient !== 'undefined' && supabaseClient){
       const { count, error: countErr } = await supabaseClient.from('cartas_futuro').select('*', {count:'exact', head:true});
       document.getElementById('corr-num').innerText = (!countErr && typeof count === 'number') ? count : '—';
     } else {
@@ -1194,6 +1206,10 @@ function corrApplyLanguage(lang){
     const n = ta ? ta.value.length : 0;
     contadorEl.innerText = n + ' ' + d.caracteres;
   }
+
+  // estado de guardado: refrescar en el nuevo idioma si ya se completó un intento
+  const statusEl = document.getElementById('corr-status');
+  if(statusEl && corrGuardadoOk !== null) statusEl.textContent = corrGuardadoOk ? d.statusGuardada : d.statusNoGuardada;
 }
 
 // inicializar sellos
@@ -2192,7 +2208,36 @@ function renderLista(){
     div.className='border border-[#1e1e28] bg-[#111117]/60 p-4 rounded-xl text-[13px] leading-relaxed flex gap-3 items-center';
     const formaObj = formas.find(f=>f.icono===of.icono) || formas.find(f=>f.nombre===of.forma) || {imagen:''};
     const imgSrc = formaObj.imagen || '';
-    div.innerHTML=`<img src="${imgSrc}" class="w-10 h-10 object-contain rounded"> <div><span class="text-[#C9A86A] serif">${of.categoria}</span><span class="text-[#E8E0D0]/40">:</span> <span class="text-[#E8E0D0]/80">"${of.texto}"</span> <span class="text-[#555]">—</span> <span class="text-[#E8E0D0]/60">${of.forma}</span></div>`;
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.className = 'w-10 h-10 object-contain rounded';
+    div.appendChild(img);
+    div.appendChild(document.createTextNode(' '));
+    const wrap = document.createElement('div');
+    const spanCategoria = document.createElement('span');
+    spanCategoria.className = 'text-[#C9A86A] serif';
+    spanCategoria.textContent = of.categoria;
+    wrap.appendChild(spanCategoria);
+    const spanDosPuntos = document.createElement('span');
+    spanDosPuntos.className = 'text-[#E8E0D0]/40';
+    spanDosPuntos.textContent = ':';
+    wrap.appendChild(spanDosPuntos);
+    wrap.appendChild(document.createTextNode(' '));
+    const spanTexto = document.createElement('span');
+    spanTexto.className = 'text-[#E8E0D0]/80';
+    spanTexto.textContent = `"${of.texto}"`;
+    wrap.appendChild(spanTexto);
+    wrap.appendChild(document.createTextNode(' '));
+    const spanGuion = document.createElement('span');
+    spanGuion.className = 'text-[#555]';
+    spanGuion.textContent = '—';
+    wrap.appendChild(spanGuion);
+    wrap.appendChild(document.createTextNode(' '));
+    const spanForma = document.createElement('span');
+    spanForma.className = 'text-[#E8E0D0]/60';
+    spanForma.textContent = of.forma;
+    wrap.appendChild(spanForma);
+    div.appendChild(wrap);
     lista.appendChild(div);
   });
 }
