@@ -176,7 +176,7 @@ svg#gsSky{width:100%;height:auto;display:block;border-radius:2px;}
 
 <div class="divider" aria-hidden="true"><svg viewBox="0 0 56 22"><circle cx="22" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/><circle cx="33" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/></svg></div>
 
-<section class="content reveal" id="cielo-de-gael" aria-label="El Cielo Nocturno, mapa interactivo">
+<section class="content reveal" id="cielo-de-gael" aria-label="El Cielo Nocturno, mapa interactivo" style="border-top:1px solid rgba(201,163,95,0.12); margin-top:1.5rem; padding-top:4.5rem;">
   <p class="gs-eyebrow" data-i18n="cielo-eyebrow">Universo Gael</p>
   <h2 class="gs-title" data-i18n="cielo-h2">El Cielo Nocturno</h2>
   <p class="gs-epigraph" data-i18n="cielo-intro">El mapa, tejido en una piel misteriosa y cálida al tacto, delineaba constelaciones que se reacomodaban cada noche, como si el destino se rescribiera con el impulso de los vientos nocturnos.</p>
@@ -258,7 +258,7 @@ svg#gsSky{width:100%;height:auto;display:block;border-radius:2px;}
 
 <div class="divider" aria-hidden="true"><svg viewBox="0 0 56 22"><circle cx="22" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/><circle cx="33" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="0.8"/></svg></div>
 
-<section class="reveal pozo-content" id="pozo-tocafondos" aria-label="El Pozo de los Tocafondos, ritual interactivo">
+<section class="reveal pozo-content" id="pozo-tocafondos" aria-label="El Pozo de los Tocafondos, ritual interactivo" style="border-top:1px solid rgba(201,163,95,0.12); margin-top:1.5rem; padding-top:4.5rem;">
 <div id="pozo-wrap">
 <div id="estado1" class="w-full text-center">
   <p class="gs-eyebrow" data-i18n="header-plaza">PLAZA DEL FÉNIX</p>
@@ -1368,7 +1368,11 @@ function applyLanguage(lang){
     if(typeof renderCategorias === 'function') renderCategorias();
     if(typeof renderFormas === 'function') renderFormas();
     const estado4El = document.getElementById('estado4');
-    if(estado4El && !estado4El.classList.contains('hidden')){ if(typeof renderReflexion === 'function') renderReflexion(); if(typeof renderLista === 'function') renderLista(); }
+    if(estado4El && !estado4El.classList.contains('hidden')){
+      if(typeof renderReflexion === 'function') renderReflexion();
+      if(typeof cargarOfrendas === 'function') cargarOfrendas().then(()=>{ if(typeof renderLista === 'function') renderLista(); });
+      else if(typeof renderLista === 'function') renderLista();
+    }
   }
   if(typeof corrApplyLanguage === 'function') corrApplyLanguage(lang);
 }
@@ -1601,7 +1605,10 @@ const formasBase = [
 
 const pozoTranslations = {
   es: {
-    "header-plaza":"PLAZA DEL FÉNIX",
+    "header-plaza":"Universo Gael",
+    "status-colectivo":"POZO COLECTIVO",
+    "status-local":"POZO LOCAL",
+    "status-no-llego":"tu última ofrenda no llegó al pozo colectivo",
     "estado1-title1":"Aventuras",
     "estado1-title2":"Introspectivas",
     "estado1-subtitle":"EL POZO DE LOS TOCAFONDOS",
@@ -1758,7 +1765,10 @@ const pozoTranslations = {
     semillas:[]
   },
   en: {
-    "header-plaza":"PHOENIX SQUARE",
+    "header-plaza":"Gael Universe",
+    "status-colectivo":"COLLECTIVE WELL",
+    "status-local":"LOCAL WELL",
+    "status-no-llego":"your last offering didn't reach the collective well",
     "estado1-title1":"Introspective",
     "estado1-title2":"Adventures",
     "estado1-subtitle":"THE WELL OF THE TOCAFONDOS",
@@ -1915,7 +1925,10 @@ const pozoTranslations = {
     semillas:[]
   },
   pt: {
-    "header-plaza":"PRAÇA DA FÊNIX",
+    "header-plaza":"Universo Gael",
+    "status-colectivo":"POÇO COLETIVO",
+    "status-local":"POÇO LOCAL",
+    "status-no-llego":"sua última oferenda não chegou ao poço coletivo",
     "estado1-title1":"Aventuras",
     "estado1-title2":"Introspectivas",
     "estado1-subtitle":"O POÇO DOS TOCAFUNDOS",
@@ -2164,8 +2177,9 @@ function soltar(){
 
 async function cargarOfrendas(){
   const status=document.getElementById('supabaseStatus');
-  if(supabaseClient){ try{ const {data, error} = await supabaseClient.from('ofrendas').select('*').order('created_at', {ascending:false}).limit(1000); if(!error && data){ ofrendas = data.map(d=>({categoria:d.categoria, texto:d.texto, forma:d.forma, icono:d.icono})); localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas)); if(status) status.innerText = (ultimoGuardadoRemoto===false) ? '○ tu última ofrenda no llegó al pozo colectivo' : '● POZO COLECTIVO'; return; } if(error) console.error('Supabase (cargarOfrendas):', error); }catch(e){ console.error('Supabase (cargarOfrendas) excepción:', e); } }
-  if(status) status.innerText='○ POZO LOCAL';
+  const pd = (typeof pozoTranslations !== 'undefined') ? (pozoTranslations[currentLang] || pozoTranslations['es']) : null;
+  if(supabaseClient){ try{ const {data, error} = await supabaseClient.from('ofrendas').select('*').order('created_at', {ascending:false}).limit(1000); if(!error && data){ ofrendas = data.map(d=>({categoria:d.categoria, texto:d.texto, forma:d.forma, icono:d.icono})); localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas)); if(status) status.innerText = (ultimoGuardadoRemoto===false) ? ('○ '+(pd?pd['status-no-llego']:'tu última ofrenda no llegó al pozo colectivo')) : ('● '+(pd?pd['status-colectivo']:'POZO COLECTIVO')); return; } if(error) console.error('Supabase (cargarOfrendas):', error); }catch(e){ console.error('Supabase (cargarOfrendas) excepción:', e); } }
+  if(status) status.innerText='○ '+(pd?pd['status-local']:'POZO LOCAL');
   const local=localStorage.getItem('aventuras_v7');
   if(local){ try{ ofrendas=JSON.parse(local); if(ofrendas.length>0) return; }catch(e){} }
   ofrendas=[];
