@@ -3,9 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0c0a16">
+<meta name="color-scheme" content="dark">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="canonical" href="https://arrudavanderley.com/robot-literario.html">
 <title>Robot Literario · Universo Gael</title>
+<meta name="description" content="Una herramienta gratuita para escritores: revisa tu texto y señala patrones de repetición, ritmo y estilo que cuesta ver desde adentro. Sin servidor, sin cookies — la decisión siempre es tuya.">
+<meta property="og:title" content="Robot Literario">
+<meta property="og:description" content="Una herramienta gratuita para escritores: revisa tu texto y señala patrones de repetición, ritmo y estilo que cuesta ver desde adentro. Sin servidor, sin cookies — la decisión siempre es tuya.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://arrudavanderley.com/robot-literario.html">
+<meta property="og:image" content="https://arrudavanderley.com/og-image.jpg">
 <style>
   :root {
+    color-scheme: dark;
     --vacio: #0c0a16;
     --tela: #17132a;
     --tela-borde: #2a2340;
@@ -214,9 +225,10 @@
     background: var(--tela);
     border: 1px solid var(--tela-borde);
     border-radius: 2px;
-    padding: 20px;
-    line-height: 1.8;
-    max-height: 420px;
+    padding: 28px;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    max-height: 640px;
     overflow-y: auto;
   }
 
@@ -278,11 +290,25 @@
   }
 
   .entrada-frase {
+    display: block;
+    width: 100%;
+    text-align: left;
     background: var(--tela);
     border: 1px solid var(--tela-borde);
     border-radius: 2px;
     padding: 16px 20px;
     margin-bottom: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .entrada-frase:hover,
+  .entrada-frase:focus-visible {
+    border-color: var(--hilo-tenue);
+  }
+  .entrada-frase:focus-visible {
+    outline: 2px solid var(--hilo-tenue);
+    outline-offset: 2px;
   }
 
   .conteo-frase {
@@ -412,7 +438,7 @@
 
   <div id="resultado-frases">
     <h2>Frases largas</h2>
-    <p class="ayuda">Las frases muy largas pueden cansar al lector o diluir una idea, y algunos editores las señalan por eso. No es un error ni una regla fija — hay estilos literarios que las usan con toda intención. Aquí quedan marcadas para que decidas tú si conviene dividirlas.</p>
+    <p class="ayuda">Las frases muy largas pueden cansar al lector o diluir una idea, y algunos editores las señalan por eso. No es un error ni una regla fija — hay estilos literarios que las usan con toda intención. Haz clic en una frase para verla resaltada en su contexto.</p>
     <p class="estado-vacio" id="estado-vacio-frases">Aquí aparecerán las frases de más de 30 palabras.</p>
     <div id="lista-frases"></div>
   </div>
@@ -426,21 +452,21 @@
 
   <div id="resultado-frases-iguales">
     <h2>Frases que empiezan igual</h2>
-    <p class="ayuda">Cuando varias frases seguidas empiezan con las mismas dos palabras, el texto puede sentirse repetitivo o mecánico al leer, aunque cada frase esté bien escrita por separado. No es un error: es un patrón de ritmo que vale la pena notar.</p>
+    <p class="ayuda">Cuando varias frases seguidas empiezan con las mismas dos palabras, el texto puede sentirse repetitivo o mecánico al leer, aunque cada frase esté bien escrita por separado. No es un error: es un patrón de ritmo que vale la pena notar. Haz clic para verlas en contexto.</p>
     <p class="estado-vacio" id="estado-vacio-frases-iguales">Aquí aparecerán las frases seguidas que empiecen con la misma palabra.</p>
     <div id="lista-frases-iguales"></div>
   </div>
 
   <div id="resultado-ritmo">
     <h2>Ritmo</h2>
-    <p class="ayuda">El ritmo depende, en parte, de la variedad en la longitud de las frases: si muchas seguidas tienen un largo parecido, la lectura puede sentirse monótona, aunque cada frase esté bien escrita. Aquí se marcan esos tramos para que decidas si conviene alternar frases cortas y largas.</p>
+    <p class="ayuda">El ritmo depende, en parte, de la variedad en la longitud de las frases: si muchas seguidas tienen un largo parecido, la lectura puede sentirse monótona, aunque cada frase esté bien escrita. Haz clic en un tramo para verlo resaltado en su contexto.</p>
     <p class="estado-vacio" id="estado-vacio-ritmo">Aquí aparecerán los tramos de frases con longitud parecida.</p>
     <div id="lista-ritmo"></div>
   </div>
 
   <div id="resultado-puntuacion">
     <h2>Puntuación</h2>
-    <p class="ayuda">Signos repetidos, como "!!" o un exceso de puntos suspensivos, suelen leerse como un recurso informal en un texto literario. No siempre hay que evitarlos, pero conviene saber cuántas veces aparecen.</p>
+    <p class="ayuda">Signos repetidos, como "!!" o un exceso de puntos suspensivos, suelen leerse como un recurso informal en un texto literario. No siempre hay que evitarlos, pero conviene saber cuántas veces aparecen. Haz clic para ver dónde aparecen.</p>
     <p class="estado-vacio" id="estado-vacio-puntuacion">Aquí aparecerá la puntuación repetida que se detecte.</p>
     <div id="lista-puntuacion"></div>
   </div>
@@ -2155,9 +2181,9 @@
     const suspensivos = texto.split("...").length - 1;
 
     const encontrados = [];
-    if (exclamaciones > 0) encontrados.push(["Exclamaciones dobles o más", exclamaciones]);
-    if (interrogaciones > 0) encontrados.push(["Interrogaciones dobles o más", interrogaciones]);
-    if (suspensivos > 0) encontrados.push(['Puntos suspensivos ("...")', suspensivos]);
+    if (exclamaciones > 0) encontrados.push(["Exclamaciones dobles o más", "!!", exclamaciones]);
+    if (interrogaciones > 0) encontrados.push(["Interrogaciones dobles o más", "??", interrogaciones]);
+    if (suspensivos > 0) encontrados.push(['Puntos suspensivos ("...")', "...", suspensivos]);
 
     const estadoVacio = document.getElementById("estado-vacio-puntuacion");
     const lista = document.getElementById("lista-puntuacion");
@@ -2172,15 +2198,26 @@
     }
 
     estadoVacio.style.display = "none";
-    let html = "";
-    for (const [etiqueta, veces] of encontrados) {
+    lista.innerHTML = "";
+    for (const [etiqueta, patron, veces] of encontrados) {
       const palabraVeces = veces === 1 ? "vez" : "veces";
-      html += `<div class="entrada-hilo" style="cursor: default;">
-                 <span class="palabra">${etiqueta}</span>
-                 <span class="conteo">${veces} ${palabraVeces}</span>
-               </div>`;
+      const boton = document.createElement("button");
+      boton.type = "button";
+      boton.className = "entrada-hilo";
+
+      const spanEtiqueta = document.createElement("span");
+      spanEtiqueta.className = "palabra";
+      spanEtiqueta.textContent = etiqueta;
+
+      const spanConteo = document.createElement("span");
+      spanConteo.className = "conteo";
+      spanConteo.textContent = `${veces} ${palabraVeces}`;
+
+      boton.appendChild(spanEtiqueta);
+      boton.appendChild(spanConteo);
+      boton.addEventListener("click", () => resaltarEnTexto(etiqueta, [patron], false));
+      lista.appendChild(boton);
     }
-    lista.innerHTML = html;
   }
 
   function revisarRitmo(texto) {
@@ -2223,18 +2260,29 @@
     }
 
     estadoVacio.style.display = "none";
-    let html = "";
+    lista.innerHTML = "";
     for (const [inicio, fin, largo] of rachas) {
-      let frasesHtml = "";
+      const boton = document.createElement("button");
+      boton.type = "button";
+      boton.className = "entrada-frase";
+
+      const etiqueta = document.createElement("span");
+      etiqueta.className = "conteo-frase";
+      etiqueta.textContent = `${largo} frases seguidas de longitud parecida`;
+      boton.appendChild(etiqueta);
+
+      const oracionesTramo = [];
       for (let j = inicio; j < fin; j++) {
-        frasesHtml += `<p class="texto-frase">${escaparHTML(frasesLimpias[j])}</p>`;
+        const p = document.createElement("p");
+        p.className = "texto-frase";
+        p.textContent = frasesLimpias[j];
+        boton.appendChild(p);
+        oracionesTramo.push(frasesLimpias[j]);
       }
-      html += `<div class="entrada-frase">
-                 <span class="conteo-frase">${largo} frases seguidas de longitud parecida</span>
-                 ${frasesHtml}
-               </div>`;
+
+      boton.addEventListener("click", () => resaltarEnTexto("Ritmo: tramo repetitivo", oracionesTramo, false));
+      lista.appendChild(boton);
     }
-    lista.innerHTML = html;
   }
 
   function limpiarBordes(palabra) {
@@ -2280,15 +2328,30 @@
     }
 
     estadoVacio.style.display = "none";
-    let html = "";
+    lista.innerHTML = "";
     for (const [palabra, frase1, frase2] of coincidencias) {
-      html += `<div class="entrada-frase">
-                 <span class="conteo-frase">Ambas empiezan con "${escaparHTML(palabra)}"</span>
-                 <p class="texto-frase">${escaparHTML(frase1)}</p>
-                 <p class="texto-frase">${escaparHTML(frase2)}</p>
-               </div>`;
+      const boton = document.createElement("button");
+      boton.type = "button";
+      boton.className = "entrada-frase";
+
+      const etiqueta = document.createElement("span");
+      etiqueta.className = "conteo-frase";
+      etiqueta.textContent = `Ambas empiezan con "${palabra}"`;
+
+      const p1 = document.createElement("p");
+      p1.className = "texto-frase";
+      p1.textContent = frase1;
+
+      const p2 = document.createElement("p");
+      p2.className = "texto-frase";
+      p2.textContent = frase2;
+
+      boton.appendChild(etiqueta);
+      boton.appendChild(p1);
+      boton.appendChild(p2);
+      boton.addEventListener("click", () => resaltarEnTexto("Frases que empiezan igual", [frase1, frase2], false));
+      lista.appendChild(boton);
     }
-    lista.innerHTML = html;
   }
 
   function revisarMuletillas(texto) {
@@ -2366,14 +2429,25 @@
     }
 
     estadoVacio.style.display = "none";
-    let html = "";
+    lista.innerHTML = "";
     for (const [numPalabras, frase] of largas) {
-      html += `<div class="entrada-frase">
-                 <span class="conteo-frase">${numPalabras} palabras</span>
-                 <p class="texto-frase">${escaparHTML(frase)}</p>
-               </div>`;
+      const boton = document.createElement("button");
+      boton.type = "button";
+      boton.className = "entrada-frase";
+
+      const etiqueta = document.createElement("span");
+      etiqueta.className = "conteo-frase";
+      etiqueta.textContent = `${numPalabras} palabras`;
+
+      const parrafo = document.createElement("p");
+      parrafo.className = "texto-frase";
+      parrafo.textContent = frase;
+
+      boton.appendChild(etiqueta);
+      boton.appendChild(parrafo);
+      boton.addEventListener("click", () => resaltarEnTexto("Frase larga", [frase], false));
+      lista.appendChild(boton);
     }
-    lista.innerHTML = html;
   }
 
   function escaparHTML(texto) {
@@ -2402,18 +2476,33 @@
     contenedor.innerHTML = html;
   }
 
-  function mostrarEnContexto(palabra) {
-    const escapada = palabra.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const patron = new RegExp(`\\b(${escapada})\\b`, "gi");
-    const textoEscapado = escaparHTML(textoActual);
-    const resaltado = textoEscapado.replace(patron, '<mark>$1</mark>').replace(/\n/g, "<br>");
+  function resaltarEnTexto(etiqueta, fragmentos, usarLimitePalabra) {
+    let textoEscapado = escaparHTML(textoActual);
+    for (const fragmento of fragmentos) {
+      const escapado = fragmento.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const patron = usarLimitePalabra
+        ? new RegExp(`\\b(${escapado})\\b`, "gi")
+        : new RegExp(`(${escapado})`, "gi");
+      textoEscapado = textoEscapado.replace(patron, '<mark>$1</mark>');
+    }
+    const resaltado = textoEscapado.replace(/\n/g, "<br>");
 
-    document.getElementById("palabra-actual").textContent = palabra;
+    document.getElementById("palabra-actual").textContent = etiqueta;
     document.getElementById("texto-resaltado").innerHTML = resaltado;
-    mostrarSinonimos(palabra);
+
+    if (usarLimitePalabra && fragmentos.length === 1) {
+      mostrarSinonimos(fragmentos[0]);
+    } else {
+      document.getElementById("sugerencias-sinonimos").innerHTML = "";
+    }
+
     const panel = document.getElementById("panel-vista-previa");
     panel.hidden = false;
     panel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function mostrarEnContexto(palabra) {
+    resaltarEnTexto(palabra, [palabra], true);
   }
 
   document.getElementById("boton-revisar").addEventListener("click", revisarTexto);
