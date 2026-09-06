@@ -409,6 +409,9 @@
   <details class="ajustes">
     <summary>Ajustes</summary>
     <div class="ajustes-grid">
+      <label>Palabras repetidas 2 veces: ignorar si están a más de
+        <input type="number" id="ajuste-distancia-cercana" value="40" min="1" max="500">
+        palabras de distancia</label>
       <label>Frases largas: más de
         <input type="number" id="ajuste-limite-palabras" value="30" min="5" max="200">
         palabras</label>
@@ -425,7 +428,7 @@
 
   <div id="resultado">
     <h2>Palabras repetidas</h2>
-    <p class="ayuda">En edición literaria se suele señalar la repetición de palabras porque, sin ser un error, puede restarle variedad a la prosa, sobre todo en un texto largo. No es una regla que debas seguir a ciegas: es información para que decidas tú. Haz clic en cualquier palabra para verla resaltada dentro de tu texto.</p>
+    <p class="ayuda">En edición literaria se suele señalar la repetición de palabras porque, sin ser un error, puede restarle variedad a la prosa, sobre todo en un texto largo. No es una regla que debas seguir a ciegas: es información para que decidas tú. Si una palabra se repite solo dos veces y está lejos, no aparece aquí — con tres o más, siempre se muestra. Haz clic en cualquier palabra para verla resaltada dentro de tu texto.</p>
     <p class="estado-vacio" id="estado-vacio">Aquí aparecerán los hilos que se repiten.</p>
     <div id="lista-hilos"></div>
   </div>
@@ -2102,7 +2105,66 @@
     "armonía",
     "son",
     "cantinela"
-  ]
+  ],
+  "poder": ["fuerza", "potestad", "dominio", "facultad"],
+  "magia": ["hechicería", "encantamiento", "brujería"],
+  "mágico": ["encantado", "hechizado", "sobrenatural"],
+  "hechizo": ["encantamiento", "conjuro", "sortilegio"],
+  "conjuro": ["hechizo", "encantamiento", "invocación"],
+  "maldición": ["hechizo maligno", "condena", "anatema"],
+  "profecía": ["vaticinio", "predicción", "augurio"],
+  "leyenda": ["mito", "relato antiguo", "tradición"],
+  "reino": ["dominio", "territorio", "monarquía"],
+  "trono": ["sitial", "asiento real"],
+  "corona": ["diadema", "cetro simbólico"],
+  "fantasma": ["espectro", "aparición", "espíritu errante"],
+  "espíritu": ["ánima", "esencia inmaterial", "aliento vital"],
+  "criatura": ["ser", "engendro", "espécimen"],
+  "monstruo": ["bestia", "engendro", "aberración"],
+  "dragón": ["bestia alada", "wyrm"],
+  "guerrero": ["combatiente", "soldado", "luchador"],
+  "batalla": ["combate", "contienda", "lid"],
+  "espada": ["hoja", "acero", "estoque"],
+  "escudo": ["broquel", "defensa"],
+  "portal": ["umbral", "puerta dimensional", "acceso"],
+  "eternidad": ["infinitud", "perpetuidad"],
+  "coraje": ["valentía", "valor", "arrojo"],
+  "traición": ["deslealtad", "engaño", "perfidia"],
+  "lealtad": ["fidelidad", "devoción", "entrega"],
+  "venganza": ["represalia", "desquite", "revancha"],
+  "sacrificio": ["ofrenda", "renuncia", "inmolación"],
+  "renacer": ["resurgir", "revivir", "renacimiento"],
+  "cristal": ["vidrio", "gema transparente"],
+  "torre": ["atalaya", "torreón"],
+  "castillo": ["fortaleza", "alcázar", "ciudadela"]
+};
+
+const muletillas = {
+  "de alguna manera": ["de algún modo", "en cierto modo", "hasta cierto punto"],
+  "en realidad": ["realmente", "de hecho", "en verdad"],
+  "es decir": ["esto es", "dicho de otro modo", "en otras palabras"],
+  "de hecho": ["en efecto", "efectivamente", "realmente"],
+  "sin duda": ["ciertamente", "indudablemente", "sin lugar a dudas"],
+  "por así decirlo": ["en cierto sentido", "como quien dice", "por decirlo de algún modo"],
+  "cabe destacar": ["destaca", "vale la pena mencionar", "es notable que"],
+  "a fin de cuentas": ["al final", "en definitiva", "después de todo"],
+  "o sea": ["es decir", "dicho de otro modo"],
+  "digamos": ["por ejemplo", "supongamos", "pongamos por caso"],
+  "en cierta forma": ["de cierto modo", "hasta cierto punto"],
+  "de cierta manera": ["de algún modo", "en cierta forma"],
+  "por decirlo así": ["en cierto sentido", "como quien dice"],
+  "como quien dice": ["por así decirlo", "en cierto sentido"],
+  "en cierto sentido": ["de algún modo", "hasta cierto punto"],
+  "hasta cierto punto": ["en parte", "de algún modo"],
+  "en fin": ["en definitiva", "al final de cuentas", "resumiendo"],
+  "la verdad es que": ["en verdad", "realmente", "lo cierto es que"],
+  "lo cierto es que": ["la verdad es que", "en realidad"],
+  "en todo caso": ["de todos modos", "de cualquier forma"],
+  "de todos modos": ["en todo caso", "de cualquier forma", "aun así"],
+  "de todas formas": ["de todos modos", "en cualquier caso"],
+  "al fin y al cabo": ["a fin de cuentas", "después de todo"],
+  "en el fondo": ["en esencia", "en última instancia"],
+  "a decir verdad": ["la verdad es que", "en realidad", "honestamente"]
 };
 
   let textoActual = "";
@@ -2117,18 +2179,26 @@
     palabrasActuales = palabras;
 
     const conteo = {};
-    for (const palabra of palabras) {
-      if (palabra in conteo) {
-        conteo[palabra] += 1;
-      } else {
-        conteo[palabra] = 1;
-      }
+    const posiciones = {};
+    for (let indice = 0; indice < palabras.length; indice++) {
+      const palabra = palabras[indice];
+      conteo[palabra] = (conteo[palabra] || 0) + 1;
+      if (!(palabra in posiciones)) posiciones[palabra] = [];
+      posiciones[palabra].push(indice);
     }
+
+    const distanciaCercana = leerUmbral("ajuste-distancia-cercana", 1, 40);
 
     const repetidas = [];
     for (const palabra in conteo) {
       const veces = conteo[palabra];
       if (veces > 1 && !vacias.includes(palabra)) {
+        if (veces === 2) {
+          const idx = posiciones[palabra];
+          if (Math.abs(idx[1] - idx[0]) > distanciaCercana) {
+            continue;
+          }
+        }
         repetidas.push([veces, palabra]);
       }
     }
@@ -2141,7 +2211,7 @@
     if (repetidas.length === 0) {
       estadoVacio.textContent = palabras.length === 0
         ? "Aquí aparecerán los hilos que se repiten."
-        : "Ningún hilo se repite. El tejido está limpio.";
+        : "Ningún hilo se repite (o se repite solo dos veces, muy separado).";
       estadoVacio.style.display = "block";
       lista.innerHTML = "";
       return;
@@ -2152,7 +2222,7 @@
     let html = "";
     for (const [veces, palabra] of repetidas) {
       const etiqueta = veces === 1 ? "vez" : "veces";
-      const tieneSinonimos = palabra in sinonimos;
+      const tieneSinonimos = encontrarClaveSinonimo(palabra) !== null;
       const marca = tieneSinonimos
         ? `<span class="marca-sinonimo" title="Tiene sinónimos sugeridos">✎</span>`
         : "";
@@ -2355,13 +2425,10 @@
   }
 
   function revisarMuletillas(texto) {
-    const muletillas = ["de alguna manera", "en realidad", "es decir", "de hecho",
-                         "sin duda", "por así decirlo", "cabe destacar", "a fin de cuentas",
-                         "o sea", "digamos"];
     const textoMinusculas = texto.toLowerCase();
 
     const encontradas = [];
-    for (const muletilla of muletillas) {
+    for (const muletilla in muletillas) {
       const veces = textoMinusculas.split(muletilla).length - 1;
       if (veces > 0) {
         encontradas.push([veces, muletilla]);
@@ -2385,7 +2452,7 @@
     for (const [veces, muletilla] of encontradas) {
       const etiqueta = veces === 1 ? "vez" : "veces";
       html += `<button type="button" class="entrada-hilo" data-palabra="${muletilla}">
-                 <span class="palabra">${muletilla}</span>
+                 <span class="palabra">${muletilla}<span class="marca-sinonimo" title="Tiene alternativas sugeridas">✎</span></span>
                  <span class="conteo">${veces} ${etiqueta}</span>
                </button>`;
     }
@@ -2393,7 +2460,7 @@
 
     const botonesMuletillas = lista.querySelectorAll(".entrada-hilo");
     for (const boton of botonesMuletillas) {
-      boton.addEventListener("click", () => mostrarEnContexto(boton.dataset.palabra));
+      boton.addEventListener("click", () => mostrarEnContextoMuletilla(boton.dataset.palabra));
     }
   }
 
@@ -2457,18 +2524,59 @@
       .replace(/>/g, "&gt;");
   }
 
-  function mostrarSinonimos(palabra) {
+  function candidatosBase(palabra) {
+    const candidatos = [];
+    if (palabra.endsWith("ones") && palabra.length > 5) {
+      candidatos.push(palabra.slice(0, -4) + "ón");
+    }
+    if (palabra.endsWith("ces") && palabra.length > 4) {
+      candidatos.push(palabra.slice(0, -3) + "z");
+    }
+    if (palabra.endsWith("es") && palabra.length > 3) {
+      candidatos.push(palabra.slice(0, -2));
+    }
+    if (palabra.endsWith("s") && palabra.length > 2) {
+      candidatos.push(palabra.slice(0, -1));
+    }
+    const base = [...candidatos];
+    for (const c of base) {
+      if (c.endsWith("a") && c.length > 1) {
+        candidatos.push(c.slice(0, -1) + "o");
+      }
+    }
+    if (palabra.endsWith("a") && palabra.length > 1) {
+      candidatos.push(palabra.slice(0, -1) + "o");
+    }
+    return candidatos;
+  }
+
+  function encontrarClaveSinonimo(palabra) {
+    if (palabra in sinonimos) return palabra;
+    for (const candidato of candidatosBase(palabra)) {
+      if (candidato in sinonimos) return candidato;
+    }
+    return null;
+  }
+
+  function contarOcurrencias(candidato) {
+    if (candidato.includes(" ")) {
+      return textoActual.toLowerCase().split(candidato.toLowerCase()).length - 1;
+    }
+    return palabrasActuales.filter(p => p === candidato.toLowerCase()).length;
+  }
+
+  function mostrarListaSugerencias(clave, listaCandidatos, tituloPrefijo) {
     const contenedor = document.getElementById("sugerencias-sinonimos");
-    if (!(palabra in sinonimos)) {
+    if (!listaCandidatos || listaCandidatos.length === 0) {
       contenedor.innerHTML = "";
       return;
     }
-    let html = `<p class="ayuda">Sinónimos posibles para «${palabra}»:</p><ul class="lista-sinonimos">`;
-    for (const candidato of sinonimos[palabra]) {
-      const vecesCandidato = palabrasActuales.filter(p => p === candidato).length;
-      const etiqueta = vecesCandidato === 1 ? "vez" : "veces";
-      const aviso = vecesCandidato > 0
-        ? `<span class="aviso"> — ya aparece ${vecesCandidato} ${etiqueta} en tu texto</span>`
+    let html = `<p class="ayuda">${tituloPrefijo} para «${clave}»:</p><ul class="lista-sinonimos">`;
+    for (const candidato of listaCandidatos) {
+      const veces = contarOcurrencias(candidato);
+      const etiqueta = veces === 1 ? "vez" : "veces";
+      const aviso = veces > 0
+        ? `<span class="aviso"> — ya aparece ${veces} ${etiqueta} en tu texto</span>`
         : "";
       html += `<li>${candidato}${aviso}</li>`;
     }
@@ -2476,7 +2584,7 @@
     contenedor.innerHTML = html;
   }
 
-  function resaltarEnTexto(etiqueta, fragmentos, usarLimitePalabra) {
+  function resaltarEnTexto(etiqueta, fragmentos, usarLimitePalabra, listaSugerencias, tituloSugerencias) {
     let textoEscapado = escaparHTML(textoActual);
     for (const fragmento of fragmentos) {
       const escapado = fragmento.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -2490,8 +2598,8 @@
     document.getElementById("palabra-actual").textContent = etiqueta;
     document.getElementById("texto-resaltado").innerHTML = resaltado;
 
-    if (usarLimitePalabra && fragmentos.length === 1) {
-      mostrarSinonimos(fragmentos[0]);
+    if (listaSugerencias) {
+      mostrarListaSugerencias(etiqueta, listaSugerencias, tituloSugerencias);
     } else {
       document.getElementById("sugerencias-sinonimos").innerHTML = "";
     }
@@ -2502,7 +2610,14 @@
   }
 
   function mostrarEnContexto(palabra) {
-    resaltarEnTexto(palabra, [palabra], true);
+    const claveEncontrada = encontrarClaveSinonimo(palabra);
+    const sugerencias = claveEncontrada ? sinonimos[claveEncontrada] : null;
+    resaltarEnTexto(palabra, [palabra], true, sugerencias, "Sinónimos posibles");
+  }
+
+  function mostrarEnContextoMuletilla(muletilla) {
+    const sugerencias = muletillas[muletilla] || null;
+    resaltarEnTexto(muletilla, [muletilla], true, sugerencias, "Alternativas");
   }
 
   document.getElementById("boton-revisar").addEventListener("click", revisarTexto);
