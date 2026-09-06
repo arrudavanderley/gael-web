@@ -1,0 +1,18 @@
+name: supabase-keepalive
+on:
+  schedule:
+    - cron: '0 9 */2 * *' # cada 2 días a las 9am UTC
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write heartbeat to Postgres
+        run: |
+          curl -X POST "https://mwfvaaiwgunubyapymhe.supabase.co/rest/v1/heartbeat?on_conflict=id" \
+            -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: resolution=merge-duplicates" \
+            -d "{\"id\":1,\"ping_at\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}"
