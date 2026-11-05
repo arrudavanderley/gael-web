@@ -17,7 +17,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   color-scheme:dark;
@@ -1009,11 +1008,23 @@ function corrSelectTalisman(btn){
 }
 
 async function corrGuardarActo3(){
-  const talText = document.getElementById('corr-talisman-text').value.trim();
+  const talText=document.getElementById('corr-talisman-text').value.trim();
   if(!corrTalismanSel){ alert(corrDict().alertSinTalisman); return; }
-  corrData.talismanTexto = talText;
-  corrData.talismanTipo = corrTalismanSel;
+  corrData.talismanTexto=talText; corrData.talismanTipo=corrTalismanSel;
   localStorage.setItem('gael-correspondencia', JSON.stringify(corrData));
+  corrGuardadoOk=false;
+  try{
+    await tursoFetch("INSERT INTO cartas_futuro (carta_completa, frase_destacada, email_futuro, quiere_email, email_enviado, equipaje, talisman_tipo, talisman_texto, fecha_devolucion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [corrData.carta||'', corrData.frase||null, corrData.wantsEmail?corrData.email:null, corrData.wantsEmail?1:0, 0, JSON.stringify(corrData.equipaje||null), corrTalismanSel, talText||null, new Date(Date.now()+3*365.25*24*60*60*1000).toISOString()]);
+    corrGuardadoOk=true;
+    if(corrData.frase) await tursoFetch("INSERT INTO muro_correspondencia (frase_destacada, talisman_tipo) VALUES (?, ?)", [corrData.frase, corrTalismanSel]);
+  }catch(e){ corrGuardadoOk=false; }
+  document.getElementById('corr-estado3').classList.add('hidden');
+  document.getElementById('corr-estado4').classList.remove('hidden');
+  corrUpdateSellos(4); corrRenderConstelacion(); corrRenderResumen();
+  document.getElementById('corr-status').textContent=corrGuardadoOk?corrDict().statusGuardada:corrDict().statusNoGuardada;
+  try{ const res=await tursoFetch("SELECT COUNT(*) as c FROM cartas_futuro"); document.getElementById('corr-num').innerText=rowsToObjects(res)[0]?.c||'—'; }catch(e){ document.getElementById('corr-num').innerText='—'; }
+  await corrCargarMuro();
+  }
 
   // Guardado final en Supabase con fecha de devolución a 3 años
   corrGuardadoOk = false;
@@ -1063,40 +1074,16 @@ async function corrGuardarActo3(){
 
 // Cargar muro colectivo desde Supabase
 async function corrCargarMuro(){
-  const muro = document.getElementById('corr-muro');
-  if(!muro) return;
+  const muro=document.getElementById('corr-muro'); if(!muro) return;
   try{
-    if(typeof supabaseClient !== 'undefined' && supabaseClient){
-      const { data, error } = await supabaseClient.from('muro_correspondencia').select('frase_destacada, talisman_tipo, created_at').order('created_at', {ascending:false}).limit(12);
-      if(!error){
-        muro.innerHTML = '';
-        if(data && data.length>0){
-          data.forEach(row=>{
-            const div = document.createElement('div');
-            div.style.paddingLeft = '0.8rem';
-            const esPropia = corrData.frase && row.frase_destacada === corrData.frase;
-            div.style.borderLeft = esPropia ? '1px solid rgba(201,163,95,0.4)' : '1px solid rgba(201,163,95,0.18)';
-            if(esPropia) div.style.color = 'var(--gold-bright)';
-            const atribucion = esPropia ? corrDict().muroTuFrase : ((row.talisman_tipo||corrDict().muroViajero) + ' · ' + new Date(row.created_at).getFullYear());
-            div.appendChild(document.createTextNode(`“${row.frase_destacada}” `));
-            const corrAtribSpan = document.createElement('span');
-            corrAtribSpan.style.color = 'var(--muted)';
-            corrAtribSpan.style.fontSize = '0.8em';
-            corrAtribSpan.textContent = `— ${atribucion}`;
-            div.appendChild(corrAtribSpan);
-            muro.appendChild(div);
-          });
-        } else {
-          const vacioDiv = document.createElement('div');
-          vacioDiv.style.opacity = '0.6'; vacioDiv.style.fontStyle = 'italic';
-          vacioDiv.textContent = corrDict().muroVacio;
-          muro.appendChild(vacioDiv);
-        }
-      } else {
-        console.error('Muro error', error);
-      }
-    }
-  }catch(e){ console.error('Muro exception', e); }
+    const res=await tursoFetch("SELECT frase_destacada, talisman_tipo, created_at FROM muro_correspondencia ORDER BY created_at DESC LIMIT 12");
+    const data=rowsToObjects(res); muro.innerHTML='';
+    data.forEach(row=>{
+      const div=document.createElement('div'); div.style.paddingLeft='0.8rem'; div.style.borderLeft='1px solid rgba(201,163,95,0.18)';
+      div.appendChild(document.createTextNode(`“${row.frase_destacada}” `));
+      const s=document.createElement('span'); s.style.color='var(--muted)'; s.style.fontSize='0.8em'; s.textContent=`— ${row.talisman_tipo} · ${new Date(row.created_at).getFullYear()}`; div.appendChild(s); muro.appendChild(div);
+    });
+  }catch(e){}
 }
 
 
@@ -2085,9 +2072,16 @@ const pozoTranslations = {
     semillas:[]
   }
 };
-
-const SUPABASE_URL = 'https://mwfvaaiwgunubyapymhe.supabase.co'; const SUPABASE_ANON_KEY = 'sb_publishable_F9VTZnEM7ve55OPS9JIyIQ_JE_nZpRo'; let supabaseClient = null; let ultimoGuardadoRemoto = null;
-if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) { supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); }
+// --- TURSO CONFIG ---
+const TURSO_URL = 'https://gael-web-arrudavanderley.aws-sa-east-1.turso.io/v2/pipeline';
+const TURSO_TOKEN = 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.[STRIPPED 224 bytes].[STRIPPED 86 bytes]';
+let supabaseClient = null;
+let ultimoGuardadoRemoto = null;
+async function tursoFetch(sql, args=[]) {
+  const res = await fetch(TURSO_URL, { method:'POST', headers:{'Authorization':'Bearer '+TURSO_TOKEN,'Content-Type':'application/json'}, body: JSON.stringify({ requests: [{ type:'execute', stmt:{ sql, args: args.map(v=>({type:'text', value: String(v ?? '')})) } }, {type:'close'}] }) });
+  const j = await res.json(); if(!res.ok) throw new Error(JSON.stringify(j)); return j.results?.[0]?.response?.result || {cols:[], rows:[]};
+}
+function rowsToObjects(r){ if(!r||!r.cols) return []; const c=r.cols.map(x=>x.name); return r.rows.map(row=>{ const o={}; row.forEach((cell,i)=>{ o[c[i]]=cell?cell.value:null; }); return o; }); }
 
 let categorias = [];
 let formas = [];
@@ -2174,23 +2168,25 @@ function soltar(){
     guardarOfrenda();
   }, 1500);
 }
-
 async function cargarOfrendas(){
   const status=document.getElementById('supabaseStatus');
-  const pd = (typeof pozoTranslations !== 'undefined') ? (pozoTranslations[currentLang] || pozoTranslations['es']) : null;
-  if(supabaseClient){ try{ const {data, error} = await supabaseClient.from('ofrendas').select('*').order('created_at', {ascending:false}).limit(1000); if(!error && data){ ofrendas = data.map(d=>({categoria:d.categoria, texto:d.texto, forma:d.forma, icono:d.icono})); localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas)); if(status) status.innerText = (ultimoGuardadoRemoto===false) ? ('○ '+(pd?pd['status-no-llego']:'tu última ofrenda no llegó al pozo colectivo')) : ('● '+(pd?pd['status-colectivo']:'POZO COLECTIVO')); return; } if(error) console.error('Supabase (cargarOfrendas):', error); }catch(e){ console.error('Supabase (cargarOfrendas) excepción:', e); } }
-  if(status) status.innerText='○ '+(pd?pd['status-local']:'POZO LOCAL');
-  const local=localStorage.getItem('aventuras_v7');
-  if(local){ try{ ofrendas=JSON.parse(local); if(ofrendas.length>0) return; }catch(e){} }
-  ofrendas=[];
+  try{
+    const res=await tursoFetch("SELECT categoria, texto, forma, icono FROM ofrendas ORDER BY created_at DESC LIMIT 1000");
+    ofrendas=rowsToObjects(res).map(d=>({categoria:d.categoria, texto:d.texto, forma:d.forma, icono:d.icono}));
+    localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas));
+    if(status) status.innerText='● POZO COLECTIVO (TURSO)';
+    return;
+  }catch(e){}
+  if(status) status.innerText='○ POZO LOCAL';
+  ofrendas=JSON.parse(localStorage.getItem('aventuras_v7')||"[]");
 }
-
 async function guardarOfrenda(){
   const texto=document.getElementById('textoOfrenda').value.trim();
   const nueva={categoria:seleccion.categoria.nombre, texto:texto, forma:seleccion.forma.nombre, icono:seleccion.forma.icono};
-  if(supabaseClient){ try{ const {error} = await supabaseClient.from('ofrendas').insert([nueva]); if(!error){ ultimoGuardadoRemoto=true; ofrendas.unshift(nueva); localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas)); return; } console.error('Supabase (guardarOfrenda):', error); ultimoGuardadoRemoto=false; }catch(e){ console.error('Supabase (guardarOfrenda) excepción:', e); ultimoGuardadoRemoto=false; } }
+  try{ await tursoFetch("INSERT INTO ofrendas (categoria, texto, forma, icono) VALUES (?, ?, ?, ?)", [nueva.categoria, nueva.texto, nueva.forma, nueva.icono]); }catch(e){}
   ofrendas.unshift(nueva); localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas));
 }
+
 
 function irEstado4(){
   document.getElementById('estado1').classList.add('hidden');
