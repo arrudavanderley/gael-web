@@ -1026,52 +1026,6 @@ async function corrGuardarActo3(){
   await corrCargarMuro();
   }
 
-  // Guardado final en Supabase con fecha de devolución a 3 años
-  corrGuardadoOk = false;
-  try{
-    if(typeof supabaseClient !== 'undefined' && supabaseClient){
-      const { data, error } = await supabaseClient.from('cartas_futuro').insert([{
-        carta_completa: corrData.carta || '',
-        frase_destacada: corrData.frase || null,
-        email_futuro: corrData.wantsEmail ? corrData.email : null,
-        quiere_email: !!corrData.wantsEmail,
-        email_enviado: false,
-        equipaje: corrData.equipaje || null,
-        talisman_tipo: corrTalismanSel,
-        talisman_texto: talText || null,
-        fecha_devolucion: new Date(Date.now() + 3*365.25*24*60*60*1000).toISOString()
-      }]).select();
-      if(error) console.error('Supabase cartas_futuro error:', error);
-      else { console.log('Carta guardada:', data); corrGuardadoOk = true; }
-      if(corrGuardadoOk && corrData.frase){
-        const { error: muroError } = await supabaseClient.from('muro_correspondencia').insert([{
-          frase_destacada: corrData.frase,
-          talisman_tipo: corrTalismanSel
-        }]);
-        if(muroError) console.error('Supabase muro_correspondencia error:', muroError);
-      }
-    }
-  }catch(e){ console.error('Supabase exception', e); corrGuardadoOk = false; }
-
-  document.getElementById('corr-estado3').classList.add('hidden');
-  document.getElementById('corr-estado4').classList.remove('hidden');
-  corrUpdateSellos(4);
-  corrRenderConstelacion();
-  corrRenderResumen();
-  const corrStatusEl = document.getElementById('corr-status');
-  if(corrStatusEl) corrStatusEl.textContent = corrGuardadoOk ? corrDict().statusGuardada : corrDict().statusNoGuardada;
-  try{
-    if(corrGuardadoOk && typeof supabaseClient !== 'undefined' && supabaseClient){
-      const { count, error: countErr } = await supabaseClient.from('cartas_futuro').select('*', {count:'exact', head:true});
-      document.getElementById('corr-num').innerText = (!countErr && typeof count === 'number') ? count : '—';
-    } else {
-      document.getElementById('corr-num').innerText = '—';
-    }
-  }catch(e){ document.getElementById('corr-num').innerText = '—'; }
-  await corrCargarMuro();
-  document.getElementById('corr-progress')?.scrollIntoView({behavior:'smooth', block:'start'});
-}
-
 // Cargar muro colectivo desde Supabase
 async function corrCargarMuro(){
   const muro=document.getElementById('corr-muro'); if(!muro) return;
