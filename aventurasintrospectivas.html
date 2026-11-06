@@ -1012,7 +1012,7 @@ async function corrGuardarActo3(){
   if(!corrTalismanSel){ alert(corrDict().alertSinTalisman); return; }
   corrData.talismanTexto=talText; corrData.talismanTipo=corrTalismanSel;
   localStorage.setItem('gael-correspondencia', JSON.stringify(corrData));
-  corrGuardadoOk=false;
+  let corrGuardadoOk=false;
   try{
     const fecha3anos = new Date(Date.now() + 3*365.25*24*60*60*1000).toISOString();
     await fetch(WORKER_URL+'/api/carta',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
@@ -1023,6 +1023,13 @@ async function corrGuardarActo3(){
     })});
     corrGuardadoOk=true;
   }catch(e){ corrGuardadoOk=false; }
+  document.getElementById('corr-estado3').classList.add('hidden');
+  document.getElementById('corr-estado4').classList.remove('hidden');
+  corrUpdateSellos(4); corrRenderConstelacion(); corrRenderResumen();
+  const corrStatusEl=document.getElementById('corr-status'); if(corrStatusEl) corrStatusEl.textContent=corrGuardadoOk?corrDict().statusGuardada:corrDict().statusNoGuardada;
+  try{ const res=await tursoFetch("SELECT COUNT(*) as c FROM cartas_futuro"); document.getElementById('corr-num').innerText=rowsToObjects(res)[0]?.c||'—'; }catch(e){ document.getElementById('corr-num').innerText='—'; }
+  await corrCargarMuro();
+}
 
 // Cargar muro colectivo
 async function corrCargarMuro(){
@@ -2133,6 +2140,8 @@ async function cargarOfrendas(){
   if(status) status.innerText='○ POZO LOCAL';
   ofrendas=JSON.parse(localStorage.getItem('aventuras_v7')||"[]");
 }
+
+  
 async function guardarOfrenda(){
   const texto=document.getElementById('textoOfrenda').value.trim();
   const nueva={categoria:seleccion.categoria.nombre, texto:texto, forma:seleccion.forma.nombre, icono:seleccion.forma.icono};
