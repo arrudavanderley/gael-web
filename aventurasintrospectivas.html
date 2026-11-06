@@ -1014,19 +1014,17 @@ async function corrGuardarActo3(){
   localStorage.setItem('gael-correspondencia', JSON.stringify(corrData));
   corrGuardadoOk=false;
   try{
-    await tursoFetch("INSERT INTO cartas_futuro (carta_completa, frase_destacada, email_futuro, quiere_email, email_enviado, equipaje, talisman_tipo, talisman_texto, fecha_devolucion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [corrData.carta||'', corrData.frase||null, corrData.wantsEmail?corrData.email:null, corrData.wantsEmail?1:0, 0, JSON.stringify(corrData.equipaje||null), corrTalismanSel, talText||null, new Date(Date.now()+3*365.25*24*60*60*1000).toISOString()]);
+    const fecha3anos = new Date(Date.now() + 3*365.25*24*60*60*1000).toISOString();
+    await fetch(WORKER_URL+'/api/carta',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      carta_completa: corrData.carta||'', frase_destacada: corrData.frase||null,
+      email_futuro: corrData.wantsEmail?corrData.email:null, quiere_email: corrData.wantsEmail?1:0,
+      equipaje: JSON.stringify(corrData.equipaje||null), talisman_tipo: corrTalismanSel,
+      talisman_texto: talText||null, fecha_devolucion: fecha3anos
+    })});
     corrGuardadoOk=true;
-    if(corrData.frase) await tursoFetch("INSERT INTO muro_correspondencia (frase_destacada, talisman_tipo) VALUES (?, ?)", [corrData.frase, corrTalismanSel]);
   }catch(e){ corrGuardadoOk=false; }
-  document.getElementById('corr-estado3').classList.add('hidden');
-  document.getElementById('corr-estado4').classList.remove('hidden');
-  corrUpdateSellos(4); corrRenderConstelacion(); corrRenderResumen();
-  document.getElementById('corr-status').textContent=corrGuardadoOk?corrDict().statusGuardada:corrDict().statusNoGuardada;
-  try{ const res=await tursoFetch("SELECT COUNT(*) as c FROM cartas_futuro"); document.getElementById('corr-num').innerText=rowsToObjects(res)[0]?.c||'—'; }catch(e){ document.getElementById('corr-num').innerText='—'; }
-  await corrCargarMuro();
-  }
 
-// Cargar muro colectivo desde Supabase
+// Cargar muro colectivo
 async function corrCargarMuro(){
   const muro=document.getElementById('corr-muro'); if(!muro) return;
   try{
@@ -2138,7 +2136,9 @@ async function cargarOfrendas(){
 async function guardarOfrenda(){
   const texto=document.getElementById('textoOfrenda').value.trim();
   const nueva={categoria:seleccion.categoria.nombre, texto:texto, forma:seleccion.forma.nombre, icono:seleccion.forma.icono};
-  try{ await tursoFetch("INSERT INTO ofrendas (categoria, texto, forma, icono) VALUES (?, ?, ?, ?)", [nueva.categoria, nueva.texto, nueva.forma, nueva.icono]); }catch(e){}
+  try{
+    await fetch(WORKER_URL+'/api/ofrenda',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(nueva)});
+  }catch(e){}
   ofrendas.unshift(nueva); localStorage.setItem('aventuras_v7', JSON.stringify(ofrendas));
 }
 
