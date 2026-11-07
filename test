@@ -1,0 +1,19 @@
+<!DOCTYPE html><html><body>
+<button onclick="test()" style="padding:2rem;font-size:1.2rem;width:100%">PROBAR OFRENDA</button>
+<pre id="log"></pre>
+<script>
+async function test(){
+  const log=document.getElementById('log');
+  log.textContent='Enviando...';
+  try{
+    const r=await fetch('https://gael-worker.arrudapedagogosocial.workers.dev/api/ofrenda',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({categoria:'prueba',texto:'hola movil '+Date.now(),forma:'test',icono:'⭐'})
+    });
+    const t=await r.text();
+    log.textContent='Status '+r.status+': '+t;
+  }catch(e){ log.textContent='Error: '+e.message; }
+}
+</script>
+</body></html>
