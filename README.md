@@ -101,4 +101,4 @@ Este proyecto usa licencia dual, coherente con el universo de Gael:
 Ver archivo `LICENSE` para el texto legal completo.
 
 ---
-Gracias por visitar el universo de Gael.
+Gracias por visitar el Universo Gael.
